@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { setVocabularySelected } from '../actions/vocabulary';
+import { setVocabularySelected, deletePhrase } from '../actions/vocabulary';
 import App from '../components/App/';
 
 export default connect(
@@ -13,6 +13,9 @@ export default connect(
         return {
             setVocabularySelected: (vocabularyId) => {
                 dispatch(setVocabularySelected(vocabularyId));
+            },
+            deletePhrase: (data) => {
+                dispatch(deletePhrase(data));
             }
         };
     }

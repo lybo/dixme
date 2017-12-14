@@ -6,13 +6,12 @@ import Vocabulary from '../Vocabulary';
 
 class App extends Component {
     renderContent() {
-        const { vocabularies, app, setVocabularySelected } = this.props;
+        const { vocabularies, app, setVocabularySelected, deletePhrase } = this.props;
 
         if (app.selectedVocabulary) {
-            console.log('aaaa');
             const vocabulary = vocabularies.find(v => v.id === app.selectedVocabulary);
             return (
-                <Vocabulary vocabulary={vocabulary} />
+                <Vocabulary vocabulary={vocabulary} onDeleteClick={deletePhrase} />
             );
         } else {
             return (
