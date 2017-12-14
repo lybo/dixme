@@ -1,4 +1,4 @@
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import Vocabularies from '../components/Vocabularies/';
 
 export default connect(
@@ -8,6 +8,7 @@ export default connect(
         };
     },
     (dispatch) => {
-        return {};
+        return {
+        };
     }
 )(Vocabularies);

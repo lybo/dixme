@@ -1,13 +1,19 @@
 import { connect } from 'react-redux'
+import { setVocabularySelected } from '../actions/vocabulary';
 import App from '../components/App/';
 
 export default connect(
     (state) => {
         return {
-            vocabularies: state.vocabularies
+            vocabularies: state.vocabularies,
+            app: state.app,
         };
     },
     (dispatch) => {
-        return {};
+        return {
+            setVocabularySelected: (vocabularyId) => {
+                dispatch(setVocabularySelected(vocabularyId));
+            }
+        };
     }
 )(App);

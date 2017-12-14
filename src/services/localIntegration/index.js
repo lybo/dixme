@@ -2,7 +2,9 @@ export function getVocabularies() {
     return new Promise(function(resolve, reject) {
         resolve([
             { id: 1, title: '1', url: '1' },
-            { id: 2, title: '2', url: '2' },
+            { id: 2, title: '2', url: '2', phrases: [
+                { id: 0, text: 'hello', translation: 'γεια' }
+            ]},
         ]);
     });
 }

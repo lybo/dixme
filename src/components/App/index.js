@@ -1,10 +1,27 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './style.css';
+import Vocabularies from '../Vocabularies';
+import Vocabulary from '../Vocabulary';
 
 class App extends Component {
+    renderContent() {
+        const { vocabularies, app, setVocabularySelected } = this.props;
+
+        if (app.selectedVocabulary) {
+            console.log('aaaa');
+            const vocabulary = vocabularies.find(v => v.id === app.selectedVocabulary);
+            return (
+                <Vocabulary vocabulary={vocabulary} />
+            );
+        } else {
+            return (
+                <Vocabularies vocabularies={vocabularies} setVocabularySelected={setVocabularySelected} />
+            );
+        }
+    }
+
     render() {
-        console.log(this.props);
         return (
             <div className="App">
                 <header className="App-header">
@@ -14,6 +31,7 @@ class App extends Component {
                 <p className="App-intro">
                     To get started, edit <code>src/App.js</code> and save to reload.
                 </p>
+                {this.renderContent()}
             </div>
         );
     }
