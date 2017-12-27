@@ -45,3 +45,7 @@ export default function(state = initialState, action = { type: '', payload: {} }
             return state;
     }
 };
+
+export function getModelVocabulary(data) {
+    return Object.assign({}, initialState, data);
+};

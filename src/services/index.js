@@ -5,14 +5,27 @@ export function getVocabularies() {
     return integration.getVocabularies();
 }
 
-export function addVocabulary(template) {
-    return integration.addVocabulary(template);
+export function addVocabulary(vocabulary) {
+    return integration.addVocabulary(vocabulary);
 }
 
-export function updateVocabulary(template) {
-    return integration.updateVocabulary(template);
+export function updateVocabulary(vocabulary) {
+    return integration.updateVocabulary(vocabulary);
 }
 
-export function deleteVocabulary(templateId) {
-    return integration.deleteVocabulary(templateId);
+export function deleteVocabulary(vocabularyId) {
+    return integration.deleteVocabulary(vocabularyId);
+}
+
+//PHRASE
+export function addPhrase(phrase) {
+    return integration.addPhrase(phrase);
+}
+
+export function updatePhrase(phrase) {
+    return integration.updatePhrase(phrase);
+}
+
+export function deletePhrase(phraseId) {
+    return integration.deletePhrase(phraseId);
 }

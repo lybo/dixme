@@ -5,6 +5,7 @@ const initialState = {
     text: '',
     translation: '',
     reference: '',
+    definition: '',
 };
 
 export default function(state = initialState, action = { type: '', payload: {} }) {
@@ -18,4 +19,8 @@ export default function(state = initialState, action = { type: '', payload: {} }
         default:
             return state;
     }
+};
+
+export function getPhraseModel(data) {
+    return Object.assign({}, initialState, data);
 };

@@ -21,12 +21,14 @@ class VocabularyListItem extends Component {
     render() {
         const { vocabulary } = this.props;
         return (
-            <div className="VocabularyListItem">
+            <div className="vocabulary-list-item">
                 <a
                     href="#"
                     onClick={this.handlerClick()}
+                    className="vocabulary-list-item__link"
                 >
-                    {vocabulary.id} - {vocabulary.title}
+                    <div className="vocabulary-list-item__title">{vocabulary.title}</div>
+                    <div className="vocabulary-list-item__number-of-phrases">({vocabulary.phrases.length})</div>
                 </a>
             </div>
         );

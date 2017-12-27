@@ -3,10 +3,18 @@ import logo from './logo.svg';
 import './style.css';
 import Vocabularies from '../Vocabularies';
 import Vocabulary from '../Vocabulary';
+import VocabularyForm from '../VocabularyForm';
 
 class App extends Component {
     renderContent() {
-        const { vocabularies, app, setVocabularySelected, addPhrase, deletePhrase } = this.props;
+        const {
+            vocabularies,
+            app,
+            setVocabularySelected,
+            addVocabulary,
+            addPhrase,
+            deletePhrase,
+        } = this.props;
 
         if (app.selectedVocabulary) {
             const vocabulary = vocabularies.find(v => v.id === app.selectedVocabulary);
@@ -15,7 +23,10 @@ class App extends Component {
             );
         } else {
             return (
-                <Vocabularies vocabularies={vocabularies} setVocabularySelected={setVocabularySelected} />
+                <div>
+                    <Vocabularies vocabularies={vocabularies} setVocabularySelected={setVocabularySelected} />
+                    <VocabularyForm onAddVocabulary={addVocabulary} />
+                </div>
             );
         }
     }

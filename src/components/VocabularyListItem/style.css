@@ -1,0 +1,20 @@
+.vocabulary-list-item {
+
+}
+
+.vocabulary-list-item__link {
+    color: 16px;
+    text-decoration: none;
+    color: #000;
+    display: flex;
+}
+
+.vocabulary-list-item__title {
+    color: 16px;
+    color: #000;
+}
+
+.vocabulary-list-item__number-of-phrases {
+    color: 14px;
+    color: #ccc;
+}

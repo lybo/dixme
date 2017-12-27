@@ -96,3 +96,27 @@ export function requestDeleteVocabulary(data) {
         payload: data
     }
 }
+
+//REQUEST_ADD_PHRASE
+export function requestAddPhrase(data) {
+    return {
+        type: types.REQUEST_ADD_PHRASE,
+        payload: data
+    }
+}
+
+//REQUEST_EDIT_PHRASE
+export function requestUpdatePhrase(data) {
+    return {
+        type: types.REQUEST_EDIT_PHRASE,
+        payload: data
+    }
+}
+
+//REQUEST_DELETE_PHRASE
+export function requestDeletePhrase(data) {
+    return {
+        type: types.REQUEST_DELETE_PHRASE,
+        payload: data
+    }
+}

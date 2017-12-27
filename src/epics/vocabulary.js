@@ -67,14 +67,72 @@ export const requestDeleteVocabulary = (action$, store) => {
     return action$
         .ofType(types.REQUEST_DELETE_VOCABULARY)
         .map(action => action.payload)
-        .flatMap(templateId =>
+        .flatMap(vocabularyId =>
             //Concat 2 observables so they fire sequentially
             Observable.concat(
-                Observable.fromPromise(api.deleteVocabulary(templateId))
+                Observable.fromPromise(api.deleteVocabulary(vocabularyId))
                     .flatMap(data =>
                         //Concat 2 observables so they fire sequentially
                         Observable.concat(
-                            Observable.of(actions.deleteVocabulary(templateId)),
+                            Observable.of(actions.deleteVocabulary(vocabularyId)),
+                        )
+                    )
+            )
+        );
+};
+
+//ADD_PHRASE
+export const requestAddPhrase = (action$, store) => {
+    return action$
+        .ofType(types.REQUEST_ADD_PHRASE)
+        .map(action => action.payload)
+        .flatMap(payload =>
+            //Concat 2 observables so they fire sequentially
+            Observable.concat(
+                Observable.fromPromise(api.addPhrase(payload))
+                    .flatMap(data =>
+                        //Concat 2 observables so they fire sequentially
+                        Observable.concat(
+                            Observable.of(actions.addPhrase(data)),
+                        )
+                    )
+            )
+        );
+};
+
+
+//EDIT_PHRASE
+export const requestUpdatePhrase = (action$, store) => {
+    return action$
+        .ofType(types.REQUEST_EDIT_PHRASE)
+        .map(action => action.payload)
+        .flatMap(payload =>
+            //Concat 2 observables so they fire sequentially
+            Observable.concat(
+                Observable.fromPromise(api.updatePhrase(payload))
+                    .flatMap(data =>
+                        //Concat 2 observables so they fire sequentially
+                        Observable.concat(
+                            Observable.of(actions.updatePhrase(data)),
+                        )
+                    )
+            )
+        );
+};
+
+//DELETE_PHRASE
+export const requestDeletePhrase = (action$, store) => {
+    return action$
+        .ofType(types.REQUEST_DELETE_PHRASE)
+        .map(action => action.payload)
+        .flatMap(phraseId =>
+            //Concat 2 observables so they fire sequentially
+            Observable.concat(
+                Observable.fromPromise(api.deletePhrase(phraseId))
+                    .flatMap(data =>
+                        //Concat 2 observables so they fire sequentially
+                        Observable.concat(
+                            Observable.of(actions.deletePhrase(phraseId)),
                         )
                     )
             )
