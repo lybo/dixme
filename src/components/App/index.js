@@ -19,7 +19,9 @@ class App extends Component {
         if (app.selectedVocabulary) {
             const vocabulary = vocabularies.find(v => v.id === app.selectedVocabulary);
             return (
-                <Vocabulary vocabulary={vocabulary} onAddPhrase={addPhrase} onDeleteClick={deletePhrase} />
+                <div>
+                    <Vocabulary vocabulary={vocabulary} onAddPhrase={addPhrase} onDeleteClick={deletePhrase} />
+                </div>
             );
         } else {
             return (
@@ -41,6 +43,9 @@ class App extends Component {
                 <p className="App-intro">
                     To get started, edit <code>src/App.js</code> and save to reload.
                 </p>
+                {/* <canvas id="pdf-canvas" width="800"></canvas> */}
+                <div id="pdf-canvas"></div>
+                <input type="file" id="file-to-upload" accept="application/pdf" />
                 {this.renderContent()}
             </div>
         );
