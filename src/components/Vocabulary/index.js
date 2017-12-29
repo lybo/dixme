@@ -4,6 +4,8 @@ import pdfjsLib from 'pdfjs-dist';
 import WebFileSystem from '../WebFileSystem';
 import PDFReader from '../PDFReader';
 import PhraseListItem from '../PhraseListItem';
+import PhraseForm from '../PhraseForm';
+import { getPhraseModel } from '../../reducers/phrase';
 
 class Vocabulary extends Component {
     constructor(props) {
@@ -11,10 +13,12 @@ class Vocabulary extends Component {
 
         this.state = {
             pdfPath: null,
+            selectedPhrase: getPhraseModel(),
         };
 
         this.handleWebFileSystemChange = this.handleWebFileSystemChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSelection = this.handleSelection.bind(this);
     }
 
     handleWebFileSystemChange(file) {
@@ -23,32 +27,38 @@ class Vocabulary extends Component {
         });
     }
 
-    handleSubmit() {
+    handleSubmit(phrase) {
         const { vocabulary, onAddPhrase } = this.props;
 
-        return (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            const currentDate = new Date();
-            onAddPhrase && onAddPhrase({
-                phrase: {
-                    id: currentDate.toString(),
-                    text: this.newPhrase.value,
-                    translation: this.translation.value,
-                    reference: this.reference.value,
-                    definition: this.definition.value,
-                },
-                vocabularyId: vocabulary.id,
-            });
+        this.setState({
+            selectedPhrase: getPhraseModel(),
+        });
+        const currentDate = new Date().getTime();
+        onAddPhrase && onAddPhrase({
+            phrase: {
+                ...phrase,
+                id: currentDate.toString(),
+            },
+            vocabularyId: vocabulary.id,
+        });
 
-            this.newPhrase.focus();
-            this.newPhrase.value = '';
-            this.translation.value = '';
-            this.reference.value = '';
-            this.definition.value = '';
-        };
     }
 
+    handleSelection(text, pageTextContent) {
+        const regexp = new RegExp(`[^.]*${text}[^.]*\.`, 'g');
+        const result = pageTextContent.match(regexp, text);
+        if (result && result[0]) {
+            const currentDate = new Date().getTime();
+            const reference = result[0].replace(text, `<b>${text}</b>`)
+            this.setState({
+                selectedPhrase: getPhraseModel({
+                    id: currentDate.toString(),
+                    text,
+                    reference,
+                })
+            });
+        }
+    }
 
     renderPDF() {
         const { pdfPath } = this.state;
@@ -58,31 +68,43 @@ class Vocabulary extends Component {
 
         const { vocabulary } = this.props;
         return (
-            <PDFReader pdfPath={pdfPath} vocabulary={vocabulary} />
+            <PDFReader
+                pdfPath={pdfPath}
+                vocabulary={vocabulary}
+                onSelection={this.handleSelection}
+            />
+        );
+    }
+
+    renderTranslationLinks() {
+        const { selectedPhrase } = this.state;
+        const text = encodeURIComponent(selectedPhrase.text || '');
+        return (
+            <div>
+                <a href={`http://www.wordreference.com/engr/${text}`} target="_blank">wordreference</a>
+                <br />
+                <a href={`https://translate.google.gr/#en/el/${text}`} target="_blank">google</a>
+                <br />
+                <a href={`http://www.bing.com/translator/?from=en&to=el&text=${text}`} target="_blank">bing</a>
+            </div>
         );
     }
 
     render() {
+        const { selectedPhrase } = this.state;
         const { vocabulary, onDeleteClick } = this.props;
         return (
             <div className="vocabulary-form">
-                <WebFileSystem onChange={this.handleWebFileSystemChange} />
+                <WebFileSystem
+                    onChange={this.handleWebFileSystemChange}
+                />
                 {this.renderPDF()}
-                <form onSubmit={this.handleSubmit()}>
-                    <label>Phrase</label>
-                    <input type="text" name="newPhrase" ref={(newPhrase) => this.newPhrase = newPhrase} defaultValue="" className="vocabulary-form__text-input" />
-                    <br />
-                    <label>Translation</label>
-                    <input type="text" name="translation" ref={(translation) => this.translation = translation} defaultValue="" className="vocabulary-form__text-input" />
-                    <br />
-                    <label>Reference</label>
-                    <input type="text" name="reference" ref={(reference) => this.reference = reference} defaultValue="" className="vocabulary-form__text-input" />
-                    <br />
-                    <label>Defintion</label>
-                    <input type="text" name="definition" ref={(definition) => this.definition = definition} defaultValue="" className="vocabulary-form__text-input" />
-                    <input type="submit" className="vocabulary-form__submit-button" />
-                </form>
-                {vocabulary.phrases.map((phrase) => {
+                <PhraseForm
+                    phrase={selectedPhrase}
+                    onSubmit={this.handleSubmit}
+                />
+                {this.renderTranslationLinks()}
+                {vocabulary.phrases.filter(phrase => phrase).map((phrase) => {
                     return (
                         <PhraseListItem
                             key={phrase.id}

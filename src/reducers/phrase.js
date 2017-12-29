@@ -21,6 +21,6 @@ export default function(state = initialState, action = { type: '', payload: {} }
     }
 };
 
-export function getPhraseModel(data) {
+export function getPhraseModel(data = {}) {
     return Object.assign({}, initialState, data);
 };

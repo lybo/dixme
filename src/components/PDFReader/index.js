@@ -9,6 +9,13 @@ class PDFReader extends Component {
         this.renderPDFcontent = this.renderPDFcontent.bind(this);
         this.handleAnnotationClick = this.handleAnnotationClick.bind(this);
         this.handleInputPageNumber = this.handleInputPageNumber.bind(this);
+        this.handleSelectionChange = this.handleSelectionChange.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.vocabulary.phrases.length !== this.props.vocabulary.phrases.length) {
+            this.renderPage(this.pageNumber);
+        }
     }
 
     componentWillMount() {
@@ -42,6 +49,7 @@ class PDFReader extends Component {
 
         return text;
     }
+
     handleAnnotationClick(evt) {
         const { vocabulary } = this.props;
         console.log(vocabulary.phrases.find(phrase => phrase.id === evt.currentTarget.id));
@@ -62,13 +70,18 @@ class PDFReader extends Component {
     }
 
     handleSelectionChange() {
+        const { onSelection } = this.props;
         if (window.getSelection() && window.getSelection().baseNode.parentElement.id === 'pdfReader' && window.getSelection().type === 'Range') {
             const range = window.getSelection().getRangeAt(0);
-            console.log('Selection changed.',
-                range.endContainer.data,
-                range.endContainer.data.slice(range.startOffset, range.endOffset)
+            // console.log('Selection changed.',
+            //     range.endContainer.data,
+            //     range.endContainer.data.slice(range.startOffset, range.endOffset)
+            // );
+            // console.log(window.getSelection().baseNode.parentElement.textContent);
+            onSelection && onSelection(
+                range.endContainer.data.slice(range.startOffset, range.endOffset),
+                window.getSelection().baseNode.parentElement.textContent,
             );
-            console.log(window.getSelection().baseNode.parentElement.textContent);
         }
     }
 
@@ -107,7 +120,8 @@ class PDFReader extends Component {
         const loadingTask = pdfjsLib.getDocument(pdfPath);
         loadingTask.promise.then((pdfDocument) => {
             this.pdfDocument = pdfDocument;
-            return this.renderPage(1);
+            this.pageNumber = 1;
+            return this.renderPage(this.pageNumber);
         }).catch(function (reason) {
             console.error('Error: ' + reason);
         });
@@ -143,6 +157,7 @@ class PDFReader extends Component {
         if (isNaN(pageNumber) || pageNumber <= 0) {
             return;
         }
+        this.pageNumber = pageNumber;
         this.renderPage(pageNumber);
     }
 
