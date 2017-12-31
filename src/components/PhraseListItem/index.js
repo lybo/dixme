@@ -29,6 +29,21 @@ class PhraseListItem extends Component {
         }
     }
 
+    renderReference() {
+        const { phrase, isReferenceVisible } = this.props;
+
+        if (!isReferenceVisible) {
+            return null;
+        }
+
+        return (
+            <div
+                className="phrase-item__reference"
+                dangerouslySetInnerHTML={{__html: `... ${phrase.reference} ...`}}
+            />
+        );
+    }
+
     render() {
         const { phrase } = this.props;
 
@@ -40,23 +55,23 @@ class PhraseListItem extends Component {
                 <div className="phrase-item__text">{phrase.text}</div>
                 <div className="phrase-item__translation">{phrase.translation}</div>
                 <div className="phrase-item__definition">{`(${phrase.definition})`}</div>
-                <div
-                    className="phrase-item__reference"
-                    dangerouslySetInnerHTML={{__html: `... ${phrase.reference} ...`}} />
-                <a
-                    href="#"
-                    className="phrase-item__edit"
-                    onClick={this.handleEditClick(phrase.id)}
-                >
-                    edit
-                </a>
-                <a
-                    href="#"
-                    className="phrase-item__delete"
-                    onClick={this.handleDeleteClick(phrase.id)}
-                >
-                    delete
-                </a>
+                {this.renderReference()}
+                <div className="phrase-item__buttons">
+                    <a
+                        href="#"
+                        className="phrase-item__edit"
+                        onClick={this.handleEditClick(phrase.id)}
+                    >
+                        edit
+                    </a>
+                    <a
+                        href="#"
+                        className="phrase-item__delete"
+                        onClick={this.handleDeleteClick(phrase.id)}
+                    >
+                        delete
+                    </a>
+                </div>
             </div>
         );
     }

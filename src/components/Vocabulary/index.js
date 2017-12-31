@@ -14,16 +14,26 @@ class Vocabulary extends Component {
         this.state = {
             pdfPath: null,
             selectedPhrase: getPhraseModel(),
+            selectedPhraseId: null,
+            isReferenceVisible: true,
+            isPhraseFormVisible: false,
         };
 
         this.handleWebFileSystemChange = this.handleWebFileSystemChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCancelClick = this.handleCancelClick.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
+        this.handleAnnotationClick = this.handleAnnotationClick.bind(this);
+        this.handleShowAllButtonClick = this.handleShowAllButtonClick.bind(this);
+        this.handleReferenceVisibilityToggle = this.handleReferenceVisibilityToggle.bind(this);
+        this.handlePhraseFormVisibilityToggle = this.handlePhraseFormVisibilityToggle.bind(this);
     }
 
     handleWebFileSystemChange(file) {
+        const pdfPath = URL.createObjectURL(file);
+        console.log(pdfPath);
         this.setState({
-            pdfPath: URL.createObjectURL(file),
+            pdfPath,
         });
     }
 
@@ -32,6 +42,7 @@ class Vocabulary extends Component {
 
         this.setState({
             selectedPhrase: getPhraseModel(),
+            isPhraseFormVisible: false,
         });
         const currentDate = new Date().getTime();
         onAddPhrase && onAddPhrase({
@@ -42,6 +53,12 @@ class Vocabulary extends Component {
             vocabularyId: vocabulary.id,
         });
 
+    }
+
+    handleCancelClick() {
+        this.setState({
+            isPhraseFormVisible: false,
+        });
     }
 
     handleSelection(text, pageTextContent) {
@@ -55,9 +72,16 @@ class Vocabulary extends Component {
                     id: currentDate.toString(),
                     text,
                     reference,
-                })
+                }),
+                isPhraseFormVisible: true,
             });
         }
+    }
+
+    handleAnnotationClick(selectedPhraseId) {
+        this.setState({
+            selectedPhraseId,
+        });
     }
 
     renderPDF() {
@@ -72,6 +96,7 @@ class Vocabulary extends Component {
                 pdfPath={pdfPath}
                 vocabulary={vocabulary}
                 onSelection={this.handleSelection}
+                onAnnotationClick={this.handleAnnotationClick}
             />
         );
     }
@@ -80,40 +105,151 @@ class Vocabulary extends Component {
         const { selectedPhrase } = this.state;
         const text = encodeURIComponent(selectedPhrase.text || '');
         return (
-            <div>
-                <a href={`http://www.wordreference.com/engr/${text}`} target="_blank">wordreference</a>
-                <br />
-                <a href={`https://translate.google.gr/#en/el/${text}`} target="_blank">google</a>
-                <br />
-                <a href={`http://www.bing.com/translator/?from=en&to=el&text=${text}`} target="_blank">bing</a>
+            <div className="phrase-item__translation-links">
+                <a
+                    href={`http://www.wordreference.com/engr/${text}`}
+                    target="_blank"
+                    className="phrase-item__translation-link"
+                >
+                    wordreference
+                </a>
+                <a
+                    href={`https://translate.google.gr/#en/el/${text}`}
+                    target="_blank"
+                    className="phrase-item__translation-link"
+                >
+                    google
+                </a>
+                <a
+                    href={`http://www.bing.com/translator/?from=en&to=el&text=${text}`}
+                    target="_blank"
+                    className="phrase-item__translation-link"
+                >
+                    bing
+                </a>
+            </div>
+        );
+    }
+
+    handleShowAllButtonClick() {
+        this.setState({
+            selectedPhraseId: null,
+        });
+    }
+
+    handleReferenceVisibilityToggle() {
+        this.setState({
+            isReferenceVisible: !this.state.isReferenceVisible,
+        });
+    }
+
+    handlePhraseFormVisibilityToggle() {
+        this.setState({
+            isPhraseFormVisible: !this.state.isPhraseFormVisible,
+        });
+    }
+
+    renderShowAllButton() {
+        const { selectedPhraseId } = this.state;
+        if (!selectedPhraseId) {
+            return null;
+        }
+
+        return (
+            <button
+                onClick={this.handleShowAllButtonClick}
+                className="phrases-list__show-all-button"
+            >
+                Show All Phrases
+            </button>
+        );
+    }
+
+    renderPhrasesButtons() {
+        return (
+            <div className="phrases-list__phrases-buttons">
+                <button
+                    onClick={this.handlePhraseFormVisibilityToggle}
+                    className="phrases-list__show-hide-phrase-form"
+                >
+                    Show/Hide Phrase Form
+                </button>
+                <button
+                    onClick={this.handleReferenceVisibilityToggle}
+                    className="phrases-list__show-hide-reference"
+                >
+                    Show/Hide Reference
+                </button>
+            </div>
+        );
+    }
+
+    renderPhraseForm() {
+        const { selectedPhrase, isPhraseFormVisible } = this.state;
+        if (!isPhraseFormVisible) {
+            return null;
+        }
+        return (
+            <div className="vocabulary__form">
+                <PhraseForm
+                    phrase={selectedPhrase}
+                    onCancelClick={this.handleCancelClick}
+                    onSubmit={this.handleSubmit}
+                />
+                {this.renderTranslationLinks()}
+            </div>
+        );
+    }
+
+    renderPhrasesList() {
+        const { selectedPhraseId, isReferenceVisible } = this.state;
+        const { vocabulary, onDeleteClick } = this.props;
+        return (
+            <div className="vocabulary__phrases-list">
+                {vocabulary.phrases
+                        .filter(phrase => phrase)
+                        .filter(phrase => {
+                            if (!selectedPhraseId){
+                                return true;
+                            }
+
+                            return phrase.id === selectedPhraseId;
+                        })
+                        .map((phrase) => {
+                            return (
+                                <PhraseListItem
+                                    key={phrase.id}
+                                    vocabulary={vocabulary}
+                                    onDeleteClick={onDeleteClick}
+                                    phrase={phrase}
+                                    isReferenceVisible={isReferenceVisible}
+                                />
+                            );
+                        })
+                }
             </div>
         );
     }
 
     render() {
-        const { selectedPhrase } = this.state;
-        const { vocabulary, onDeleteClick } = this.props;
         return (
-            <div className="vocabulary-form">
-                <WebFileSystem
-                    onChange={this.handleWebFileSystemChange}
-                />
-                {this.renderPDF()}
-                <PhraseForm
-                    phrase={selectedPhrase}
-                    onSubmit={this.handleSubmit}
-                />
-                {this.renderTranslationLinks()}
-                {vocabulary.phrases.filter(phrase => phrase).map((phrase) => {
-                    return (
-                        <PhraseListItem
-                            key={phrase.id}
-                            vocabulary={vocabulary}
-                            onDeleteClick={onDeleteClick}
-                            phrase={phrase}
-                        />
-                    );
-                })}
+            <div className="vocabulary">
+                <div className="vocabulary__pdf-reader">
+                    <WebFileSystem
+                        onChange={this.handleWebFileSystemChange}
+                    />
+                    {this.renderPDF()}
+                </div>
+
+                <div className="vocabulary__content">
+                    {this.renderPhraseForm()}
+
+                    <div className="vocabulary__phrases-list-container">
+                        {this.renderPhrasesButtons()}
+                        {this.renderShowAllButton()}
+                        {this.renderPhrasesList()}
+                    </div>
+                </div>
             </div>
         );
     }

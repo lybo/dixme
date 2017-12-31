@@ -27,7 +27,7 @@ class Vocabularies extends Component {
 
     render() {
         return (
-            <div className="Vocabularies">
+            <div className="vocabularies">
                 {this.props.vocabularies.map(this.renderVocabularyListItem)}
             </div>
         );

@@ -20,14 +20,21 @@ class App extends Component {
             const vocabulary = vocabularies.find(v => v.id === app.selectedVocabulary);
             return (
                 <div>
-                    <Vocabulary vocabulary={vocabulary} onAddPhrase={addPhrase} onDeleteClick={deletePhrase} />
+                    <Vocabulary
+                        vocabulary={vocabulary}
+                        onAddPhrase={addPhrase}
+                        onDeleteClick={deletePhrase}
+                    />
                 </div>
             );
         } else {
             return (
                 <div>
-                    <Vocabularies vocabularies={vocabularies} setVocabularySelected={setVocabularySelected} />
                     <VocabularyForm onAddVocabulary={addVocabulary} />
+                    <Vocabularies
+                        vocabularies={vocabularies}
+                        setVocabularySelected={setVocabularySelected}
+                    />
                 </div>
             );
         }
@@ -38,12 +45,8 @@ class App extends Component {
             <div className="App">
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React aaaa</h1>
+                    <h1 className="App-title">diXme</h1>
                 </header>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
-                {/* <canvas id="pdf-canvas" width="800"></canvas> */}
                 {this.renderContent()}
             </div>
         );

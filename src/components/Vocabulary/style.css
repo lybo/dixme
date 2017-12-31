@@ -1,57 +1,79 @@
-.phrase-item {
-    margin: 0 0 10px 0;
-    padding: 0 0 10px 0;
-    border: solid #ccc;
-    border-width: 0 0 1px 0;
+.vocabulary {
+    display: flex;
 }
 
-.phrase-item__text {
-    font-size: 18px;
+@media only screen and (min-width : 800px) {
+    .vocabulary {
+        flex-wrapper: wrap;
+    }
+    .vocabulary__pdf-reader {
+        flex: 1;
+    }
+    .vocabulary__content {
+        display: flex;
+        flex-wrapper: wrap;
+        flex: 1;
+    }
 }
 
-.phrase-item__translation {
-    font-size: 16px;
-    margin: 0 0 5px 0;
+@media only screen and (max-width : 800px) {
+    .vocabulary {
+        display: block;
+    }
 }
 
-.phrase-item__reference {
+.vocabulary__phrases-list-container {
+    flex: 1;
+}
+.vocabulary__phrases-list {
+
+}
+
+.phrases-list__phrases-buttons {
+    display: flex;
+    margin-top: 10px;
+}
+
+.phrases-list__show-all-button {
+    width: 100%;
+    margin-top: 10px;
+    box-sizing: border-box;
+    padding: 5px;
+    background: #000;
+    color: #fff;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.phrases-list__show-hide-reference {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 5px;
+    background: #000;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.phrases-list__show-hide-phrase-form {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 5px;
+    background: #000;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.phrase-item__translation-links {
+    margin: 10px 0;
+}
+
+.phrase-item__translation-link {
+    box-sizing: border-box;
+    padding: 5px;
+    margin: 10px;
+    border-radius: 5px;
+    background: #000;
+    color: #FFF;
     font-size: 14px;
-    background:#f9f9f9;
-    border-left:1em solid #eee;
-    margin:1.5em 1em;
-    padding:.5em 1em;
-    quotes:"\201C""\201D";
-}
-
-.phrase-item__reference:before{
-    color:#808080;
-    content:open-quote;
-    font-size:4em;
-    line-height:.1em;
-    margin-right:.25em;
-    vertical-align:-.4em;
-}
-.phrase-item__reference:first-child{
-    display:inline;
-}
-.phrase-item__reference:last-child{
-    margin-bottom:0;
-}
-
-.phrase-item__definition {
-    font-size: 14px;
-}
-
-.phrase-item__edit {
-    display: block;
-    color: red;
-    font-size: 14px;
-    margin: 10px 0 0 0;
-}
-
-.phrase-item__delete {
-    display: block;
-    color: red;
-    font-size: 14px;
-    margin: 10px 0 0 0;
+    text-decoration: none;
 }

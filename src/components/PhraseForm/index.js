@@ -21,6 +21,7 @@ class PhraseForm extends Component {
             definition,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCancelClick = this.handleCancelClick.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -65,6 +66,13 @@ class PhraseForm extends Component {
         };
     }
 
+    handleCancelClick(e) {
+        const { onCancelClick } = this.props;
+        e.stopPropagation();
+        e.preventDefault();
+        onCancelClick && onCancelClick();
+    }
+
     handleInputChange(name) {
         return () => {
             const currentState = this.state;
@@ -73,7 +81,7 @@ class PhraseForm extends Component {
         };
     }
 
-    renderInput(label, name, value, id) {
+    renderInput(type, label, name, value, id) {
         const props = {
             type: 'text',
             name: name,
@@ -81,12 +89,14 @@ class PhraseForm extends Component {
             value: value,
             id: `phrase-form__text-input-${id}`,
             className: 'phrase-form__text-input',
-            onChange: this.handleInputChange(name)
+            onChange: this.handleInputChange(name),
+            rows: 4,
         };
+        const input = type === 'text' ? (<input {...props} />) : (<textarea {...props}></textarea>);
         return (
             <div>
                 <label>{label}</label>
-                <input {...props} />
+                {input}
             </div>
         );
     }
@@ -103,11 +113,19 @@ class PhraseForm extends Component {
         return (
             <div className="phrase-form">
                 <form onSubmit={this.handleSubmit()}>
-                    {this.renderInput('Phrase', 'text', text, id)}
-                    {this.renderInput('Translation', 'translation', translation, id)}
-                    {this.renderInput('Reference', 'reference', reference, id)}
-                    {this.renderInput('Definition', 'definition', definition, id)}
-                    <input type="submit" className="phrase-form__submit-button" />
+                    {this.renderInput('text', 'Phrase', 'text', text, id)}
+                    {this.renderInput('text', 'Translation', 'translation', translation, id)}
+                    {this.renderInput('text', 'Definition', 'definition', definition, id)}
+                    {this.renderInput('textarea', 'Reference', 'reference', reference, id)}
+                    <div className="phrase-form__buttons">
+                        <button
+                            className="phrase-form__cancel-button"
+                            onClick={this.handleCancelClick}
+                        >
+                            Cancel
+                        </button>
+                        <input type="submit" className="phrase-form__submit-button" />
+                    </div>
                 </form>
             </div>
         );

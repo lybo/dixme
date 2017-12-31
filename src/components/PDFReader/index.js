@@ -2,19 +2,36 @@ import React, { Component } from 'react';
 import './style.css';
 import pdfjsLib from 'pdfjs-dist';
 
+const DEFAULT_PAGE_NUMBER = 1;
+const PDF_READER_ANNOTATION_CLASS_NAME = 'pdf-reader__annotation';
+
 class PDFReader extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            pageNumber: DEFAULT_PAGE_NUMBER,
+            pdfPagesNumber: 0,
+        };
+
         this.renderPDFcontent = this.renderPDFcontent.bind(this);
         this.handleAnnotationClick = this.handleAnnotationClick.bind(this);
+        this.handleNavButtonClick = this.handleNavButtonClick.bind(this);
         this.handleInputPageNumber = this.handleInputPageNumber.bind(this);
         this.handleSelectionChange = this.handleSelectionChange.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.vocabulary.phrases.length !== this.props.vocabulary.phrases.length) {
-            this.renderPage(this.pageNumber);
+        const hasPhrasesChanged = nextProps.vocabulary.phrases.length !== this.props.vocabulary.phrases.length;
+        const hasPdfPathChanged = nextProps.pdfPath !== this.props.pdfPath;
+        if (hasPhrasesChanged) {
+            this.renderPage(this.state.pageNumber);
+        }
+        if (hasPdfPathChanged) {
+            this.setState({
+                pageNumber: DEFAULT_PAGE_NUMBER,
+            });
+            this.parsePDF(nextProps.pdfPath, this.renderPDFcontent);
         }
     }
 
@@ -44,15 +61,15 @@ class PDFReader extends Component {
                 });
             });
         enhancedPhrases.forEach(enhancedPhrase => {
-            text = text.replace(enhancedPhrase.highlighedWord, `<span class="pdf-annotation" id="${enhancedPhrase.id}">${enhancedPhrase.highlighedWord}</span>`)
+            text = text.replace(enhancedPhrase.highlighedWord, `<span class="${PDF_READER_ANNOTATION_CLASS_NAME}" id="${enhancedPhrase.id}">${enhancedPhrase.highlighedWord}</span>`)
         });
 
         return text;
     }
 
     handleAnnotationClick(evt) {
-        const { vocabulary } = this.props;
-        console.log(vocabulary.phrases.find(phrase => phrase.id === evt.currentTarget.id));
+        const { vocabulary, onAnnotationClick } = this.props;
+        onAnnotationClick && onAnnotationClick(evt.currentTarget.id);
     }
 
     renderPDFcontent(text) {
@@ -62,7 +79,7 @@ class PDFReader extends Component {
         this.cashedText = content;
         this.pdfReader.innerHTML = content;
 
-        const pdfAnnotations = document.querySelectorAll('.pdf-annotation');
+        const pdfAnnotations = document.querySelectorAll(`.${PDF_READER_ANNOTATION_CLASS_NAME}`);
         [].forEach.call(pdfAnnotations, (pdfAnnotation) => {
             pdfAnnotation.removeEventListener('click', this.handleAnnotationClick);
             pdfAnnotation.addEventListener('click', this.handleAnnotationClick);
@@ -71,17 +88,18 @@ class PDFReader extends Component {
 
     handleSelectionChange() {
         const { onSelection } = this.props;
-        if (window.getSelection() && window.getSelection().baseNode.parentElement.id === 'pdfReader' && window.getSelection().type === 'Range') {
+        if (window.getSelection() &&
+            window.getSelection().baseNode &&
+            window.getSelection().baseNode.parentElement.id === 'pdfReader' &&
+            window.getSelection().type === 'Range'
+        ) {
             const range = window.getSelection().getRangeAt(0);
-            // console.log('Selection changed.',
-            //     range.endContainer.data,
-            //     range.endContainer.data.slice(range.startOffset, range.endOffset)
-            // );
-            // console.log(window.getSelection().baseNode.parentElement.textContent);
-            onSelection && onSelection(
-                range.endContainer.data.slice(range.startOffset, range.endOffset),
-                window.getSelection().baseNode.parentElement.textContent,
-            );
+            if (range.endContainer.data) {
+                onSelection && onSelection(
+                    range.endContainer.data.slice(range.startOffset, range.endOffset),
+                    window.getSelection().baseNode.parentElement.textContent,
+                );
+            }
         }
     }
 
@@ -115,13 +133,14 @@ class PDFReader extends Component {
             });
             return svg;
         }
-        // const pdfPath = URL.createObjectURL('../../../../../../Downloads/American_Gods.pdf');
         pdfjsLib.PDFJS.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.228/build/pdf.worker.js';
         const loadingTask = pdfjsLib.getDocument(pdfPath);
         loadingTask.promise.then((pdfDocument) => {
             this.pdfDocument = pdfDocument;
-            this.pageNumber = 1;
-            return this.renderPage(this.pageNumber);
+            this.setState({
+                pdfPagesNumber: pdfDocument.numPages,
+            });
+            return this.renderPage(DEFAULT_PAGE_NUMBER);
         }).catch(function (reason) {
             console.error('Error: ' + reason);
         });
@@ -129,6 +148,10 @@ class PDFReader extends Component {
     }
 
     renderPage(pageNumber) {
+        if (!this.isPageNumberValid(pageNumber)) {
+            return;
+        }
+
         function buildText(textContent) {
             let content = '';
 
@@ -151,26 +174,68 @@ class PDFReader extends Component {
         });
     }
 
+    isPageNumberValid(pageNumber) {
+        return pageNumber && !isNaN(pageNumber) && pageNumber > 0;
+    }
 
     handleInputPageNumber() {
         const pageNumber = parseInt(this.inputPageNumber.value);
-        if (isNaN(pageNumber) || pageNumber <= 0) {
+        this.setState({
+            pageNumber
+        });
+        if (!this.isPageNumberValid(pageNumber)) {
             return;
         }
-        this.pageNumber = pageNumber;
         this.renderPage(pageNumber);
+    }
+
+    handleNavButtonClick(nextPageNumber) {
+        return (e) => {
+            const { pageNumber } = this.state;
+            const newPageNumber = parseInt(pageNumber + nextPageNumber);
+            if (!this.isPageNumberValid(newPageNumber) || newPageNumber > this.state.pdfPagesNumber) {
+                return;
+            }
+            this.renderPage(newPageNumber);
+            this.setState({
+                pageNumber: newPageNumber
+            });
+        };
+    }
+
+    renderNavButton(label, nextPageNumber) {
+        return (
+            <button
+                className="pdf-reader__nav-button"
+                onClick={this.handleNavButtonClick(nextPageNumber)}
+            >
+                {label}
+            </button>
+        );
     }
 
     render() {
         return (
             <div>
-                <input
-                    type="number"
-                    ref={(inputPageNumber) => this.inputPageNumber = inputPageNumber}
-                    defaultValue="1"
-                    onChange={this.handleInputPageNumber}
-                />
-                <div id="pdfReader" ref={(pdfReader) => this.pdfReader = pdfReader}></div>
+                <div
+                    className="pdf-reader__nav-container"
+                >
+                    {this.renderNavButton('Prev', -1)}
+                    <input
+                        type="number"
+                        className="pdf-reader__nav-text-input"
+                        ref={(inputPageNumber) => this.inputPageNumber = inputPageNumber}
+                        value={this.state.pageNumber}
+                        onChange={this.handleInputPageNumber}
+                    />
+                    / {this.state.pdfPagesNumber}
+                    {this.renderNavButton('Next', 1)}
+                </div>
+                <div
+                    id="pdfReader"
+                    className="pdf-reader__content"
+                    ref={(pdfReader) => this.pdfReader = pdfReader}>
+                </div>
             </div>
         );
     }

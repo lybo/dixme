@@ -1,5 +1,5 @@
 .vocabulary-list-item {
-
+    margin: 5px 0;
 }
 
 .vocabulary-list-item__link {
@@ -7,6 +7,8 @@
     text-decoration: none;
     color: #000;
     display: flex;
+    padding: 5px;
+    background: #DDD;
 }
 
 .vocabulary-list-item__title {

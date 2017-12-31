@@ -1,0 +1,65 @@
+.phrase-item {
+    margin: 0 0 10px 0;
+    padding: 0 0 10px 0;
+    border: solid #ccc;
+    border-width: 0 0 1px 0;
+    width: 100%;
+}
+
+.phrase-item__text {
+    font-size: 18px;
+}
+
+.phrase-item__translation {
+    font-size: 16px;
+    margin: 0 0 5px 0;
+}
+
+.phrase-item__reference {
+    font-size: 14px;
+    background:#f9f9f9;
+    border-left:1em solid #eee;
+    margin:1.5em 1em;
+    padding:.5em 1em;
+    quotes:"\201C""\201D";
+}
+
+.phrase-item__reference:before{
+    color:#808080;
+    content:open-quote;
+    font-size:4em;
+    line-height:.1em;
+    margin-right:.25em;
+    vertical-align:-.4em;
+}
+.phrase-item__reference:first-child{
+    display:inline;
+}
+.phrase-item__reference:last-child{
+    margin-bottom:0;
+}
+
+.phrase-item__definition {
+    font-size: 14px;
+}
+
+.phrase-item__buttons {
+    display: flex;
+    margin: 10px 0 0 0;
+}
+
+.phrase-item__edit {
+    display: block;
+    color: red;
+    font-size: 14px;
+    margin: 0 20px 0 0;
+    flex: 1;
+}
+
+.phrase-item__delete {
+    display: block;
+    color: red;
+    font-size: 14px;
+    flex: 1;
+}
+
