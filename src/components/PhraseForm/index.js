@@ -87,7 +87,7 @@ class PhraseForm extends Component {
             name: name,
             ref: (input) => this[name] =  input,
             value: value,
-            id: `phrase-form__text-input-${id}`,
+            id: `phrase-form__text-input-${name}-${id}`,
             className: 'phrase-form__text-input',
             onChange: this.handleInputChange(name),
             rows: 4,
@@ -95,7 +95,12 @@ class PhraseForm extends Component {
         const input = type === 'text' ? (<input {...props} />) : (<textarea {...props}></textarea>);
         return (
             <div>
-                <label>{label}</label>
+                <label
+                    htmlFor={`phrase-form__text-input-${name}-${id}`}
+                    className="phrase-form__input-label"
+                >
+                    {label}
+                </label>
                 {input}
             </div>
         );

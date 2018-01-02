@@ -18,13 +18,14 @@ class WebFileSystem extends Component {
     }
 
     render() {
+        const { accept } = this.props;
         return (
             <div className="web-file-system">
                 <input
                     type="file"
                     onChange={this.handleChange}
                     ref={(input) => this.input = input}
-                    accept="application/pdf"
+                    accept={accept}
                 />
             </div>
         );

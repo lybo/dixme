@@ -10,7 +10,7 @@ class PDFReader extends Component {
         super(props);
 
         this.state = {
-            pageNumber: DEFAULT_PAGE_NUMBER,
+            pageNumber: props.vocabulary.lastPageNumber ||  DEFAULT_PAGE_NUMBER,
             pdfPagesNumber: 0,
         };
 
@@ -29,7 +29,7 @@ class PDFReader extends Component {
         }
         if (hasPdfPathChanged) {
             this.setState({
-                pageNumber: DEFAULT_PAGE_NUMBER,
+                pageNumber: nextProps.vocabulary.lastPageNumber ||  DEFAULT_PAGE_NUMBER,
             });
             this.parsePDF(nextProps.pdfPath, this.renderPDFcontent);
         }
@@ -137,10 +137,12 @@ class PDFReader extends Component {
         const loadingTask = pdfjsLib.getDocument(pdfPath);
         loadingTask.promise.then((pdfDocument) => {
             this.pdfDocument = pdfDocument;
+            const pageNumber = this.state.pageNumber > pdfDocument.numPages ? DEFAULT_PAGE_NUMBER : this.state.pageNumber;
             this.setState({
                 pdfPagesNumber: pdfDocument.numPages,
+                pageNumber,
             });
-            return this.renderPage(DEFAULT_PAGE_NUMBER);
+            return this.renderPage(pageNumber);
         }).catch(function (reason) {
             console.error('Error: ' + reason);
         });
@@ -179,6 +181,7 @@ class PDFReader extends Component {
     }
 
     handleInputPageNumber() {
+        const { onPageNumberChange } = this.props;
         const pageNumber = parseInt(this.inputPageNumber.value);
         this.setState({
             pageNumber
@@ -187,9 +190,12 @@ class PDFReader extends Component {
             return;
         }
         this.renderPage(pageNumber);
+        onPageNumberChange && onPageNumberChange(pageNumber);
     }
 
     handleNavButtonClick(nextPageNumber) {
+        const { onPageNumberChange } = this.props;
+
         return (e) => {
             const { pageNumber } = this.state;
             const newPageNumber = parseInt(pageNumber + nextPageNumber);
@@ -200,6 +206,7 @@ class PDFReader extends Component {
             this.setState({
                 pageNumber: newPageNumber
             });
+            onPageNumberChange && onPageNumberChange(newPageNumber);
         };
     }
 
@@ -216,7 +223,7 @@ class PDFReader extends Component {
 
     render() {
         return (
-            <div>
+            <div className="pdf-reader">
                 <div
                     className="pdf-reader__nav-container"
                 >

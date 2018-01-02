@@ -19,7 +19,12 @@ export function addVocabulary(vocabulary) {
 }
 
 export function updateVocabulary(vocabulary) {
+    const mapVocabulary = (vocabularyState) => {
+        return vocabularyState.id === vocabulary.id ? Object.assign({}, vocabularyState, vocabulary) : vocabularyState;
+    };
     return new Promise(function(resolve, reject) {
+        const vocabularies = JSON.parse(localStorage.getItem('vocabularies')) || [];
+        localStorage.setItem('vocabularies', JSON.stringify(vocabularies.map(mapVocabulary)));
         resolve(vocabulary);
     });
 }

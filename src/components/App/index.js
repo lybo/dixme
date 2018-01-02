@@ -4,8 +4,35 @@ import './style.css';
 import Vocabularies from '../Vocabularies';
 import Vocabulary from '../Vocabulary';
 import VocabularyForm from '../VocabularyForm';
+import ImportVocabularyForm from '../ImportVocabularyForm';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.handleGoBack = this.handleGoBack.bind(this);
+        this.handleImportVocabularyFormChange = this.handleImportVocabularyFormChange.bind(this);
+        this.handlePageNumberChange = this.handlePageNumberChange.bind(this);
+    }
+
+    handleGoBack() {
+        const { setVocabularySelected } = this.props;
+        setVocabularySelected(null);
+    }
+
+    handleImportVocabularyFormChange(file) {
+        const { addVocabulary } = this.props;
+        addVocabulary(file);
+    }
+
+    handlePageNumberChange(pageNumber) {
+        const { updateVocabulary, app } = this.props;
+        updateVocabulary && updateVocabulary({
+            id: app.selectedVocabulary,
+            lastPageNumber: pageNumber,
+        });
+    }
+
     renderContent() {
         const {
             vocabularies,
@@ -24,13 +51,20 @@ class App extends Component {
                         vocabulary={vocabulary}
                         onAddPhrase={addPhrase}
                         onDeleteClick={deletePhrase}
+                        onGoBack={this.handleGoBack}
+                        onPageNumberChange={this.handlePageNumberChange}
                     />
                 </div>
             );
         } else {
             return (
                 <div>
-                    <VocabularyForm onAddVocabulary={addVocabulary} />
+                    <VocabularyForm
+                        onAddVocabulary={addVocabulary}
+                    />
+                    <ImportVocabularyForm
+                        onChange={this.handleImportVocabularyFormChange}
+                    />
                     <Vocabularies
                         vocabularies={vocabularies}
                         setVocabularySelected={setVocabularySelected}

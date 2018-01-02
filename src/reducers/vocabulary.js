@@ -7,6 +7,7 @@ const initialState = {
     url: '',
     lang1: '',
     lang2: '',
+    lastPageNumber: 1,
     phrases: [],
 };
 

@@ -6,6 +6,18 @@ import PDFReader from '../PDFReader';
 import PhraseListItem from '../PhraseListItem';
 import PhraseForm from '../PhraseForm';
 import { getPhraseModel } from '../../reducers/phrase';
+import * as LAYOUT_TYPE from '../../constants/layout';
+
+// https://stackoverflow.com/questions/19721439/download-json-object-as-a-file-from-browser
+
+function downloadObjectAsJson(exportObj, exportName){
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
 
 class Vocabulary extends Component {
     constructor(props) {
@@ -17,6 +29,7 @@ class Vocabulary extends Component {
             selectedPhraseId: null,
             isReferenceVisible: true,
             isPhraseFormVisible: false,
+            layout: LAYOUT_TYPE.SIMPLE,
         };
 
         this.handleWebFileSystemChange = this.handleWebFileSystemChange.bind(this);
@@ -27,11 +40,13 @@ class Vocabulary extends Component {
         this.handleShowAllButtonClick = this.handleShowAllButtonClick.bind(this);
         this.handleReferenceVisibilityToggle = this.handleReferenceVisibilityToggle.bind(this);
         this.handlePhraseFormVisibilityToggle = this.handlePhraseFormVisibilityToggle.bind(this);
+        this.handleLayoutClick = this.handleLayoutClick.bind(this);
+        this.handleExportClick = this.handleExportClick.bind(this);
+        this.handlePageNumberChange = this.handlePageNumberChange.bind(this);
     }
 
     handleWebFileSystemChange(file) {
         const pdfPath = URL.createObjectURL(file);
-        console.log(pdfPath);
         this.setState({
             pdfPath,
         });
@@ -84,7 +99,12 @@ class Vocabulary extends Component {
         });
     }
 
-    renderPDF() {
+    handlePageNumberChange(pageNumber) {
+        const { onPageNumberChange } = this.props;
+        onPageNumberChange && onPageNumberChange(pageNumber);
+    }
+
+    renderPDFContent() {
         const { pdfPath } = this.state;
         if (!pdfPath) {
             return;
@@ -97,7 +117,26 @@ class Vocabulary extends Component {
                 vocabulary={vocabulary}
                 onSelection={this.handleSelection}
                 onAnnotationClick={this.handleAnnotationClick}
+                onPageNumberChange={this.handlePageNumberChange}
             />
+        );
+    }
+
+    renderPDF() {
+        const { layout } = this.state;
+        if (layout !== LAYOUT_TYPE.PDF) {
+            return;
+        }
+
+        const { vocabulary } = this.props;
+        return (
+            <div className="vocabulary__pdf-reader">
+                <WebFileSystem
+                    onChange={this.handleWebFileSystemChange}
+                    accept={'application/pdf'}
+                />
+                {this.renderPDFContent()}
+            </div>
         );
     }
 
@@ -231,23 +270,64 @@ class Vocabulary extends Component {
         );
     }
 
+    handleLayoutClick(layout) {
+        return () => {
+            this.setState({
+                layout,
+            });
+        };
+    }
+
+    handleExportClick() {
+        const { vocabulary } = this.props;
+        downloadObjectAsJson(vocabulary, vocabulary.title);
+    }
+
     render() {
+        const { vocabulary, onGoBack  } = this.props;
         return (
             <div className="vocabulary">
-                <div className="vocabulary__pdf-reader">
-                    <WebFileSystem
-                        onChange={this.handleWebFileSystemChange}
-                    />
-                    {this.renderPDF()}
+                <div className="vocabulary__header">
+                    <button
+                        onClick={onGoBack}
+                        className="vocabulary__go-back-button"
+                    >
+                        Go back
+                    </button>
+                    <h1>{vocabulary.title}</h1>
+                    layout:
+                    <button
+                        className="vocabulary__layout-simple-button"
+                        onClick={this.handleLayoutClick(LAYOUT_TYPE.SIMPLE)}
+                    >
+                        simple
+                    </button>
+                    <button
+                        className="vocabulary__layout-pdf-button"
+                        onClick={this.handleLayoutClick(LAYOUT_TYPE.PDF)}
+                    >
+                        pdf
+                    </button>
+                    |
+                    <button
+                        className="vocabulary__export-button"
+                        onClick={this.handleExportClick}
+                    >
+                        export
+                    </button>
+
                 </div>
-
                 <div className="vocabulary__content">
-                    {this.renderPhraseForm()}
+                    {this.renderPDF()}
 
-                    <div className="vocabulary__phrases-list-container">
-                        {this.renderPhrasesButtons()}
-                        {this.renderShowAllButton()}
-                        {this.renderPhrasesList()}
+                    <div className="vocabulary__content-list-form">
+                        {this.renderPhraseForm()}
+
+                        <div className="vocabulary__phrases-list-container">
+                            {this.renderPhrasesButtons()}
+                            {this.renderShowAllButton()}
+                            {this.renderPhrasesList()}
+                        </div>
                     </div>
                 </div>
             </div>
