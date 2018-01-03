@@ -20,6 +20,7 @@
 .vocabulary-form__buttons {
     display: flex;
     margin-top: 5px;
+    user-select: none;
 }
 
 .vocabulary-form__submit-button {

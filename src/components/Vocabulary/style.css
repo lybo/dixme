@@ -1,60 +1,6 @@
 .vocabulary {
 }
 
-.vocabulary__header {
-    margin-bottom: 20px;
-}
-
-.vocabulary__go-back-button {
-    box-sizing: border-box;
-    padding: 7px 5px;
-    background: #000;
-    color: #fff;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    box-shadow: 0 4px #444;
-}
-
-.vocabulary__go-back-button:active {
-  box-shadow: 0 0px #666;
-  transform: translateY(4px);
-}
-
-.vocabulary__layout-simple-button {
-    box-sizing: border-box;
-    padding: 7px 5px;
-    background: #000;
-    color: #fff;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    box-shadow: 0 4px #444;
-
-    margin: 0 10px;
-}
-
-.vocabulary__layout-simple-button:active {
-  box-shadow: 0 0px #666;
-  transform: translateY(4px);
-}
-
-.vocabulary__layout-pdf-button {
-    box-sizing: border-box;
-    padding: 7px 5px;
-    background: #000;
-    color: #fff;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    box-shadow: 0 4px #444;
-}
-
-.vocabulary__layout-pdf-button:active {
-  box-shadow: 0 0px #666;
-  transform: translateY(4px);
-}
-
 .vocabulary__export-button {
     box-sizing: border-box;
     padding: 7px 5px;
@@ -113,6 +59,8 @@
 
 .vocabulary__phrases-list-container {
     flex: 1;
+    position: relative;
+    padding: 0 0 50px;
 }
 .vocabulary__phrases-list {
 
@@ -122,25 +70,6 @@
     display: flex;
     margin: 10px 0 14px 0;
     padding: 10px;
-}
-
-.phrases-list__show-all-button {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 5px;
-    background: #000;
-    color: #fff;
-    border-radius: 5px;
-    margin-right: 10px;
-    border: none;
-    box-shadow: 0 4px #444;
-
-    margin: 10px;
-}
-
-.phrases-list__show-all-button:active {
-  box-shadow: 0 0px #666;
-  transform: translateY(4px);
 }
 
 .phrases-list__show-hide-reference {

@@ -51,9 +51,23 @@ export function addPhrase(phraseData) {
     });
 }
 
-export function updatePhrase(phrase) {
+export function updatePhrase(phraseData) {
+    const mapPhrase = (phraseState) => {
+        return phraseState.id === phraseData.phrase.id ? Object.assign({}, phraseState, phraseData.phrase) : phraseState;
+    };
+    const mapVocabulary = (vocabularyState) => {
+        return vocabularyState.id === phraseData.vocabularyId ? Object.assign(
+            {},
+            vocabularyState,
+            Object.assign({}, vocabularyState, {
+                phrases: vocabularyState.phrases.map(mapPhrase)
+            }),
+        ) : vocabularyState;
+    };
     return new Promise(function(resolve, reject) {
-        resolve(phrase);
+        const vocabularies = JSON.parse(localStorage.getItem('vocabularies')) || [];
+        localStorage.setItem('vocabularies', JSON.stringify(vocabularies.map(mapVocabulary)));
+        resolve(phraseData);
     });
 }
 

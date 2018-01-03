@@ -40,6 +40,7 @@ class App extends Component {
             setVocabularySelected,
             addVocabulary,
             addPhrase,
+            updatePhrase,
             deletePhrase,
         } = this.props;
 
@@ -50,6 +51,7 @@ class App extends Component {
                     <Vocabulary
                         vocabulary={vocabulary}
                         onAddPhrase={addPhrase}
+                        onUpdatePhrase={updatePhrase}
                         onDeleteClick={deletePhrase}
                         onGoBack={this.handleGoBack}
                         onPageNumberChange={this.handlePageNumberChange}

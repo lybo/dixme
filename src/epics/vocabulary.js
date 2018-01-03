@@ -100,7 +100,6 @@ export const requestAddPhrase = (action$, store) => {
         );
 };
 
-
 //EDIT_PHRASE
 export const requestUpdatePhrase = (action$, store) => {
     return action$

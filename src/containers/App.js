@@ -3,6 +3,7 @@ import App from '../components/App/';
 import {
     setVocabularySelected,
     requestAddPhrase,
+    requestUpdatePhrase,
     requestDeletePhrase,
     requestAddVocabulary,
     requestUpdateVocabulary,
@@ -28,6 +29,9 @@ export default connect(
             },
             addPhrase: (data) => {
                 dispatch(requestAddPhrase(data));
+            },
+            updatePhrase: (data) => {
+                dispatch(requestUpdatePhrase(data));
             },
             deletePhrase: (data) => {
                 dispatch(requestDeletePhrase(data));

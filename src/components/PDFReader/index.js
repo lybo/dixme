@@ -12,6 +12,8 @@ class PDFReader extends Component {
         this.state = {
             pageNumber: props.vocabulary.lastPageNumber ||  DEFAULT_PAGE_NUMBER,
             pdfPagesNumber: 0,
+            selectedPhraseId: null,
+            isSelectionDialogVisible: false,
         };
 
         this.renderPDFcontent = this.renderPDFcontent.bind(this);
@@ -22,10 +24,15 @@ class PDFReader extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (!this.pdfDocument) {
+            return;
+        }
+
         const hasPhrasesChanged = nextProps.vocabulary.phrases.length !== this.props.vocabulary.phrases.length;
         const hasPdfPathChanged = nextProps.pdfPath !== this.props.pdfPath;
         if (hasPhrasesChanged) {
-            this.renderPage(this.state.pageNumber);
+            // this.renderPage(this.state.pageNumber);
+            this.renderPDFcontent(this.cashedRawText, nextProps.vocabulary.phrases);
         }
         if (hasPdfPathChanged) {
             this.setState({
@@ -61,22 +68,29 @@ class PDFReader extends Component {
                 });
             });
         enhancedPhrases.forEach(enhancedPhrase => {
-            text = text.replace(enhancedPhrase.highlighedWord, `<span class="${PDF_READER_ANNOTATION_CLASS_NAME}" id="${enhancedPhrase.id}">${enhancedPhrase.highlighedWord}</span>`)
+            text = text.replace(
+                enhancedPhrase.highlighedWord,
+                `<span class="${PDF_READER_ANNOTATION_CLASS_NAME}" id="${enhancedPhrase.id}">${enhancedPhrase.highlighedWord}</span>`,
+            );
         });
 
         return text;
     }
 
     handleAnnotationClick(evt) {
-        const { vocabulary, onAnnotationClick } = this.props;
-        onAnnotationClick && onAnnotationClick(evt.currentTarget.id);
+        // const { vocabulary, onAnnotationClick } = this.props;
+        // onAnnotationClick && onAnnotationClick(evt.currentTarget.id);
+        this.setState({
+            selectedPhraseId: evt.currentTarget.id,
+        });
     }
 
-    renderPDFcontent(text) {
-        const { vocabulary } = this.props;
-        const content = this.getParsedPDFWithPhrases(text, vocabulary.phrases);
+    renderPDFcontent(text, phrases) {
+        // const { vocabulary } = this.props;
+        const content = this.getParsedPDFWithPhrases(text, phrases);
 
         this.cashedText = content;
+        this.cashedRawText = text;
         this.pdfReader.innerHTML = content;
 
         const pdfAnnotations = document.querySelectorAll(`.${PDF_READER_ANNOTATION_CLASS_NAME}`);
@@ -87,18 +101,23 @@ class PDFReader extends Component {
     }
 
     handleSelectionChange() {
-        const { onSelection } = this.props;
+        // const { onSelection } = this.props;
         if (window.getSelection() &&
             window.getSelection().baseNode &&
             window.getSelection().baseNode.parentElement.id === 'pdfReader' &&
-            window.getSelection().type === 'Range'
+            window.getSelection().type === 'Range' &&
+            window.getSelection().getRangeAt &&
+            window.getSelection().getRangeAt(0)
         ) {
             const range = window.getSelection().getRangeAt(0);
             if (range.endContainer.data) {
-                onSelection && onSelection(
-                    range.endContainer.data.slice(range.startOffset, range.endOffset),
-                    window.getSelection().baseNode.parentElement.textContent,
-                );
+                this.setState({
+                    isSelectionDialogVisible: true,
+                });
+                // onSelection && onSelection(
+                //     range.endContainer.data.slice(range.startOffset, range.endOffset),
+                //     window.getSelection().baseNode.parentElement.textContent,
+                // );
             }
         }
     }
@@ -133,7 +152,8 @@ class PDFReader extends Component {
             });
             return svg;
         }
-        pdfjsLib.PDFJS.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.228/build/pdf.worker.js';
+        // pdfjsLib.PDFJS.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.228/build/pdf.worker.js';
+        pdfjsLib.PDFJS.workerSrc = '/pdf.worker.min.js';
         const loadingTask = pdfjsLib.getDocument(pdfPath);
         loadingTask.promise.then((pdfDocument) => {
             this.pdfDocument = pdfDocument;
@@ -154,6 +174,7 @@ class PDFReader extends Component {
             return;
         }
 
+        const { vocabulary } = this.props;
         function buildText(textContent) {
             let content = '';
 
@@ -171,7 +192,7 @@ class PDFReader extends Component {
                 // var svg = buildSVG(viewport, textContent);
                 // document.getElementById('pdf-canvas').appendChild(svg);
                 const text = buildText(textContent);
-                this.renderPDFcontent(text);
+                this.renderPDFcontent(text, vocabulary.phrases);
             });
         });
     }
@@ -221,28 +242,131 @@ class PDFReader extends Component {
         );
     }
 
+    renderAnnotationDialog() {
+        const { isSelectionDialogVisible } = this.state;
+        const { onSelection } = this.props;
+
+        if (!isSelectionDialogVisible) {
+            return null;
+        }
+
+        const range = window.getSelection().getRangeAt(0);
+        const phrase = range.endContainer.data.slice(range.startOffset, range.endOffset);
+
+        if (!phrase) {
+            return null;
+        }
+
+        return (
+            <div
+                className="pdf-reader__annotation_info"
+            >
+                {phrase}
+                <div className="pdf-reader__annotation_info-buttons">
+                    <button
+                        className="pdf-reader__annotation_info-cancel-button"
+                        onClick={() => {
+                            this.setState({
+                                isSelectionDialogVisible: false,
+                            });
+                        }}
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        className="pdf-reader__annotation_info-edit-button"
+                        onClick={() => {
+                            this.setState({
+                                isSelectionDialogVisible: false,
+                            });
+                            onSelection && onSelection(
+                                phrase,
+                                window.getSelection().baseNode.parentElement.textContent,
+                            );
+                        }}
+                    >
+                        Edit
+                    </button>
+                </div>
+            </div>
+        );
+
+    }
+
+    renderAnnotationConfirmation() {
+        const { vocabulary } = this.props;
+        const { selectedPhraseId } = this.state;
+
+        const selectedPhrase = vocabulary.phrases.find((phrase) => phrase.id === selectedPhraseId);
+
+        if (!selectedPhrase) {
+            return null;
+        }
+
+        return (
+            <div
+                className="pdf-reader__annotation_info"
+            >
+                {selectedPhrase.translation || 'Missing translation'}<br/>
+                {selectedPhrase.definition || 'Missing definition'}
+                <div className="pdf-reader__annotation_info-buttons">
+                    <button
+                        className="pdf-reader__annotation_info-cancel-button"
+                        onClick={() => {
+                            this.setState({
+                                selectedPhraseId: null,
+                            });
+                        }}
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        className="pdf-reader__annotation_info-edit-button"
+                        onClick={() => {
+                            const { onEditClick } = this.props;
+                            onEditClick && onEditClick(selectedPhrase);
+                        }}
+                    >
+                        Edit
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    renderFooter() {
+
+        return (
+            <div
+                className="pdf-reader__nav-container"
+            >
+                {this.renderAnnotationConfirmation()}
+                {this.renderAnnotationDialog()}
+                {this.renderNavButton('Prev', -1)}
+                <input
+                    type="number"
+                    className="pdf-reader__nav-text-input"
+                    ref={(inputPageNumber) => this.inputPageNumber = inputPageNumber}
+                    value={this.state.pageNumber}
+                    onChange={this.handleInputPageNumber}
+                />
+                / {this.state.pdfPagesNumber}
+                {this.renderNavButton('Next', 1)}
+            </div>
+        );
+    }
+
     render() {
         return (
             <div className="pdf-reader">
-                <div
-                    className="pdf-reader__nav-container"
-                >
-                    {this.renderNavButton('Prev', -1)}
-                    <input
-                        type="number"
-                        className="pdf-reader__nav-text-input"
-                        ref={(inputPageNumber) => this.inputPageNumber = inputPageNumber}
-                        value={this.state.pageNumber}
-                        onChange={this.handleInputPageNumber}
-                    />
-                    / {this.state.pdfPagesNumber}
-                    {this.renderNavButton('Next', 1)}
-                </div>
                 <div
                     id="pdfReader"
                     className="pdf-reader__content"
                     ref={(pdfReader) => this.pdfReader = pdfReader}>
                 </div>
+                {this.renderFooter()}
             </div>
         );
     }

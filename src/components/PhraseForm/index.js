@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './style.css';
+import ButtonWithConfirmation from '../ButtonWithConfirmation';
 
 class PhraseForm extends Component {
     constructor(props) {
@@ -106,6 +107,22 @@ class PhraseForm extends Component {
         );
     }
 
+    renderDeleteButton() {
+        const { onDeleteClick, phrase } = this.props;
+        if (!phrase.id) {
+            return null;
+        }
+
+        return (
+            <ButtonWithConfirmation
+                label="delete"
+                confirmationMessage="Do you want to delete this phrase?"
+                onConfirm={() => onDeleteClick(phrase.id)}
+                buttonClassName="phrase-item__delete"
+            />
+        );
+    }
+
     render() {
         const {
             id,
@@ -131,6 +148,7 @@ class PhraseForm extends Component {
                         </button>
                         <input type="submit" className="phrase-form__submit-button" />
                     </div>
+                    {this.renderDeleteButton()}
                 </form>
             </div>
         );

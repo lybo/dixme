@@ -1,5 +1,6 @@
 .pdf-reader {
-
+    position: relative;
+    padding: 0 0 200px;
 }
 
 .pdf-reader__annotation {
@@ -9,13 +10,83 @@
     color: #FFF;
     cursor: pointer;
     user-select: none;
+
+}
+
+.pdf-reader__annotation_info-buttons {
+    display: flex;
+    margin: 10px 0 0 0;
+}
+
+.pdf-reader__annotation_info-cancel-button {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 7px 5px;
+    background: #000;
+    color: #fff;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    box-shadow: 0 4px #444;
+
+    margin: 0 10px 0 0;
+}
+
+.pdf-reader__annotation_info-cancel-button:active {
+  box-shadow: 0 0px #666;
+  transform: translateY(4px);
+}
+
+.pdf-reader__annotation_info-edit-button {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 7px 5px;
+    background: #000;
+    color: #fff;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    box-shadow: 0 4px #444;
+
+    margin: 0 10px 0 0;
+}
+
+.pdf-reader__annotation_info-edit-button:active {
+  box-shadow: 0 0px #666;
+  transform: translateY(4px);
+}
+
+.pdf-reader__annotation_info {
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    min-height: 80px;
+    box-sizing: border-box;
+    background: #bbb;
+    border-top: 1px solid #999;
+    padding: 10px;
 }
 
 .pdf-reader__nav-container {
-    margin: 20px 0;
     padding: 0 5px;
     display: flex;
     align-items: center;
+
+    display: flex;
+    padding: 10px;
+    background: #bbb;
+    border-top: 1px solid #999;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1;
+    height: 80px;
 }
 
 .pdf-reader__nav-text-input {
@@ -42,6 +113,7 @@
 .pdf-reader__content {
     padding: 5px 10px;
     font-size: 1.2em;
+    line-height: 1.7em;
     text-align: left;
 }
 @media only screen and (max-width: 800px) {
@@ -51,6 +123,7 @@
 }
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
     .pdf-reader__content {
+        line-height: 2em;
         font-size: 1.4em;
     }
     .pdf-reader__content br {
