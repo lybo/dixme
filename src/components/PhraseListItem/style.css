@@ -46,6 +46,7 @@
 .phrase-item__buttons {
     display: flex;
     margin: 10px 0 0 0;
+    user-select: none;
 }
 
 .phrase-item__edit {

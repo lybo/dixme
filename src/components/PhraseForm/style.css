@@ -24,6 +24,7 @@
 .phrase-form__buttons {
     display: flex;
     margin-top: 5px;
+    user-select: none;
 }
 
 .phrase-form__submit-button {

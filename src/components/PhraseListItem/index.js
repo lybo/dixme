@@ -11,9 +11,12 @@ class PhraseListItem extends Component {
     }
 
     handleEditClick(phraseId) {
+        const { onEditClick } = this.props;
         return (e) => {
             e.stopPropagation();
             e.preventDefault();
+
+            onEditClick && onEditClick(phraseId);
         }
     }
 
