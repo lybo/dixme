@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './style.css';
+import ButtonWithConfirmation from '../ButtonWithConfirmation';
 
 class PhraseListItem extends Component {
     constructor(props) {
@@ -19,9 +20,7 @@ class PhraseListItem extends Component {
     handleDeleteClick(phraseId) {
         const { vocabulary, onDeleteClick } = this.props;
 
-        return (e) => {
-            e.stopPropagation();
-            e.preventDefault();
+        return () => {
             onDeleteClick && onDeleteClick({
                 phraseId,
                 vocabularyId: vocabulary.id,
@@ -64,13 +63,12 @@ class PhraseListItem extends Component {
                     >
                         edit
                     </a>
-                    <a
-                        href="#"
-                        className="phrase-item__delete"
-                        onClick={this.handleDeleteClick(phrase.id)}
-                    >
-                        delete
-                    </a>
+                    <ButtonWithConfirmation
+                        label="delete"
+                        confirmationMessage="Do you want to delete this phrase?"
+                        onConfirm={this.handleDeleteClick(phrase.id)}
+                        buttonClassName="phrase-item__delete"
+                    />
                 </div>
             </div>
         );
