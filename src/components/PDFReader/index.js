@@ -58,7 +58,7 @@ class PDFReader extends Component {
     getParsedPDFWithPhrases(text, phrases) {
         const enhancedPhrases = phrases
             .map(phrases => {
-                const result = phrases.reference.match(/<b>(.*?)<\/b>/g);
+                const result = phrases.sourceReference.match(/<b>(.*?)<\/b>/g);
                 if (!result || !result[0]) {
                     return phrases;
                 }
@@ -306,11 +306,17 @@ class PDFReader extends Component {
             return null;
         }
 
+        const translation = selectedPhrase.translationTo ? (
+            <div>
+                {selectedPhrase.translationFrom} ({selectedPhrase.translationFromType}): {selectedPhrase.translationTo}
+            </div>
+        ) : 'Missing translation';
+
         return (
             <div
                 className="pdf-reader__annotation_info"
             >
-                {selectedPhrase.translation || 'Missing translation'}<br/>
+                {translation}
                 {selectedPhrase.definition || 'Missing definition'}
                 <div className="pdf-reader__annotation_info-buttons">
                     <button

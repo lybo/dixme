@@ -1,6 +1,26 @@
 import React, { Component } from 'react';
 import './style.css';
 
+// [
+//   "es",
+//   "fr",
+//   "it",
+//   "pt",
+//   "de",
+//   "nl",
+//   "sv",
+//   "ru",
+//   "pl",
+//   "ro",
+//   "cz",
+//   "gr",
+//   "tr",
+//   "zh",
+//   "ja",
+//   "ko",
+//   "ar"
+// ]
+
 class VocabularyForm extends Component {
     constructor(props) {
         super(props);

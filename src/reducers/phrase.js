@@ -3,9 +3,14 @@ import * as types from '../constants/vocabulary'
 const initialState = {
     id: 0,
     text: '',
-    translation: '',
-    reference: '',
+    stemmedText: '',
+    sourceReference: '',
+    translationFrom: '',
+    translationFromType: '',
+    translationTo: '',
+    translationReference: '',
     definition: '',
+    definitionReference: '',
 };
 
 export default function(state = initialState, action = { type: '', payload: {} }) {

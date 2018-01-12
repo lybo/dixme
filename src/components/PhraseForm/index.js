@@ -10,17 +10,27 @@ class PhraseForm extends Component {
         const {
             id,
             text,
-            translation,
-            reference,
+            stemmedText,
+            sourceReference,
+            translationFrom,
+            translationFromType,
+            translationTo,
+            translationReference,
             definition,
+            definitionReference,
         } = this.props.phrase || {};
 
         this.state = {
             id,
             text,
-            translation,
-            reference,
+            stemmedText,
+            sourceReference,
+            translationFrom: translationFrom || text,
+            translationFromType,
+            translationTo,
+            translationReference,
             definition,
+            definitionReference,
             translations: [],
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -39,18 +49,28 @@ class PhraseForm extends Component {
         const {
             id,
             text,
-            translation,
-            reference,
+            stemmedText,
+            sourceReference,
+            translationFrom,
+            translationFromType,
+            translationTo,
+            translationReference,
             definition,
+            definitionReference,
         } = nextProps.phrase || {};
 
         if (this.state.text !== text && this.state.id !== id) {
             this.setState({
                 id,
                 text,
-                translation,
-                reference,
+                stemmedText,
+                sourceReference,
+                translationFrom: translationFrom || text,
+                translationFromType,
+                translationTo,
+                translationReference,
                 definition,
+                definitionReference,
             });
         }
 
@@ -62,18 +82,36 @@ class PhraseForm extends Component {
         return (e) => {
             e.stopPropagation();
             e.preventDefault();
+            const {
+                text,
+                stemmedText,
+                sourceReference,
+                translationFrom,
+                translationFromType,
+                translationTo,
+                translationReference,
+                definition,
+                definitionReference,
+            } = this.state;
             onSubmit && onSubmit({
-                text: this.text.value,
-                translation: this.translation.value,
-                reference: this.reference.value,
-                definition: this.definition.value,
+                text: text || translationFrom,
+                stemmedText,
+                sourceReference,
+                translationFrom,
+                translationFromType,
+                translationTo,
+                translationReference,
+                definition,
+                definitionReference,
             });
 
-            this.text.focus();
-            this.text.value = '';
-            this.translation.value = '';
-            this.reference.value = '';
-            this.definition.value = '';
+            // this.text.focus();
+            // this.text.value = '';
+            // this.translationFrom.value = '';
+            // this.translationTo.value = '';
+            // this.reference.value = '';
+            // this.definition.value = '';
+            // this.definitionRefe.value = '';
         };
     }
 
@@ -150,25 +188,38 @@ class PhraseForm extends Component {
         const {
             id,
             text,
-            translation,
-            reference,
+            stemmedText,
+            sourceReference,
+            translationFrom,
+            translationFromType,
+            translationTo,
+            translationReference,
             definition,
+            definitionReference,
             translations,
         } = this.state || {};
 
         return (
             <div className="phrase-form">
                 <form onSubmit={this.handleSubmit()}>
-                    {this.renderInput('text', 'Phrase', 'text', text, id, (value) => {
+                    {}
+
+                    <div
+                        className="phrase-item__reference"
+                        dangerouslySetInnerHTML={{__html: `... ${sourceReference} ...`}}
+                    />
+                    {this.renderInput('text', 'Translation from', 'translationFrom', translationFrom, id, (value) => {
                         wordreferenceAPI(value,'en','gr')
                             .then(result => {
                                 this.updateTranslations(result);
                             })
                             .catch(console.log);
                     })}
-                    {this.renderInput('text', 'Translation', 'translation', translation, id)}
+                    <div className="phrase-form__translations">
+                    {this.renderInput('text', 'Translation to', 'translationTo', translationTo, id)}
+                    {this.renderInput('text', 'Translation Reference', 'translationReference', translationReference, id)}
                     {this.renderInput('text', 'Definition', 'definition', definition, id)}
-                    {this.renderInput('textarea', 'Reference', 'reference', reference, id)}
+                    {this.renderInput('text', 'Definition Reference', 'definitionReference', definitionReference, id)}
                     <div className="phrase-form__buttons">
                         <button
                             className="phrase-form__cancel-button"
@@ -179,25 +230,28 @@ class PhraseForm extends Component {
                         <input type="submit" className="phrase-form__submit-button" />
                     </div>
                     {this.renderDeleteButton()}
-                </form>
-                <div className="phrase-form__translations">
+                    {'Source: wordreference.com'}
                     {translations.map((translation, i) => {
                         return (
                             <button
                                 key={i}
                                 className="phrase-form__translation"
-                                onClick={() => {
+                                onClick={(e) => {
+                                    e.preventDefault();
                                     this.setState({
-                                        translation: translation.to
+                                        translationFrom: translation.from,
+                                        translationFromType: translation.fromType,
+                                        translationTo: translation.to,
+                                        translationReference: 'wordreference.com',
                                     });
                                 }}
                             >
-                                {translation.from} ({translation.fromType})
-                                {translation.to}
+                                {translation.from} ({translation.fromType}) - {translation.to}
                             </button>
                         );
                     })}
                 </div>
+                </form>
             </div>
         );
     }

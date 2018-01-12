@@ -41,8 +41,8 @@
 }
 
 .phrase-form__submit-button:active {
-  box-shadow: 0 0px #666;
-  transform: translateY(4px);
+    box-shadow: 0 0px #666;
+    transform: translateY(4px);
 }
 
 .phrase-form__cancel-button {
@@ -74,4 +74,29 @@
     margin: 10px 0;
     border: none;
     background: #ccc;
+}
+
+
+.phrase-item__reference {
+    font-size: 14px;
+    background:#f9f9f9;
+    border-left:1em solid #eee;
+    margin:1.5em 1em;
+    padding:.5em 1em;
+    quotes:"\201C""\201D";
+}
+
+.phrase-item__reference:before{
+    color:#808080;
+    content:open-quote;
+    font-size:4em;
+    line-height:.1em;
+    margin-right:.25em;
+    vertical-align:-.4em;
+}
+.phrase-item__reference:first-child{
+    display:inline;
+}
+.phrase-item__reference:last-child{
+    margin-bottom:0;
 }

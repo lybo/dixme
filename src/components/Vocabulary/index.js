@@ -91,11 +91,11 @@ class Vocabulary extends Component {
         const regexp = new RegExp(`[^.]*${text}[^.]*\.`, 'g');
         const result = pageTextContent.match(regexp, text);
         if (result && result[0]) {
-            const reference = result[0].replace(text, `<b>${text}</b>`)
+            const sourceReference = result[0].replace(text, `<b>${text}</b>`)
             this.setState({
                 selectedPhrase: getPhraseModel({
                     text,
-                    reference,
+                    sourceReference,
                 }),
                 layout: LAYOUT_TYPE.PHRASE_FORM_PDF,
             });
@@ -139,15 +139,24 @@ class Vocabulary extends Component {
                 className="vocabulary__pdf-reader"
                  style={{ display: layout === LAYOUT_TYPE.PDF ? 'block' : 'none' }}
             >
-                <WebFileSystem
-                    onChange={this.handleWebFileSystemChange}
-                    accept={'application/pdf'}
-                />
-                <button onClick={() => {
-                    this.setState({
-                        layout: LAYOUT_TYPE.PHRASES_LIST,
-                    });
-                }}>Back to List</button>
+                <div className="vocabulary__pdf-reader-buttons">
+                    <button
+                        className="vocabulary__pdf-reader-back-button"
+                        onClick={()=> {
+                            this.setState({
+                                layout: LAYOUT_TYPE.PHRASES_LIST,
+                            });
+                        }}
+                    >
+                        &#8592;
+                    </button>
+                    <div className="vocabulary__pdf-reader-upload-button">
+                        <WebFileSystem
+                            onChange={this.handleWebFileSystemChange}
+                            accept={'application/pdf'}
+                        />
+                    </div>
+                </div>
                 {this.renderPDFContent()}
             </div>
         );

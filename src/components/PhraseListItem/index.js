@@ -41,7 +41,7 @@ class PhraseListItem extends Component {
         return (
             <div
                 className="phrase-item__reference"
-                dangerouslySetInnerHTML={{__html: `... ${phrase.reference} ...`}}
+                dangerouslySetInnerHTML={{__html: `... ${phrase.sourceReference} ...`}}
             />
         );
     }
@@ -55,7 +55,7 @@ class PhraseListItem extends Component {
                 key={phrase.id}
             >
                 <div className="phrase-item__text">{phrase.text}</div>
-                <div className="phrase-item__translation">{phrase.translation}</div>
+                <div className="phrase-item__translation">{phrase.translationFrom} ({phrase.translationFromType}) - {phrase.translationTo}</div>
                 <div className="phrase-item__definition">{`(${phrase.definition})`}</div>
                 {this.renderReference()}
                 <div className="phrase-item__buttons">
