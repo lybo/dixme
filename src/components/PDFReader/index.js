@@ -70,30 +70,18 @@ class PDFReader extends Component {
     }
 
     getParsedPDFWithPhrases(text, phrases) {
-        const enhancedPhrases = phrases
-            .map(phrases => {
-                const result = phrases.sourceReference.match(/<b>(.*?)<\/b>/g);
-                if (!result || !result[0]) {
-                    return phrases;
-                }
-                const word = result[0].replace('<b>', '').replace('</b>', '');
-                return Object.assign({}, phrases, {
-                    highlighedWord: word,
-                });
-            });
-        enhancedPhrases.forEach(enhancedPhrase => {
-            text = text.replace(
-                enhancedPhrase.highlighedWord,
-                `<span class="${PDF_READER_ANNOTATION_CLASS_NAME}" id="${enhancedPhrase.id}">${enhancedPhrase.highlighedWord}</span>`,
+        let newText = text;
+        phrases.forEach(enhancedPhrase => {
+            newText = newText.replace(
+                new RegExp(`\\b${enhancedPhrase.text}\\b`, 'gm'),
+                `<span class="${PDF_READER_ANNOTATION_CLASS_NAME}" id="${enhancedPhrase.id}">${enhancedPhrase.text}</span>`,
             );
         });
 
-        return text;
+        return newText;
     }
 
     handleAnnotationClick(evt) {
-        // const { vocabulary, onAnnotationClick } = this.props;
-        // onAnnotationClick && onAnnotationClick(evt.currentTarget.id);
         this.setState({
             selectedPhraseId: evt.currentTarget.id,
         });
@@ -133,7 +121,6 @@ class PDFReader extends Component {
     }
 
     handleSelectionChange() {
-        // const { onSelection } = this.props;
         if (window.getSelection() &&
             this.getSelectionNode() &&
             window.getSelection().type === 'Range' &&
@@ -275,7 +262,7 @@ class PDFReader extends Component {
             return null;
         }
 
-        const phrase = window.getSelection().toString().trim();
+        const phrase = window.getSelection().toString().trim().replace(/\n/g, ' ');
 
         if (!phrase) {
             return null;

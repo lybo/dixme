@@ -324,6 +324,7 @@ class Vocabulary extends Component {
         }
 
         if (layout === LAYOUT_TYPE.PDF) {
+            document.documentElement.scrollTop = vocabulary.pdfLastScrollPosition;
             return (
                 <div className="vocabulary">
                     {this.renderPDF()}

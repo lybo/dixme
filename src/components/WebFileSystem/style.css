@@ -10,6 +10,7 @@
     outline: none;
     border: none;
     box-shadow: 0 4px #444;
+    cursor: pointer;
 }
 
 .web-file-system__label:active {
