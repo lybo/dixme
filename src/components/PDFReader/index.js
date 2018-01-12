@@ -103,8 +103,10 @@ class PDFReader extends Component {
     handleSelectionChange() {
         // const { onSelection } = this.props;
         if (window.getSelection() &&
-            window.getSelection().baseNode &&
-            window.getSelection().baseNode.parentElement.id === 'pdfReader' &&
+            ((window.getSelection().baseNode &&
+            window.getSelection().baseNode.parentElement.id === 'pdfReader') ||
+            (window.getSelection().focusNode &&
+            window.getSelection().focusNode.parentElement.id === 'pdfReader')) &&
             window.getSelection().type === 'Range' &&
             window.getSelection().getRangeAt &&
             window.getSelection().getRangeAt(0)
