@@ -13,6 +13,7 @@ class App extends Component {
         this.handleGoBack = this.handleGoBack.bind(this);
         this.handleImportVocabularyFormChange = this.handleImportVocabularyFormChange.bind(this);
         this.handlePageNumberChange = this.handlePageNumberChange.bind(this);
+        this.handlePdfScrollPositionChange = this.handlePdfScrollPositionChange.bind(this);
     }
 
     handleGoBack() {
@@ -30,6 +31,14 @@ class App extends Component {
         updateVocabulary && updateVocabulary({
             id: app.selectedVocabulary,
             lastPageNumber: pageNumber,
+        });
+    }
+
+    handlePdfScrollPositionChange(position) {
+        const { updateVocabulary, app } = this.props;
+        updateVocabulary && updateVocabulary({
+            id: app.selectedVocabulary,
+            pdfLastScrollPosition: position,
         });
     }
 
@@ -55,6 +64,7 @@ class App extends Component {
                         onDeleteClick={deletePhrase}
                         onGoBack={this.handleGoBack}
                         onPageNumberChange={this.handlePageNumberChange}
+                        onPdfScrollPositionChange={this.handlePdfScrollPositionChange}
                     />
                 </div>
             );

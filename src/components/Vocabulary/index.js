@@ -113,7 +113,7 @@ class Vocabulary extends Component {
             return;
         }
 
-        const { vocabulary } = this.props;
+        const { vocabulary, onPdfScrollPositionChange } = this.props;
         return (
             <PDFReader
                 pdfPath={pdfPath}
@@ -127,6 +127,7 @@ class Vocabulary extends Component {
                     });
                 }}
                 onPageNumberChange={this.handlePageNumberChange}
+                onPdfScrollPositionChange={onPdfScrollPositionChange}
             />
         );
     }
@@ -306,6 +307,7 @@ class Vocabulary extends Component {
 
     render() {
         const { layout } = this.state;
+        const { vocabulary } = this.props;
 
         if (layout === LAYOUT_TYPE.PHRASE_FORM_MAIN || layout === LAYOUT_TYPE.PHRASE_FORM_PDF) {
             return (
@@ -321,6 +323,7 @@ class Vocabulary extends Component {
         }
 
         if (layout === LAYOUT_TYPE.PDF) {
+            document.documentElement.scrollTop = vocabulary.pdfLastScrollPosition;
             return (
                 <div className="vocabulary">
                     {this.renderPDF()}
