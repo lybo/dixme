@@ -28,6 +28,8 @@
     outline: none;
     border: none;
     box-shadow: 0 4px #444;
+    user-select: none;
+    cursor: pointer;
 
     margin: 0 10px 0 0;
 }
@@ -47,6 +49,8 @@
     outline: none;
     border: none;
     box-shadow: 0 4px #444;
+    user-select: none;
+    cursor: pointer;
 
     margin: 0 10px 0 0;
 }
@@ -57,36 +61,30 @@
 }
 
 .pdf-reader__annotation_info {
+    padding: 10px;
+    user-select: none;
+    flex: 1;
+}
+
+.pdf-reader__footer {
+    display: flex;
     position: fixed;
-    z-index: 2;
+    bottom: 0;
     left: 0;
     right: 0;
-    bottom: 0;
     width: 100%;
-    min-height: 80px;
+    z-index: 1;
     box-sizing: border-box;
-    background: #bbb;
     border-top: 1px solid #999;
-    padding: 10px;
+    background: #bbb;
+    user-select: none;
 }
 
 .pdf-reader__nav-container {
-    padding: 0 5px;
     display: flex;
+    flex: 1;
     align-items: center;
-
-    display: flex;
     padding: 10px;
-    background: #bbb;
-    border-top: 1px solid #999;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 1;
-    height: 80px;
 }
 
 .pdf-reader__nav-text-input {
@@ -103,6 +101,8 @@
     outline: none;
     border: none;
     box-shadow: 0 4px #444;
+    user-select: none;
+    cursor: pointer;
 }
 
 .pdf-reader__nav-button:active {
