@@ -100,13 +100,14 @@ class PDFReader extends Component {
         });
     }
 
+    getSelectionNode() {
+        return window.getSelection().baseNode || window.getSelection().focusNode;
+    }
+
     handleSelectionChange() {
         // const { onSelection } = this.props;
         if (window.getSelection() &&
-            ((window.getSelection().baseNode &&
-            window.getSelection().baseNode.parentElement.id === 'pdfReader') ||
-            (window.getSelection().focusNode &&
-            window.getSelection().focusNode.parentElement.id === 'pdfReader')) &&
+            this.getSelectionNode().parentElement.id === 'pdfReader' &&
             window.getSelection().type === 'Range' &&
             window.getSelection().getRangeAt &&
             window.getSelection().getRangeAt(0)
@@ -284,7 +285,7 @@ class PDFReader extends Component {
                             });
                             onSelection && onSelection(
                                 phrase,
-                                window.getSelection().baseNode.parentElement.textContent,
+                                this.getSelectionNode().parentElement.textContent,
                             );
                         }}
                     >
@@ -296,11 +297,7 @@ class PDFReader extends Component {
 
     }
 
-    renderAnnotationConfirmation() {
-        const { vocabulary } = this.props;
-        const { selectedPhraseId } = this.state;
-
-        const selectedPhrase = vocabulary.phrases.find((phrase) => phrase.id === selectedPhraseId);
+    renderAnnotationConfirmation(selectedPhrase) {
 
         if (!selectedPhrase) {
             return null;
@@ -345,13 +342,14 @@ class PDFReader extends Component {
     }
 
     renderFooter() {
+        const { vocabulary } = this.props;
+        const { isSelectionDialogVisible, selectedPhraseId } = this.state;
+        const selectedPhrase = vocabulary.phrases.find((phrase) => phrase.id === selectedPhraseId);
 
-        return (
+        const nav = (
             <div
                 className="pdf-reader__nav-container"
             >
-                {this.renderAnnotationConfirmation()}
-                {this.renderAnnotationDialog()}
                 {this.renderNavButton('Prev', -1)}
                 <input
                     type="number"
@@ -362,6 +360,16 @@ class PDFReader extends Component {
                 />
                 / {this.state.pdfPagesNumber}
                 {this.renderNavButton('Next', 1)}
+            </div>
+        );
+
+        return (
+            <div
+                className="pdf-reader__footer"
+            >
+                {this.renderAnnotationConfirmation(selectedPhrase)}
+                {this.renderAnnotationDialog()}
+                {!isSelectionDialogVisible && !selectedPhrase ? nav : null}
             </div>
         );
     }
