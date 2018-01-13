@@ -8,6 +8,7 @@ const initialState = {
     lang1: '',
     lang2: '',
     lastPageNumber: 1,
+    pdfLastScrollPosition: 0,
     phrases: [],
 };
 

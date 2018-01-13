@@ -107,6 +107,7 @@ class PDFReader extends Component {
     handleSelectionChange() {
         // const { onSelection } = this.props;
         if (window.getSelection() &&
+            this.getSelectionNode() &&
             this.getSelectionNode().parentElement.id === 'pdfReader' &&
             window.getSelection().type === 'Range' &&
             window.getSelection().getRangeAt &&
@@ -247,7 +248,7 @@ class PDFReader extends Component {
 
     renderAnnotationDialog() {
         const { isSelectionDialogVisible } = this.state;
-        const { onSelection } = this.props;
+        const { onSelection, onPdfScrollPositionChange } = this.props;
 
         if (!isSelectionDialogVisible) {
             return null;
@@ -280,6 +281,7 @@ class PDFReader extends Component {
                     <button
                         className="pdf-reader__annotation_info-edit-button"
                         onClick={() => {
+                            onPdfScrollPositionChange(document.documentElement.scrollTop);
                             this.setState({
                                 isSelectionDialogVisible: false,
                             });
@@ -298,6 +300,7 @@ class PDFReader extends Component {
     }
 
     renderAnnotationConfirmation(selectedPhrase) {
+        const { onPdfScrollPositionChange } = this.props;
 
         if (!selectedPhrase) {
             return null;
@@ -331,6 +334,7 @@ class PDFReader extends Component {
                         className="pdf-reader__annotation_info-edit-button"
                         onClick={() => {
                             const { onEditClick } = this.props;
+                            onPdfScrollPositionChange(document.documentElement.scrollTop);
                             onEditClick && onEditClick(selectedPhrase);
                         }}
                     >
