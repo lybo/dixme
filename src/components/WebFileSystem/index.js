@@ -20,16 +20,22 @@ class WebFileSystem extends Component {
     render() {
         const { accept } = this.props;
         return (
-            <button className="web-file-system">
-                Click here to Upload
+            <div className="web-file-system">
+                <label
+                    htmlFor="file"
+                    className="web-file-system__label"
+                >
+                    Click here to Upload
+                </label>
                 <input
                     type="file"
+                    id="file"
                     onChange={this.handleChange}
                     ref={(input) => this.input = input}
                     accept={accept}
                     className="web-file-system__input"
                 />
-            </button>
+            </div>
         );
     }
 
