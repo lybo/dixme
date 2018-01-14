@@ -115,28 +115,35 @@ class PDFReader extends Component {
     }
 
     getSelectionNode() {
-        return window.getSelection().baseNode || window.getSelection().focusNode;
+        const node = window.getSelection().baseNode || window.getSelection().focusNode;
+
+        if (!node) {
+            return null;
+        }
+
+        if (node.id === 'pdfReader') {
+            return node;
+        }
+
+        if (node.parentElement.id === 'pdfReader') {
+            return node.parentElement;
+        }
+
+        return null;
     }
 
     handleSelectionChange() {
         // const { onSelection } = this.props;
         if (window.getSelection() &&
             this.getSelectionNode() &&
-            this.getSelectionNode().parentElement.id === 'pdfReader' &&
             window.getSelection().type === 'Range' &&
-            window.getSelection().getRangeAt &&
-            window.getSelection().getRangeAt(0)
+            // window.getSelection().getRangeAt &&
+            // window.getSelection().getRangeAt(0) &&
+            window.getSelection().toString().trim()
         ) {
-            const range = window.getSelection().getRangeAt(0);
-            if (range.endContainer.data) {
-                this.setState({
-                    isSelectionDialogVisible: true,
-                });
-                // onSelection && onSelection(
-                //     range.endContainer.data.slice(range.startOffset, range.endOffset),
-                //     window.getSelection().baseNode.parentElement.textContent,
-                // );
-            }
+            this.setState({
+                isSelectionDialogVisible: true,
+            });
         }
     }
 
@@ -268,8 +275,7 @@ class PDFReader extends Component {
             return null;
         }
 
-        const range = window.getSelection().getRangeAt(0);
-        const phrase = range.endContainer.data.slice(range.startOffset, range.endOffset);
+        const phrase = window.getSelection().toString().trim();
 
         if (!phrase) {
             return null;
@@ -301,7 +307,7 @@ class PDFReader extends Component {
                             });
                             onSelection && onSelection(
                                 phrase,
-                                this.getSelectionNode().parentElement.textContent,
+                                this.getSelectionNode().textContent,
                             );
                         }}
                     >
