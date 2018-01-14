@@ -108,7 +108,7 @@ class Vocabulary extends Component {
     }
 
     renderPDFContent() {
-        const { pdfPath } = this.state;
+        const { pdfPath, layout } = this.state;
         if (!pdfPath) {
             return;
         }
@@ -128,6 +128,7 @@ class Vocabulary extends Component {
                 }}
                 onPageNumberChange={this.handlePageNumberChange}
                 onPdfScrollPositionChange={onPdfScrollPositionChange}
+                layout={layout}
             />
         );
     }
@@ -323,7 +324,6 @@ class Vocabulary extends Component {
         }
 
         if (layout === LAYOUT_TYPE.PDF) {
-            document.documentElement.scrollTop = vocabulary.pdfLastScrollPosition;
             return (
                 <div className="vocabulary">
                     {this.renderPDF()}

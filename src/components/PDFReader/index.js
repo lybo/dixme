@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 import pdfjsLib from 'pdfjs-dist';
+import * as LAYOUT_TYPE from '../../constants/layout';
 
 const DEFAULT_PAGE_NUMBER = 1;
 const PDF_READER_ANNOTATION_CLASS_NAME = 'pdf-reader__annotation';
@@ -15,6 +16,8 @@ class PDFReader extends Component {
             selectedPhraseId: null,
             isSelectionDialogVisible: false,
         };
+
+        this.layout = props.layout;
 
         this.renderPDFcontent = this.renderPDFcontent.bind(this);
         this.handleAnnotationClick = this.handleAnnotationClick.bind(this);
@@ -40,6 +43,17 @@ class PDFReader extends Component {
             });
             this.parsePDF(nextProps.pdfPath, this.renderPDFcontent);
         }
+
+        //TODO: remove layout prop from this component
+        if (nextProps.layout === LAYOUT_TYPE.PDF && nextProps.layout !== this.layout) {
+            setTimeout(() => {
+
+                document.documentElement.scrollTop = nextProps.vocabulary.pdfLastScrollPosition;
+            }, 200);
+        }
+
+        this.layout = nextProps.layout;
+
     }
 
     componentWillMount() {
