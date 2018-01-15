@@ -71,9 +71,10 @@ class PDFReader extends Component {
 
     getParsedPDFWithPhrases(text, phrases) {
         let newText = text;
+        //https://github.com/padolsey/findAndReplaceDOMText
         phrases.forEach(enhancedPhrase => {
             newText = newText.replace(
-                new RegExp(`\\b${enhancedPhrase.text}\\b`, 'gm'),
+                new RegExp(`(\\b${enhancedPhrase.text}\\b)(?![^<]*>|[^<>]*<\/)`, 'gm'),
                 `<span class="${PDF_READER_ANNOTATION_CLASS_NAME}" id="${enhancedPhrase.id}">${enhancedPhrase.text}</span>`,
             );
         });
