@@ -59,13 +59,12 @@ class PhraseListItem extends Component {
                 <div className="phrase-item__definition">{`(${phrase.definition})`}</div>
                 {this.renderReference()}
                 <div className="phrase-item__buttons">
-                    <a
-                        href="#"
+                    <button
                         className="phrase-item__edit"
                         onClick={this.handleEditClick(phrase.id)}
                     >
                         edit
-                    </a>
+                    </button>
                     <ButtonWithConfirmation
                         label="delete"
                         confirmationMessage="Do you want to delete this phrase?"

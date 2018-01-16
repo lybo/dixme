@@ -1,0 +1,62 @@
+.button-with-confirmation__buttons {
+    display: flex;
+}
+
+.button-with-confirmation__button-wrapper {
+    display: flex;
+}
+
+.button-with-confirmation__button {
+    box-sizing: border-box;
+    padding: 5px;
+    background: #000;
+    color: #fff;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    box-shadow: 0 4px #444;
+
+    flex: 1;
+}
+
+.button-with-confirmation__button:active {
+    box-shadow: 0 0px #666;
+    transform: translateY(4px);
+}
+
+.button-with-confirmation__cancel-button {
+    box-sizing: border-box;
+    padding: 5px;
+    background: #000;
+    color: #fff;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    box-shadow: 0 4px #444;
+
+    flex: 1;
+    margin-right: 10px;
+}
+
+.button-with-confirmation__cancel-button:active {
+    box-shadow: 0 0px #666;
+    transform: translateY(4px);
+}
+
+.button-with-confirmation__confirmation-button {
+    box-sizing: border-box;
+    padding: 5px;
+    background: #000;
+    color: #fff;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    box-shadow: 0 4px #444;
+
+    flex: 1;
+}
+
+.button-with-confirmation__confirmation-button:active {
+    box-shadow: 0 0px #666;
+    transform: translateY(4px);
+}

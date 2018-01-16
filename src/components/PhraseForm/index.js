@@ -229,7 +229,9 @@ class PhraseForm extends Component {
                         </button>
                         <input type="submit" className="phrase-form__submit-button" />
                     </div>
-                    {this.renderDeleteButton()}
+                    <div className="phrase-form__delete-button-wrapper">
+                        {this.renderDeleteButton()}
+                    </div>
                     {'Source: wordreference.com'}
                     {translations.map((translation, i) => {
                         return (

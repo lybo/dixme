@@ -64,6 +64,10 @@
   transform: translateY(4px);
 }
 
+.phrase-form__delete-button-wrapper {
+    margin: 20px 0;
+}
+
 .phrase-form__translations {
     display: flex;
     flex-direction: column;

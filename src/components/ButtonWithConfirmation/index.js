@@ -61,12 +61,16 @@ class ButtonWithConfirmation extends Component {
         } = this.props;
 
         return (
-            <button
-                className={`button-with-confirmation__button ${buttonClassName}`}
-                onClick={this.handleButtonClick()}
+            <div
+                className={`button-with-confirmation__button-wrapper`}
             >
-                {label}
-            </button>
+                <button
+                    className={`button-with-confirmation__button ${buttonClassName}`}
+                    onClick={this.handleButtonClick()}
+                >
+                    {label}
+                </button>
+            </div>
         );
     }
 
