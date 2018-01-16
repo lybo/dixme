@@ -193,12 +193,17 @@ class PDFReader extends Component {
 
             // processing all items
             textContent.items.forEach(function (textItem) {
-                content = content + ' ' + textItem.str + '<br/>';
+                const text = content
+                    .trim()
+                    .replace('  ', ' ')
+                    .replace('  ', ' ')
+                    .replace('  ', ' ');
+                content = `${text} ${textItem.str}<br/>`;
             });
             return content;
         }
         this.pdfDocument.getPage(pageNumber).then((pdfPage) => {
-            const scale = 2.0;
+            const scale = 1.0;
             const viewport = pdfPage.getViewport(scale);
             pdfPage.getTextContent().then((textContent) => {
                 // building SVG and adding that to the DOM
