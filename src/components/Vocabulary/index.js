@@ -8,6 +8,7 @@ import { getPhraseModel } from '../../reducers/phrase';
 import * as LAYOUT_TYPE from '../../constants/layout';
 import VocabularyPhraseList from '../VocabularyPhraseList';
 import VocabularyPhraseListMenu from '../VocabularyPhraseListMenu';
+import ButtonWithConfirmation from '../ButtonWithConfirmation';
 
 // TODO: move it to utils
 function downloadObjectAsJson(exportObj, exportName){
@@ -229,7 +230,7 @@ class Vocabulary extends Component {
 
     renderPhraseForm() {
         const { selectedPhrase, layout } = this.state;
-        const { vocabulary, onDeleteClick } = this.props;
+        const { vocabulary, onDeletePhrase } = this.props;
 
         return (
             <div className="vocabulary__form">
@@ -238,7 +239,7 @@ class Vocabulary extends Component {
                     onCancelClick={this.handleCancelClick}
                     onSubmit={this.handleSubmit}
                     onDeleteClick={(phraseId) => {
-                        onDeleteClick({
+                        onDeletePhrase({
                             phraseId,
                             vocabularyId: vocabulary.id,
                         });
@@ -267,16 +268,26 @@ class Vocabulary extends Component {
 
     renderPhrasesList() {
         const { selectedPhraseId, isReferenceVisible } = this.state;
-        const { vocabulary, onDeleteClick, onGoBack } = this.props;
+        const { vocabulary, onDelete, onDeletePhrase, onGoBack } = this.props;
         return (
             <div className="vocabulary__phrases-list">
 
                 <h1>{vocabulary.title}</h1>
+
+                <div className="vocabulary__delete-button">
+                    <ButtonWithConfirmation
+                        label="delete"
+                        confirmationMessage="Do you want to delete this vocabulary?"
+                        onConfirm={() => onDelete(vocabulary.id)}
+                        buttonClassName=""
+                    />
+                </div>
+
                 {this.renderPhrasesButtons()}
 
                 <VocabularyPhraseList
                     vocabulary={vocabulary}
-                    onDeleteClick={onDeleteClick}
+                    onDeleteClick={onDeletePhrase}
                     onEditClick={(phraseId) => {
                         this.setState({
                             selectedPhrase: vocabulary.phrases.find(phrase => phrase.id === phraseId),

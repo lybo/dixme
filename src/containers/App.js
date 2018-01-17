@@ -7,6 +7,7 @@ import {
     requestDeletePhrase,
     requestAddVocabulary,
     requestUpdateVocabulary,
+    requestDeleteVocabulary,
 } from '../actions/vocabulary';
 
 export default connect(
@@ -26,6 +27,9 @@ export default connect(
             },
             updateVocabulary: (data) => {
                 dispatch(requestUpdateVocabulary(data));
+            },
+            deleteVocabulary: (data) => {
+                dispatch(requestDeleteVocabulary(data));
             },
             addPhrase: (data) => {
                 dispatch(requestAddPhrase(data));

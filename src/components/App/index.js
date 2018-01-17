@@ -48,6 +48,7 @@ class App extends Component {
             app,
             setVocabularySelected,
             addVocabulary,
+            deleteVocabulary,
             addPhrase,
             updatePhrase,
             deletePhrase,
@@ -61,7 +62,11 @@ class App extends Component {
                         vocabulary={vocabulary}
                         onAddPhrase={addPhrase}
                         onUpdatePhrase={updatePhrase}
-                        onDeleteClick={deletePhrase}
+                        onDeletePhrase={deletePhrase}
+                        onDelete={(id) => {
+                            setVocabularySelected(null);
+                            deleteVocabulary(id);
+                        }}
                         onGoBack={this.handleGoBack}
                         onPageNumberChange={this.handlePageNumberChange}
                         onPdfScrollPositionChange={this.handlePdfScrollPositionChange}
