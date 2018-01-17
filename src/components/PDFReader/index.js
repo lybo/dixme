@@ -195,10 +195,10 @@ class PDFReader extends Component {
             textContent.items.forEach(function (textItem) {
                 const text = content
                     .trim()
-                    .replace('  ', ' ')
-                    .replace('  ', ' ')
-                    .replace('  ', ' ');
-                content = `${text} ${textItem.str}<br/>`;
+                    .replace(/  /g, ' ')
+                    .replace(/  /g, ' ')
+                    .replace(/  /g, ' ');
+                content = `${text} ${textItem.str}`;
             });
             return content;
         }
