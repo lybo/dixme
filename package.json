@@ -11,7 +11,8 @@
     "redux": "^3.0.0",
     "redux-observable": "^0.14.1",
     "rxjs": "^5.4.2",
-    "wordreference-api": "^1.1.0"
+    "wordreference-api": "^1.1.0",
+    "iso-639-1": "^2.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

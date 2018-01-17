@@ -3,6 +3,32 @@ import './style.css';
 import ButtonWithConfirmation from '../ButtonWithConfirmation';
 import wordreferenceAPI from 'wordreference-api';
 
+const wordreferenceCodeLanguagesAPI = {
+    'en': 'en',
+    'es': 'es',
+    'fr': 'fr',
+    'it': 'it',
+    'pt': 'pt',
+    'de': 'de',
+    'nl': 'nl',
+    'sv': 'sv',
+    'ru': 'ru',
+    'pl': 'pl',
+    'ro': 'ro',
+    'cs': 'cz',
+    'el': 'gr',
+    'tr': 'tr', // it doesn't work
+    'zh': 'zh',
+    'ja': 'ja',
+    'ko': 'ko',
+    'ar': 'ar',
+};
+
+const supportedCodeLanguages = Object.keys(wordreferenceCodeLanguagesAPI);
+const getSupportedLanguage = (code) => {
+    return supportedCodeLanguages.includes(code) ? wordreferenceCodeLanguagesAPI[code] : null;
+};
+
 class PhraseForm extends Component {
     constructor(props) {
         super(props);
@@ -38,11 +64,18 @@ class PhraseForm extends Component {
     }
 
     componentWillMount() {
-        wordreferenceAPI(this.state.text,'en','gr')
-            .then(result => {
-                this.updateTranslations(result);
-            })
-            .catch(console.log);
+        const { vocabulary } = this.props;
+
+        const langFrom = getSupportedLanguage(vocabulary.langFrom) || 'en';
+        const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
+
+        if ([langFrom, langTo].includes('en')) {
+            wordreferenceAPI(this.state.text, langFrom, langTo)
+                .then(result => {
+                    this.updateTranslations(result);
+                })
+                .catch(console.log);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -209,11 +242,18 @@ class PhraseForm extends Component {
                         dangerouslySetInnerHTML={{__html: `... ${sourceReference} ...`}}
                     />
                     {this.renderInput('text', 'Translation from', 'translationFrom', translationFrom, id, (value) => {
-                        wordreferenceAPI(value,'en','gr')
-                            .then(result => {
-                                this.updateTranslations(result);
-                            })
-                            .catch(console.log);
+                        const { vocabulary } = this.props;
+
+                        const langFrom = getSupportedLanguage(vocabulary.langFrom) || 'en';
+                        const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
+
+                        if ([langFrom, langTo].includes('en')) {
+                            wordreferenceAPI(value, langFrom, langTo)
+                                .then(result => {
+                                    this.updateTranslations(result);
+                                })
+                                .catch(console.log);
+                        }
                     })}
                     <div className="phrase-form__translations">
                     {this.renderInput('text', 'Translation to', 'translationTo', translationTo, id)}

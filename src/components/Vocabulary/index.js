@@ -9,6 +9,8 @@ import * as LAYOUT_TYPE from '../../constants/layout';
 import VocabularyPhraseList from '../VocabularyPhraseList';
 import VocabularyPhraseListMenu from '../VocabularyPhraseListMenu';
 import ButtonWithConfirmation from '../ButtonWithConfirmation';
+import VocabularyForm from '../VocabularyForm';
+import ISO6391 from 'iso-639-1';
 
 // TODO: move it to utils
 function downloadObjectAsJson(exportObj, exportName){
@@ -236,6 +238,7 @@ class Vocabulary extends Component {
             <div className="vocabulary__form">
                 <PhraseForm
                     phrase={selectedPhrase}
+                    vocabulary={vocabulary}
                     onCancelClick={this.handleCancelClick}
                     onSubmit={this.handleSubmit}
                     onDeleteClick={(phraseId) => {
@@ -273,6 +276,20 @@ class Vocabulary extends Component {
             <div className="vocabulary__phrases-list">
 
                 <h1>{vocabulary.title}</h1>
+                {ISO6391.getName(vocabulary.langFrom)} -> {ISO6391.getName(vocabulary.langTo)}<br/><br/>
+
+                <div style={{display: 'flex', padding: '0 10px'}}>
+                    <button
+                        className="vocabulary__edit-button"
+                        onClick={() => {
+                            this.setState({
+                                layout: LAYOUT_TYPE.VOCABULARY_FORM,
+                            });
+                        }}
+                    >
+                        edit
+                    </button>
+                </div>
 
                 <div className="vocabulary__delete-button">
                     <ButtonWithConfirmation
@@ -328,7 +345,7 @@ class Vocabulary extends Component {
 
     render() {
         const { layout } = this.state;
-        const { vocabulary } = this.props;
+        const { vocabulary, onUpdate } = this.props;
 
         if (layout === LAYOUT_TYPE.PHRASE_FORM_MAIN || layout === LAYOUT_TYPE.PHRASE_FORM_PDF) {
             return (
@@ -348,6 +365,29 @@ class Vocabulary extends Component {
             return (
                 <div className="vocabulary">
                     {this.renderPDF()}
+                </div>
+            );
+        }
+
+        if (layout === LAYOUT_TYPE.VOCABULARY_FORM) {
+            document.documentElement.scrollTop = vocabulary.pdfLastScrollPosition;
+            return (
+                <div className="vocabulary">
+                    {this.renderPDF()}
+                    <VocabularyForm
+                        vocabulary={vocabulary}
+                        onSubmit={(data) => {
+                          onUpdate(data);
+                          this.setState({
+                            layout: LAYOUT_TYPE.PHRASES_LIST,
+                          });
+                        }}
+                        onCancelClick={() => {
+                          this.setState({
+                            layout: LAYOUT_TYPE.PHRASES_LIST,
+                          });
+                        }}
+                    />
                 </div>
             );
         }
