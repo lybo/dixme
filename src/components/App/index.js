@@ -48,6 +48,7 @@ class App extends Component {
             app,
             setVocabularySelected,
             addVocabulary,
+            updateVocabulary,
             deleteVocabulary,
             addPhrase,
             updatePhrase,
@@ -63,6 +64,7 @@ class App extends Component {
                         onAddPhrase={addPhrase}
                         onUpdatePhrase={updatePhrase}
                         onDeletePhrase={deletePhrase}
+                        onUpdate={updateVocabulary}
                         onDelete={(id) => {
                             setVocabularySelected(null);
                             deleteVocabulary(id);
@@ -77,7 +79,8 @@ class App extends Component {
             return (
                 <div>
                     <VocabularyForm
-                        onAddVocabulary={addVocabulary}
+                        vocabulary={{}}
+                        onSubmit={addVocabulary}
                     />
                     <ImportVocabularyForm
                         onChange={this.handleImportVocabularyFormChange}
