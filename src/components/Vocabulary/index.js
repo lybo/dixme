@@ -141,17 +141,26 @@ class Vocabulary extends Component {
                 className="vocabulary__pdf-reader"
                  style={{ display: layout === LAYOUT_TYPE.PDF ? 'block' : 'none' }}
             >
+                <div className="vocabulary__pdf-reader-header">
+                    <div className="vocabulary__pdf-reader-header-left">
+                        <button
+                            className="vocabulary__pdf-reader-back-button"
+                            onClick={()=> {
+                                this.setState({
+                                    layout: LAYOUT_TYPE.PHRASES_LIST,
+                                });
+                            }}
+                        >
+                            &#8592;
+                        </button>
+                    </div>
+                    <div className="vocabulary__pdf-reader-header-center">
+                        <h1 className="vocabulary__pdf-reader-vocabulary-title">{vocabulary.title}</h1>
+                    </div>
+                    <div className="vocabulary__pdf-reader-header-right">
+                    </div>
+                </div>
                 <div className="vocabulary__pdf-reader-buttons">
-                    <button
-                        className="vocabulary__pdf-reader-back-button"
-                        onClick={()=> {
-                            this.setState({
-                                layout: LAYOUT_TYPE.PHRASES_LIST,
-                            });
-                        }}
-                    >
-                        &#8592;
-                    </button>
                     <div className="vocabulary__pdf-reader-upload-button">
                         <WebFileSystem
                             onChange={this.handleWebFileSystemChange}

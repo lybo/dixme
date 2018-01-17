@@ -128,6 +128,35 @@
 }
 
 
+.vocabulary__pdf-reader-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+.vocabulary__pdf-reader-header-center {
+    padding: 0 10px;
+}
+
+.vocabulary__pdf-reader-header-right {
+    flex: 1;
+}
+
+.vocabulary__pdf-reader-header-left {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.vocabulary__pdf-reader-vocabulary-title {
+    font-size: 32px;
+    padding: 0;
+    margin: 0;
+}
+
 .vocabulary__pdf-reader-buttons {
     display: flex;
     margin: 10px 0 0 0;
@@ -148,7 +177,7 @@
     border: none;
     box-shadow: 0 4px #444;
 
-    margin-bottom: 20px;
+    margin-bottom: 2px;
     padding: 5px 15px;
 }
 
