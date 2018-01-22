@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './style.css';
 import pdfjsLib from 'pdfjs-dist';
-import * as LAYOUT_TYPE from '../../constants/layout';
 
 const DEFAULT_PAGE_NUMBER = 1;
 const PDF_READER_ANNOTATION_CLASS_NAME = 'pdf-reader__annotation';
@@ -17,7 +16,7 @@ class PDFReader extends Component {
             isSelectionDialogVisible: false,
         };
 
-        this.layout = props.layout;
+        this.isVisible = props.isVisible;
 
         this.renderPDFcontent = this.renderPDFcontent.bind(this);
         this.handleAnnotationClick = this.handleAnnotationClick.bind(this);
@@ -35,7 +34,7 @@ class PDFReader extends Component {
         const hasPdfPathChanged = nextProps.pdfPath !== this.props.pdfPath;
         if (hasPhrasesChanged) {
             // this.renderPage(this.state.pageNumber);
-            this.renderPDFcontent(this.cashedRawText, nextProps.vocabulary.phrases);
+            this.renderPDFcontent(this.cashedRawText, nextProps.vocabulary.phrases, false);
         }
         if (hasPdfPathChanged) {
             this.setState({
@@ -45,14 +44,13 @@ class PDFReader extends Component {
         }
 
         //TODO: remove layout prop from this component
-        if (nextProps.layout === LAYOUT_TYPE.PDF && nextProps.layout !== this.layout) {
+        if (nextProps.isVisible && nextProps.isVisible !== this.isVisible) {
             setTimeout(() => {
-
                 document.documentElement.scrollTop = nextProps.vocabulary.pdfLastScrollPosition;
-            }, 200);
+            }, 10);
         }
 
-        this.layout = nextProps.layout;
+        this.isVisible = nextProps.isVisible;
 
     }
 
@@ -88,13 +86,20 @@ class PDFReader extends Component {
         });
     }
 
-    renderPDFcontent(text, phrases) {
+    renderPDFcontent(text, phrases, scroll) {
         // const { vocabulary } = this.props;
         const content = this.getParsedPDFWithPhrases(text, phrases);
 
         this.cashedText = content;
         this.cashedRawText = text;
         this.pdfReader.innerHTML = content;
+
+
+        if (scroll) {
+            setTimeout(() => {
+                document.documentElement.scrollTop = this.props.vocabulary.pdfLastScrollPosition;
+            }, 10);
+        }
 
         const pdfAnnotations = document.querySelectorAll(`.${PDF_READER_ANNOTATION_CLASS_NAME}`);
         [].forEach.call(pdfAnnotations, (pdfAnnotation) => {
@@ -139,32 +144,32 @@ class PDFReader extends Component {
         // http://mozilla.github.io/pdf.js/examples/index.html#interactive-examples
         // window.getSelection().getRangeAt(0);
         // 'mind. Her father was a fisherman, and it was'.slice(17, 20)
-        var SVG_NS = 'http://www.w3.org/2000/svg';
-        function buildSVG(viewport, textContent) {
-            // Building SVG with size of the viewport (for simplicity)
-            var svg = document.createElementNS(SVG_NS, 'svg:svg');
-            svg.setAttribute('width', viewport.width + 'px');
-            svg.setAttribute('height', viewport.height + 'px');
-            // items are transformed to have 1px font size
-            svg.setAttribute('font-size', 0.9);
-
-            // processing all items
-            textContent.items.forEach(function (textItem) {
-                // we have to take in account viewport transform, which includes scale,
-                // rotation and Y-axis flip, and not forgetting to flip text.
-                var tx = pdfjsLib.PDFJS.Util.transform(
-                    pdfjsLib.PDFJS.Util.transform(viewport.transform, textItem.transform),
-                    [1, 0, 0, -1, 0, 0]);
-                var style = textContent.styles[textItem.fontName];
-                // adding text element
-                var text = document.createElementNS(SVG_NS, 'svg:text');
-                text.setAttribute('transform', 'matrix(' + tx.join(' ') + ')');
-                text.setAttribute('font-family', style.fontFamily);
-                text.textContent = textItem.str;
-                svg.appendChild(text);
-            });
-            return svg;
-        }
+        // var SVG_NS = 'http://www.w3.org/2000/svg';
+        // function buildSVG(viewport, textContent) {
+        //     // Building SVG with size of the viewport (for simplicity)
+        //     var svg = document.createElementNS(SVG_NS, 'svg:svg');
+        //     svg.setAttribute('width', viewport.width + 'px');
+        //     svg.setAttribute('height', viewport.height + 'px');
+        //     // items are transformed to have 1px font size
+        //     svg.setAttribute('font-size', 0.9);
+        //
+        //     // processing all items
+        //     textContent.items.forEach(function (textItem) {
+        //         // we have to take in account viewport transform, which includes scale,
+        //         // rotation and Y-axis flip, and not forgetting to flip text.
+        //         var tx = pdfjsLib.PDFJS.Util.transform(
+        //             pdfjsLib.PDFJS.Util.transform(viewport.transform, textItem.transform),
+        //             [1, 0, 0, -1, 0, 0]);
+        //         var style = textContent.styles[textItem.fontName];
+        //         // adding text element
+        //         var text = document.createElementNS(SVG_NS, 'svg:text');
+        //         text.setAttribute('transform', 'matrix(' + tx.join(' ') + ')');
+        //         text.setAttribute('font-family', style.fontFamily);
+        //         text.textContent = textItem.str;
+        //         svg.appendChild(text);
+        //     });
+        //     return svg;
+        // }
         // pdfjsLib.PDFJS.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.228/build/pdf.worker.js';
         pdfjsLib.PDFJS.workerSrc = '/pdf.worker.min.js';
         const loadingTask = pdfjsLib.getDocument(pdfPath);
@@ -175,14 +180,14 @@ class PDFReader extends Component {
                 pdfPagesNumber: pdfDocument.numPages,
                 pageNumber,
             });
-            return this.renderPage(pageNumber);
+            return this.renderPage(pageNumber, true);
         }).catch(function (reason) {
             console.error('Error: ' + reason);
         });
 
     }
 
-    renderPage(pageNumber) {
+    renderPage(pageNumber, scroll) {
         if (!this.isPageNumberValid(pageNumber)) {
             return;
         }
@@ -203,14 +208,14 @@ class PDFReader extends Component {
             return content;
         }
         this.pdfDocument.getPage(pageNumber).then((pdfPage) => {
-            const scale = 1.0;
-            const viewport = pdfPage.getViewport(scale);
+            // const scale = 1.0;
+            // const viewport = pdfPage.getViewport(scale);
             pdfPage.getTextContent().then((textContent) => {
                 // building SVG and adding that to the DOM
                 // var svg = buildSVG(viewport, textContent);
                 // document.getElementById('pdf-canvas').appendChild(svg);
                 const text = buildText(textContent);
-                this.renderPDFcontent(text, vocabulary.phrases);
+                this.renderPDFcontent(text, vocabulary.phrases, scroll);
             });
         });
     }
@@ -221,7 +226,7 @@ class PDFReader extends Component {
 
     handleInputPageNumber() {
         const { onPageNumberChange } = this.props;
-        const pageNumber = parseInt(this.inputPageNumber.value);
+        const pageNumber = parseInt(this.inputPageNumber.value, 10);
         this.setState({
             pageNumber
         });
@@ -237,7 +242,7 @@ class PDFReader extends Component {
 
         return (e) => {
             const { pageNumber } = this.state;
-            const newPageNumber = parseInt(pageNumber + nextPageNumber);
+            const newPageNumber = parseInt(pageNumber + nextPageNumber, 10);
             if (!this.isPageNumberValid(newPageNumber) || newPageNumber > this.state.pdfPagesNumber) {
                 return;
             }

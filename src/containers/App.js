@@ -10,6 +10,11 @@ import {
     requestDeleteVocabulary,
 } from '../actions/vocabulary';
 
+import {
+    setPDFPath,
+    setSelectedPhrase,
+} from '../actions/app';
+
 export default connect(
     (state) => {
         return {
@@ -21,6 +26,12 @@ export default connect(
         return {
             setVocabularySelected: (vocabularyId) => {
                 dispatch(setVocabularySelected(vocabularyId));
+            },
+            setPDFPath: (pdfPath) => {
+                dispatch(setPDFPath(pdfPath));
+            },
+            setSelectedPhrase: (phrase) => {
+                dispatch(setSelectedPhrase(phrase));
             },
             addVocabulary: (data) => {
                 dispatch(requestAddVocabulary(data));
