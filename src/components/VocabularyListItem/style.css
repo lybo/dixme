@@ -1,14 +1,17 @@
 .vocabulary-list-item {
     margin: 5px 0;
+    display: flex;
 }
 
 .vocabulary-list-item__link {
-    color: 16px;
+    font-size: 16px;
     text-decoration: none;
     color: #000;
     display: flex;
-    padding: 5px;
     background: #DDD;
+    margin: 10px 0;
+    padding: 10px;
+    flex: 1 1 100%;
 }
 
 .vocabulary-list-item__title {

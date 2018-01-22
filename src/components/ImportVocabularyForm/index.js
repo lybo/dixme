@@ -12,12 +12,12 @@ class ImportVocabularyForm extends Component {
     // TODO: refactor the following
     handleChange(file) {
         const url = URL.createObjectURL(file);
-        const xhr = new XMLHttpRequest;
+        const xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
 
         xhr.onload = () => {
             var recoveredBlob = xhr.response;
-            const reader = new FileReader;
+            const reader = new FileReader();
 
             reader.onload = () => {
                 const json = reader.result;

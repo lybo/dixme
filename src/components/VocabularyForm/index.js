@@ -36,16 +36,20 @@ class VocabularyForm extends Component {
         return (e) => {
             e.stopPropagation();
             e.preventDefault();
-            const currentDate = new Date();
+            const currentDate = new Date().getTime();
+            const validVocabulary = vocabulary && vocabulary.id;
+            const id = validVocabulary ? vocabulary.id : currentDate.toString();
             onSubmit && onSubmit({
-                id: vocabulary ? vocabulary.id : currentDate.toString(),
+                id,
                 title: this.newVocabulary.value,
                 langFrom: this.langFrom.value,
                 langTo: this.langTo.value,
             });
 
-            this.newVocabulary.focus();
-            this.newVocabulary.value = '';
+            if (!validVocabulary) {
+                this.newVocabulary.focus();
+                this.newVocabulary.value = '';
+            }
         };
     }
 

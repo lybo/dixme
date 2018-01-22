@@ -110,7 +110,7 @@ class PhraseForm extends Component {
     }
 
     handleSubmit() {
-        const { vocabulary, onSubmit } = this.props;
+        const { onSubmit } = this.props;
 
         return (e) => {
             e.stopPropagation();
@@ -220,11 +220,8 @@ class PhraseForm extends Component {
     render() {
         const {
             id,
-            text,
-            stemmedText,
             sourceReference,
             translationFrom,
-            translationFromType,
             translationTo,
             translationReference,
             definition,

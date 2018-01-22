@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './style.css';
-import PhraseListItem from '../PhraseListItem';
 
 class VocabularyPhraseListMenu extends Component {
 
