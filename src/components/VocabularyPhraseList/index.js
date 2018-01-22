@@ -8,7 +8,6 @@ class VocabularyPhraseList extends Component {
             vocabulary,
             onEditClick,
             onDeleteClick,
-            selectedPhraseId,
             isReferenceVisible,
         } = this.props;
 
@@ -16,13 +15,6 @@ class VocabularyPhraseList extends Component {
             <div className="vocabulary-phrase-list">
                 {vocabulary.phrases
                         .filter(phrase => phrase)
-                        .filter(phrase => {
-                            if (!selectedPhraseId){
-                                return true;
-                            }
-
-                            return phrase.id === selectedPhraseId;
-                        })
                         .map((phrase) => {
                             return (
                                 <PhraseListItem

@@ -29,7 +29,6 @@ class Vocabulary extends Component {
         this.state = {
             pdfPath: null,
             selectedPhrase: getPhraseModel(),
-            selectedPhraseId: null, //TODO: remove it
             isReferenceVisible: true,
             layout: LAYOUT_TYPE.PHRASES_LIST,
         };
@@ -270,7 +269,7 @@ class Vocabulary extends Component {
     }
 
     renderPhrasesList() {
-        const { selectedPhraseId, isReferenceVisible } = this.state;
+        const { isReferenceVisible } = this.state;
         const { vocabulary, onDelete, onDeletePhrase, onGoBack } = this.props;
         return (
             <div className="vocabulary__phrases-list">
@@ -311,7 +310,6 @@ class Vocabulary extends Component {
                             layout: LAYOUT_TYPE.PHRASE_FORM_MAIN,
                         });
                     }}
-                    selectedPhraseId={selectedPhraseId}
                     isReferenceVisible={isReferenceVisible}
                 />
 
