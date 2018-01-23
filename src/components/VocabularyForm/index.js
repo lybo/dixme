@@ -21,7 +21,7 @@ import ISO6391 from 'iso-639-1';
 //   "ko",
 //   "ar"
 // ]
-// ['es', 'fr', 'it', 'pt', 'de', 'nl', 'sv', 'ru', 'pl', 'ro', 'cz', 'gr', 'tr', 'zh', 'ja', 'ko', 'ar']
+// ['en', 'es', 'fr', 'it', 'pt', 'de', 'nl', 'sv', 'ru', 'pl', 'ro', 'cz', 'gr', 'tr', 'zh', 'ja', 'ko', 'ar']
 class VocabularyForm extends Component {
     constructor(props) {
         super(props);
