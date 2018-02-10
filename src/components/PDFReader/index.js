@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 import pdfjsLib from 'pdfjs-dist';
+import Load from '../Load/';
 
 const DEFAULT_PAGE_NUMBER = 1;
 const PDF_READER_ANNOTATION_CLASS_NAME = 'pdf-reader__annotation';
@@ -14,6 +15,7 @@ class PDFReader extends Component {
             pdfPagesNumber: 0,
             selectedPhraseId: null,
             isSelectionDialogVisible: false,
+            isLoading: false,
         };
 
         this.isVisible = props.isVisible;
@@ -47,7 +49,7 @@ class PDFReader extends Component {
         if (nextProps.isVisible && nextProps.isVisible !== this.isVisible) {
             setTimeout(() => {
                 document.documentElement.scrollTop = nextProps.vocabulary.pdfLastScrollPosition;
-            }, 10);
+            }, 1);
         }
 
         this.isVisible = nextProps.isVisible;
@@ -98,7 +100,14 @@ class PDFReader extends Component {
         if (scroll) {
             setTimeout(() => {
                 document.documentElement.scrollTop = this.props.vocabulary.pdfLastScrollPosition;
+                this.setState({
+                    isLoading: false,
+                });
             }, 10);
+        } else {
+            this.setState({
+                isLoading: false,
+            });
         }
 
         const pdfAnnotations = document.querySelectorAll(`.${PDF_READER_ANNOTATION_CLASS_NAME}`);
@@ -171,6 +180,9 @@ class PDFReader extends Component {
         //     return svg;
         // }
         // pdfjsLib.PDFJS.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.228/build/pdf.worker.js';
+        this.setState({
+            isLoading: true,
+        });
         pdfjsLib.PDFJS.workerSrc = '/pdf.worker.min.js';
         const loadingTask = pdfjsLib.getDocument(pdfPath);
         loadingTask.promise.then((pdfDocument) => {
@@ -183,6 +195,9 @@ class PDFReader extends Component {
             return this.renderPage(pageNumber, true);
         }).catch(function (reason) {
             console.error('Error: ' + reason);
+            this.setState({
+                isLoading: false,
+            });
         });
 
     }
@@ -200,13 +215,21 @@ class PDFReader extends Component {
             textContent.items.forEach(function (textItem) {
                 const text = content
                     .trim()
-                    .replace(/  /g, ' ')
+                    .replace(/\t\t/g, ' ')
+                    .replace(/\t/g, ' ')
+                    .replace(/    /g, ' ')
+                    .replace(/    /g, ' ')
+                    .replace(/   /g, ' ')
+                    .replace(/   /g, ' ')
                     .replace(/  /g, ' ')
                     .replace(/  /g, ' ');
                 content = `${text} ${textItem.str}`;
             });
             return content;
         }
+        this.setState({
+            isLoading: true,
+        });
         this.pdfDocument.getPage(pageNumber).then((pdfPage) => {
             // const scale = 1.0;
             // const viewport = pdfPage.getViewport(scale);
@@ -246,6 +269,7 @@ class PDFReader extends Component {
             if (!this.isPageNumberValid(newPageNumber) || newPageNumber > this.state.pdfPagesNumber) {
                 return;
             }
+            document.documentElement.scrollTop = 0;
             this.renderPage(newPageNumber);
             this.setState({
                 pageNumber: newPageNumber
@@ -396,9 +420,22 @@ class PDFReader extends Component {
         );
     }
 
+    renderLoader() {
+        const {
+            isLoading,
+        } = this.state;
+
+        if (isLoading) {
+            return <Load />
+        }
+
+        return null;
+    }
+
     render() {
         return (
             <div className="pdf-reader">
+                {this.renderLoader()}
                 <div
                     id="pdfReader"
                     className="pdf-reader__content"
