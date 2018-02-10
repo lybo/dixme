@@ -425,11 +425,13 @@ class PDFReader extends Component {
             isLoading,
         } = this.state;
 
-        if (isLoading) {
-            return <Load />
-        }
-
-        return null;
+        return (
+            <Load
+                isVisible={isLoading}
+                label={'Loading'}
+                timeout={500}
+            />
+        );
     }
 
     render() {
