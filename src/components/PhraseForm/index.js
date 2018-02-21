@@ -250,44 +250,75 @@ class PhraseForm extends Component {
                                 .catch(console.log);
                         }
                     })}
-                    <div className="phrase-form__translations">
-                    {this.renderInput('text', 'Translation to', 'translationTo', translationTo, id)}
-                    {this.renderInput('text', 'Translation Reference', 'translationReference', translationReference, id)}
-                    {this.renderInput('text', 'Definition', 'definition', definition, id)}
-                    {this.renderInput('text', 'Definition Reference', 'definitionReference', definitionReference, id)}
-                    <div className="phrase-form__buttons">
-                        <button
-                            className="phrase-form__cancel-button"
-                            onClick={this.handleCancelClick}
-                        >
-                            Cancel
-                        </button>
-                        <input type="submit" className="phrase-form__submit-button" />
-                    </div>
-                    <div className="phrase-form__delete-button-wrapper">
-                        {this.renderDeleteButton()}
-                    </div>
-                    {'Source: wordreference.com'}
-                    {translations.map((translation, i) => {
-                        return (
+                    <div className="phrase-form__form">
+                        {this.renderInput('text', 'Translation to', 'translationTo', translationTo, id)}
+                        {this.renderInput('text', 'Translation Reference', 'translationReference', translationReference, id)}
+                        {this.renderInput('text', 'Definition', 'definition', definition, id)}
+                        {this.renderInput('text', 'Definition Reference', 'definitionReference', definitionReference, id)}
+                        <div className="phrase-form__buttons">
                             <button
-                                key={i}
-                                className="phrase-form__translation"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    this.setState({
-                                        translationFrom: translation.from,
-                                        translationFromType: translation.fromType,
-                                        translationTo: translation.to,
-                                        translationReference: 'wordreference.com',
-                                    });
-                                }}
+                                className="phrase-form__cancel-button"
+                                onClick={this.handleCancelClick}
                             >
-                                {translation.from} ({translation.fromType}) - {translation.to}
+                                Cancel
                             </button>
-                        );
-                    })}
-                </div>
+                            <input type="submit" className="phrase-form__submit-button" />
+                        </div>
+                        <div className="phrase-form__delete-button-wrapper">
+                            {this.renderDeleteButton()}
+                        </div>
+
+                        {'Source: wordreference.com'}
+
+                        <div className="phrase-form__translations">
+                            {translations.map((translation, i) => {
+                                return (
+                                    <div
+                                        key={i}
+                                        className="phrase-form__translation"
+                                    >
+                                        <div
+                                            className="phrase-form__translation-text"
+                                        >
+                                            {translation.from} ({translation.fromType}) - {translation.to}
+                                        </div>
+                                        <div className="phrase-form__translation-buttons">
+                                            <button
+                                                className="phrase-form__translation-button"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    this.setState({
+                                                        translationFrom: translation.from,
+                                                        translationFromType: translation.fromType,
+                                                        translationTo: translation.to.trim(),
+                                                        translationReference: 'wordreference.com',
+                                                    });
+                                                }}
+                                            >
+                                                {this.state.translationTo ? 'Replace translation' : 'Add translation'}
+                                            </button>
+                                            {this.state.translationTo ? (
+                                                <button
+                                                    className="phrase-form__translation-button"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        this.setState({
+                                                            translationFrom: translation.from,
+                                                            translationFromType: translation.fromType,
+                                                            translationTo: this.state.translationTo + ', ' + translation.to.trim(),
+                                                            translationReference: 'wordreference.com',
+                                                        });
+                                                    }}
+                                                >
+                                                    {'Add translation'}
+                                                </button>
+                                            ) : null}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </form>
             </div>
         );
