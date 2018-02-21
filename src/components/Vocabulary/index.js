@@ -70,14 +70,13 @@ class Vocabulary extends Component {
 
     render() {
         const { isReferenceVisible } = this.state;
-        const { vocabulary,
+        const {
+            vocabulary,
             deleteVocabulary,
             onEditClick,
             onAddClick,
             deletePhrase,
-            onGoBack,
-            goToPDF,
-            onGoToEdit,
+            navigate,
         } = this.props;
 
         if (!vocabulary) {
@@ -99,9 +98,7 @@ class Vocabulary extends Component {
                                 <div style={{display: 'flex', padding: '0 10px'}}>
                                     <button
                                         className="vocabulary__edit-button"
-                                        onClick={() => {
-                                            onGoToEdit && onGoToEdit();
-                                        }}
+                                        onClick={() => navigate(`/vocabulary/edit/${vocabulary.id}`)}
                                     >
                                         edit
                                     </button>
@@ -131,17 +128,15 @@ class Vocabulary extends Component {
                                 primaryButtons={[
                                     {
                                         label: 'home',
-                                        onClick: onGoBack,
+                                        onClick: () => navigate(`/`),
                                     },
                                     {
                                         label: 'pdf',
-                                        onClick: goToPDF,
+                                        onClick: () => navigate(`/vocabulary/pdf/${vocabulary.id}`),
                                     },
                                     {
                                         label: 'add phrase',
-                                        onClick: () => {
-                                            onAddClick && onAddClick();
-                                        },
+                                        onClick: () => onAddClick(),
                                     },
                                     {
                                         label: 'export',

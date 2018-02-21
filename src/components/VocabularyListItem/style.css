@@ -1,5 +1,5 @@
 .vocabulary-list-item {
-    margin: 5px 0;
+    margin: 10px 0;
     display: flex;
 }
 
@@ -12,14 +12,20 @@
     margin: 10px 0;
     padding: 10px;
     flex: 1 1 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .vocabulary-list-item__title {
-    color: 16px;
+    font-size: 20px;
     color: #000;
+    margin: 0 0 5px 0;
+}
+
+.vocabulary-list-item__details {
+    display: flex;
 }
 
 .vocabulary-list-item__number-of-phrases {
-    color: 14px;
-    color: #ccc;
+    color: 12px;
 }
