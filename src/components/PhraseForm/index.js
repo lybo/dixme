@@ -232,12 +232,10 @@ class PhraseForm extends Component {
         return (
             <div className="phrase-form">
                 <form onSubmit={this.handleSubmit()}>
-                    {}
-
-                    <div
+                    {sourceReference ? (<div
                         className="phrase-item__reference"
                         dangerouslySetInnerHTML={{__html: `... ${sourceReference} ...`}}
-                    />
+                    />) : null}
                     {this.renderInput('text', 'Translation from', 'translationFrom', translationFrom, id, (value) => {
                         const { vocabulary } = this.props;
 

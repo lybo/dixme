@@ -60,6 +60,10 @@ class PhraseFormPage extends Component {
             isVisible: false,
         };
 
+        if (!selectedPhrase) {
+            return null;
+        }
+
         return (
             <div>
                 <PDFReaderView {...pdfProps} />

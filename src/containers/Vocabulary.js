@@ -51,20 +51,11 @@ export default connect(
             deletePhrase: (data) => {
                 dispatch(requestDeletePhrase(data));
             },
-            onGoBack: () => {
-                navigate(`/`);
-            },
-            goToPDF: () => {
-                navigate(`/vocabulary/pdf/${ownProps.match.params.vocabularyId}`);
-            },
             goToAddPhrase: () => {
                 navigate(`/vocabulary/${ownProps.match.params.vocabularyId}/phrase/0/null`);
             },
-            onGoToEdit: () => {
-                navigate(`/vocabulary/edit/${ownProps.match.params.vocabularyId}`);
-            },
             onEditClick: (selectedPhrase) => {
-                dispatch(setVocabularySelected(selectedPhrase));
+                dispatch(setSelectedPhrase(selectedPhrase));
                 navigate(`/vocabulary/${ownProps.match.params.vocabularyId}/phrase/${selectedPhrase.id}/null`);
             },
             onAddClick: () => {

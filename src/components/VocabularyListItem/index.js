@@ -20,14 +20,25 @@ class VocabularyListItem extends Component {
 
     render() {
         const { vocabulary } = this.props;
+        const numberOfPhraseWithReference = vocabulary.phrases.filter(phrase => phrase.translationReference !== '').length;
+        const pecentageOfPhraseWithReference = (100 * numberOfPhraseWithReference) / vocabulary.phrases.length;
+        const details = `, ${numberOfPhraseWithReference} phrases with reference (${pecentageOfPhraseWithReference}%)`;
+
         return (
             <div className="vocabulary-list-item">
                 <button
                     onClick={this.handlerClick()}
                     className="vocabulary-list-item__link"
                 >
-                    <div className="vocabulary-list-item__title">{vocabulary.title}</div>
-                    <div className="vocabulary-list-item__number-of-phrases">({vocabulary.phrases.length})</div>
+                    <div className="vocabulary-list-item__title">
+                        {vocabulary.title}
+                    </div>
+                    <div className="vocabulary-list-item__details">
+                        <div className="vocabulary-list-item__number-of-phrases">
+                            {vocabulary.phrases.length} phrases
+                            {vocabulary.phrases.length ? details : null}
+                        </div>
+                    </div>
                 </button>
             </div>
         );
