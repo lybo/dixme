@@ -13,7 +13,7 @@ class PDFReader extends Component {
         this.state = {
             pageNumber: props.vocabulary.lastPageNumber ||  DEFAULT_PAGE_NUMBER,
             pdfPagesNumber: 0,
-            selectedPhraseId: null,
+            selectedPhrase: null,
             isSelectionDialogVisible: false,
             isLoading: false,
         };
@@ -72,19 +72,22 @@ class PDFReader extends Component {
     getParsedPDFWithPhrases(text, phrases) {
         let newText = text;
         //https://github.com/padolsey/findAndReplaceDOMText
-        phrases.forEach(enhancedPhrase => {
-            newText = newText.replace(
-                new RegExp(`(\\b${enhancedPhrase.text}\\b)(?![^<]*>|[^<>]*<\/)`, 'gm'),
-                `<span class="${PDF_READER_ANNOTATION_CLASS_NAME}" id="${enhancedPhrase.id}">${enhancedPhrase.text}</span>`,
-            );
-        });
+        phrases
+            .map(phrase => phrase.text)
+            .filter((v, i, a) => a.indexOf(v) === i)
+            .forEach(enhancedPhrase => {
+                newText = newText.replace(
+                    new RegExp(`(\\b${enhancedPhrase}\\b)(?![^<]*>|[^<>]*<\/)`, 'gm'),
+                    `<span class="${PDF_READER_ANNOTATION_CLASS_NAME}" id="${enhancedPhrase}">${enhancedPhrase}</span>`,
+                );
+            });
 
         return newText;
     }
 
     handleAnnotationClick(evt) {
         this.setState({
-            selectedPhraseId: evt.currentTarget.id,
+            selectedPhrase: evt.currentTarget.id,
         });
     }
 
@@ -341,46 +344,74 @@ class PDFReader extends Component {
 
     }
 
-    renderAnnotationConfirmation(selectedPhrase) {
+    renderAnnotationConfirmation(selectedPhrases) {
         const { onPdfScrollPositionChange } = this.props;
 
-        if (!selectedPhrase) {
+        if (!selectedPhrases || !selectedPhrases.length) {
             return null;
         }
-
-        const translation = selectedPhrase.translationTo ? (
-            <div>
-                {selectedPhrase.translationFrom} ({selectedPhrase.translationFromType}): {selectedPhrase.translationTo}
-            </div>
-        ) : 'Missing translation';
 
         return (
             <div
                 className="pdf-reader__annotation_info"
             >
-                {translation}
-                {selectedPhrase.definition || 'Missing definition'}
+                <div className="pdf-reader__annotation_info-translations">
+                    {selectedPhrases.map((selectedPhrase) => {
+
+                        const translation = selectedPhrase.translationTo ? (
+                            <div>
+                                {selectedPhrase.translationFrom} ({selectedPhrase.translationFromType}): {selectedPhrase.translationTo}
+                            </div>
+                        ) : 'Missing translation';
+
+                        return (
+                            <div
+                                className="pdf-reader__annotation_info-translation-container"
+                                key={selectedPhrase.id}
+                            >
+                                <div
+                                    className="pdf-reader__annotation_info-translation"
+                                >
+                                    {translation}
+                                </div>
+                                <button
+                                    className="pdf-reader__annotation_info-edit-button"
+                                    onClick={() => {
+                                        const { onEditClick } = this.props;
+                                        onPdfScrollPositionChange(document.documentElement.scrollTop);
+                                        onEditClick && onEditClick(selectedPhrase);
+                                    }}
+                                >
+                                    Edit
+                                </button>
+                            </div>
+                        );
+                    })}
+                </div>
                 <div className="pdf-reader__annotation_info-buttons">
                     <button
                         className="pdf-reader__annotation_info-cancel-button"
                         onClick={() => {
                             this.setState({
-                                selectedPhraseId: null,
+                                selectedPhrase: null,
                             });
                         }}
                     >
                         Cancel
                     </button>
-
                     <button
                         className="pdf-reader__annotation_info-edit-button"
                         onClick={() => {
-                            const { onEditClick } = this.props;
+                            const { onSelection } = this.props;
                             onPdfScrollPositionChange(document.documentElement.scrollTop);
-                            onEditClick && onEditClick(selectedPhrase);
+                            // onNewClick && onNewClick();
+                            onSelection && onSelection(
+                                selectedPhrases[0].text,
+                                document.getElementById('pdfReader').textContent,
+                            );
                         }}
                     >
-                        Edit
+                        New phrase
                     </button>
                 </div>
             </div>
@@ -389,8 +420,8 @@ class PDFReader extends Component {
 
     renderFooter() {
         const { vocabulary } = this.props;
-        const { isSelectionDialogVisible, selectedPhraseId } = this.state;
-        const selectedPhrase = vocabulary.phrases.find((phrase) => phrase.id === selectedPhraseId);
+        const { isSelectionDialogVisible, selectedPhrase } = this.state;
+        const selectedPhrases = vocabulary.phrases.filter((phrase) => phrase.text === selectedPhrase);
 
         const nav = (
             <div
@@ -413,7 +444,7 @@ class PDFReader extends Component {
             <div
                 className="pdf-reader__footer"
             >
-                {this.renderAnnotationConfirmation(selectedPhrase)}
+                {this.renderAnnotationConfirmation(selectedPhrases)}
                 {this.renderAnnotationDialog()}
                 {!isSelectionDialogVisible && !selectedPhrase ? nav : null}
             </div>

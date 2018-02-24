@@ -18,6 +18,23 @@
     margin: 10px 0 0 0;
 }
 
+.pdf-reader__annotation_info-translations {
+}
+
+.pdf-reader__annotation_info-translation-container {
+    display: flex;
+    padding: 20px 0 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.pdf-reader__annotation_info-translation-container:last-child {
+    border: none;
+}
+
+.pdf-reader__annotation_info-translation {
+    flex: 1 1 100%;
+}
+
 .pdf-reader__annotation_info-cancel-button {
     flex: 1;
     box-sizing: border-box;
@@ -31,7 +48,6 @@
     user-select: none;
     cursor: pointer;
 
-    margin: 0 10px 0 0;
 }
 
 .pdf-reader__annotation_info-cancel-button:active {
@@ -52,7 +68,7 @@
     user-select: none;
     cursor: pointer;
 
-    margin: 0 10px 0 0;
+    margin: 0 10px 0 10px;
 }
 
 .pdf-reader__annotation_info-edit-button:active {
