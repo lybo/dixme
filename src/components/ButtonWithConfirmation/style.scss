@@ -1,0 +1,29 @@
+@import '../../assets/scss/global.scss';
+
+.button-with-confirmation {
+    &__buttons {
+        display: flex;
+    }
+
+    &__button-wrapper {
+        display: flex;
+    }
+
+    &__button {
+        @include button;
+        flex: 1;
+    }
+
+    &__cancel-button {
+        @include button;
+
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    &__confirmation-button {
+        @include button;
+
+        flex: 1;
+    }
+}
