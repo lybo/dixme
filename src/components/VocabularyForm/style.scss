@@ -1,0 +1,37 @@
+@import '../../assets/scss/global.scss';
+
+.vocabulary-form {
+    padding: 10px;
+
+    &__input-label {
+        text-align: center;
+    }
+
+    &__text-input {
+        box-sizing: border-box;
+        padding: 5px;
+        margin-bottom: 10px;
+        width: 100%;
+        border: solid #ddd;
+        border-width: 2px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    &__buttons {
+        display: flex;
+        margin-top: 5px;
+        user-select: none;
+    }
+
+    &__submit-button {
+        @include button;
+        flex: 1;
+    }
+
+    &__cancel-button {
+        @include button;
+        flex: 1;
+        margin-right: 10px;
+    }
+}

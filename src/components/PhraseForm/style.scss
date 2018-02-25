@@ -1,0 +1,109 @@
+@import '../../assets/scss/global.scss';
+
+.phrase-form {
+    padding: 10px;
+
+    &__input-label {
+        text-align: center;
+    }
+
+    &__text-input {
+        box-sizing: border-box;
+        padding: 5px;
+        margin-bottom: 10px;
+        width: 100%;
+        border: solid #ddd;
+        border-width: 2px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    &__text-input:focus {
+        outline-color: #ccc;
+    }
+
+    &__buttons {
+        display: flex;
+        margin-top: 5px;
+        user-select: none;
+    }
+
+    &__submit-button {
+        @include button;
+        flex: 1;
+    }
+
+    &__cancel-button {
+        @include button;
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    &__delete-button-wrapper {
+        margin: 20px 0;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__translations {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__translation {
+        padding: 10px;
+        margin: 10px 0;
+        border-top: 1px solid #ccc;
+    }
+
+    &__translation-text {
+        padding: 10px;
+        border: none;
+        /* background: #ccc; */
+    }
+
+    &__translation-buttons {
+        display: flex;
+        padding: 0;
+        margin: 0;
+    }
+
+    &__translation-button {
+        @include button;
+        flex: 1;
+    }
+
+    &__translation-button:first-child {
+        margin-right: 10px;
+    }
+
+    .phrase-item__reference {
+        font-size: 14px;
+        background: #f9f9f9;
+        border-left: 1em solid #eee;
+        margin: 1.5em 1em;
+        padding: .5em 1em;
+        quotes: "\201C""\201D";
+    }
+
+    .phrase-item__reference:before{
+        color: #808080;
+        content: open-quote;
+        font-size: 4em;
+        line-height: .1em;
+        margin-right: .25em;
+        vertical-align: -.4em;
+    }
+
+    .phrase-item__reference:first-child{
+        display: block;
+    }
+
+    .phrase-item__reference:last-child{
+        margin-bottom: 0;
+    }
+}
+

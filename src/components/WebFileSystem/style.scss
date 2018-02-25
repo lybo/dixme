@@ -1,0 +1,21 @@
+@import '../../assets/scss/global.scss';
+
+.web-file-system {
+
+    &__label {
+        @include button;
+        display: inline-block;
+        cursor: pointer;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    &__input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+}

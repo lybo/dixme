@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './style.css';
 import {
     HashRouter as Router,
     Switch,
