@@ -4,14 +4,47 @@ import {
     Switch,
     Route,
 } from 'react-router-dom';
-import Layout from '../../components/Layout/';
+import Layout from '../../containers/Layout';
 import PDFReaderPage from '../../containers/PDFReaderPage.js';
 import Vocabulary from '../../containers/Vocabulary';
 import Home from '../../containers/Home';
 import EditVocabularyPage from '../../containers/EditVocabularyPage';
 import PhraseFormPage from '../../containers/PhraseFormPage';
+import * as AuthService from '../../services/authService/';
 
 class App extends Component {
+    componentWillMount() {
+        const {
+            loginError,
+            loginSuccess,
+            syncVocabularies,
+        } = this.props;
+
+        if (!AuthService.isTokenExpired()) {
+          setTimeout(() => syncVocabularies(), 10);
+        }
+
+        AuthService.lock.on('authenticated', authResult => {
+            AuthService.lock.getUserInfo(authResult.accessToken, (error, profile) => {
+                if (error) {
+                    return loginError(error);
+                }
+                AuthService.setTokenA(authResult.accessToken);
+                AuthService.setToken(authResult.idToken);
+                AuthService.setProfile(profile);
+                loginSuccess(profile);
+                AuthService.lock.hide();
+                window.location = '/#/';
+
+                syncVocabularies();
+            });
+        });
+
+        AuthService.lock.on('authorization_error', error => {
+            loginError(error);
+        });
+    }
+
     render() {
         return (
             <Router>
@@ -24,8 +57,9 @@ class App extends Component {
                                 ...props,
                                 isVisible: false,
                             };
+
                             return (
-                                <Layout>
+                                <Layout {...props}>
                                     <PDFReaderPage {...newProps} />
                                     <Home {...props} />
                                 </Layout>
@@ -42,7 +76,7 @@ class App extends Component {
                                 isVisible: false,
                             };
                             return (
-                                <Layout>
+                                <Layout {...props}>
                                     <PDFReaderPage {...newProps} />
                                     <EditVocabularyPage {...props} />
                                 </Layout>
@@ -59,7 +93,7 @@ class App extends Component {
                                 isVisible: false,
                             };
                             return (
-                                <Layout>
+                                <Layout {...props}>
                                     <PDFReaderPage {...newProps} />
                                     <Vocabulary {...props} />
                                 </Layout>
@@ -76,7 +110,7 @@ class App extends Component {
                                 isVisible: false,
                             };
                             return (
-                                <Layout>
+                                <Layout {...props}>
                                     <PDFReaderPage {...newProps} />
                                     <PhraseFormPage {...props} />
                                 </Layout>
@@ -94,7 +128,7 @@ class App extends Component {
                                 isVisible: true,
                             };
                             return (
-                                <Layout>
+                                <Layout {...props}>
                                     <PDFReaderPage {...newProps} />
                                 </Layout>
                             );

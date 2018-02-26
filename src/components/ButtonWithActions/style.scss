@@ -1,0 +1,38 @@
+@import '../../assets/scss/global.scss';
+
+.button-with-actions {
+    &__buttons {
+        display: flex;
+    }
+    &__action-buttons {
+        display: flex;
+        flex: 1 1 100%;
+        flex-direction: column;
+    }
+
+    &__button-wrapper {
+        display: flex;
+    }
+
+    &__button {
+        @include button;
+        flex: 1;
+    }
+
+    &__cancel-button {
+        @include button;
+
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    &__confirmation-button {
+        @include button;
+
+        flex: 1;
+        margin-bottom: 5px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

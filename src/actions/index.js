@@ -41,10 +41,10 @@ export function requestAddVocabulary(data) {
     }
 }
 
-//REQUEST_POPULATE_VOCABULARIES
-export function requestPopulateVocabularies(data) {
+//REQUEST_POPULATE_VOCABULARIES_FROM_LOCAL
+export function requestPopulateVocabulariesFromLocal(data) {
     return {
-        type: types.REQUEST_POPULATE_VOCABULARIES,
+        type: types.REQUEST_POPULATE_VOCABULARIES_FROM_LOCAL,
         payload: data
     }
 }

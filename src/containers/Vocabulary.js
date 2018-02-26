@@ -3,16 +3,20 @@ import { connect } from 'react-redux';
 import Vocabulary from '../components/Vocabulary/';
 import { getPhraseModel } from '../reducers/phrase';
 import {
-    setVocabularySelected,
+    // setVocabularySelected,
     requestAddPhrase,
     requestUpdatePhrase,
     requestDeletePhrase,
     requestAddVocabulary,
     requestUpdateVocabulary,
     requestDeleteVocabulary,
+    requestGetRemoteVocabulary,
+    requestSyncVocabulary,
+    requestGetRemoteVocabularyPhrases,
 } from '../actions/vocabulary';
 import {
     setSelectedPhrase,
+    setRemoteVocabulary,
 } from '../actions/app';
 
 function VocabularyContainer (props) {
@@ -26,12 +30,25 @@ export default connect(
         const vocabulary = state.vocabularies.find(v => v.id === ownProps.match.params.vocabularyId);
         return {
             vocabulary,
+            remoteVocabulary: state.app.remoteVocabulary,
         };
     },
     (dispatch, ownProps) => {
         const navigate = ownProps.history.push;
         return {
             navigate,
+            setRemoteVocabulary: (vocabulary) => {
+                dispatch(setRemoteVocabulary(vocabulary));
+            },
+            getRemoteVocabulary: (vocabularyId) => {
+                dispatch(requestGetRemoteVocabulary(vocabularyId));
+            },
+            updateLocalVocabularyByRemote: (vocabulary) => {
+                dispatch(requestGetRemoteVocabularyPhrases(vocabulary));
+            },
+            updateRemoteVocabulary: (vocabulary) => {
+                dispatch(requestSyncVocabulary(vocabulary));
+            },
             addVocabulary: (data) => {
                 dispatch(requestAddVocabulary(data));
             },

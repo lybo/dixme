@@ -1,20 +1,6 @@
 import { combineEpics } from 'redux-observable';
-import {
-    requestPopulateVocabularies,
-    requestAddVocabulary,
-    requestUpdateVocabulary,
-    requestDeleteVocabulary,
-    requestAddPhrase,
-    requestUpdatePhrase,
-    requestDeletePhrase,
-} from './vocabulary';
+import * as vocabulary from './vocabulary';
 
 export default combineEpics(
-    requestPopulateVocabularies,
-    requestAddVocabulary,
-    requestUpdateVocabulary,
-    requestDeleteVocabulary,
-    requestAddPhrase,
-    requestUpdatePhrase,
-    requestDeletePhrase,
+    ...Object.keys(vocabulary).map(k => vocabulary[k]),
 );

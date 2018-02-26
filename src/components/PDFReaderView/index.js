@@ -14,7 +14,7 @@ class PDFReaderView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
+        // console.log(nextProps);
     }
 
     handleWebFileSystemChange(file) {
@@ -25,7 +25,7 @@ class PDFReaderView extends Component {
 
     handleSelection(text, pageTextContent) {
         const { onSelection } = this.props;
-        const regexp = new RegExp(`[^.]*${text}[^.]*\.`, 'g');
+        const regexp = new RegExp(`[^.]*${text}[^.]*.`, 'g');
         const result = pageTextContent.match(regexp, text);
         if (result && result[0]) {
             const sourceReference = result[0].replace(text, `<b>${text}</b>`)

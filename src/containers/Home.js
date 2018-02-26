@@ -5,12 +5,14 @@ import Vocabularies from '../components/Vocabularies';
 import ImportVocabularyForm from '../components/ImportVocabularyForm';
 import {
     requestAddVocabulary,
+    requestImportVocabulary,
 } from '../actions/vocabulary';
 
 function Home ({
     navigate,
     vocabularies,
     addVocabulary,
+    importVocabulary,
 }) {
     return (
         <div>
@@ -19,7 +21,7 @@ function Home ({
                 onSubmit={addVocabulary}
             />
             <ImportVocabularyForm
-                onChange={addVocabulary}
+                onChange={importVocabulary}
             />
             <Vocabularies
                 vocabularies={vocabularies}
@@ -43,6 +45,9 @@ export default connect(
             navigate,
             addVocabulary: (data) => {
                 dispatch(requestAddVocabulary(data));
+            },
+            importVocabulary: (data) => {
+                dispatch(requestImportVocabulary(data));
             },
         };
     },

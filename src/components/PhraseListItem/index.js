@@ -54,10 +54,12 @@ class PhraseListItem extends Component {
                 className="phrase-item"
                 key={phrase.id}
             >
-                <div className="phrase-item__text">{phrase.text}</div>
-                <div className="phrase-item__translation">{phrase.translationFrom} ({phrase.translationFromType}) - {phrase.translationTo}</div>
-                <div className="phrase-item__definition">{`(${phrase.definition})`}</div>
-                {this.renderReference()}
+                <div className="phrase-item__content">
+                    <div className="phrase-item__text">{phrase.text}</div>
+                    <div className="phrase-item__translation">{phrase.translationFrom} ({phrase.translationFromType}) - {phrase.translationTo}</div>
+                    {/* <div className="phrase-item__definition">{`(${phrase.definition})`}</div> */}
+                    {this.renderReference()}
+                </div>
                 <div className="phrase-item__buttons">
                     <button
                         className="phrase-item__edit"

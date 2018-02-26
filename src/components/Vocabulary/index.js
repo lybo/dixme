@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './style.css';
 import { getPhraseModel } from '../../reducers/phrase';
-import * as LAYOUT_TYPE from '../../constants/layout';
 import VocabularyPhraseList from '../VocabularyPhraseList';
 import VocabularyPhraseListMenu from '../VocabularyPhraseListMenu';
 import ButtonWithConfirmation from '../ButtonWithConfirmation';
+import SyncButton from '../SyncButton';
 import ISO6391 from 'iso-639-1';
 
 // TODO: move it to utils
@@ -27,7 +27,6 @@ class Vocabulary extends Component {
             pdfPath: null,
             selectedPhrase: getPhraseModel(),
             isReferenceVisible: true,
-            layout: LAYOUT_TYPE.PHRASES_LIST,
         };
 
         this.handleReferenceVisibilityToggle = this.handleReferenceVisibilityToggle.bind(this);
@@ -46,15 +45,37 @@ class Vocabulary extends Component {
         });
     }
 
+    renderSyncButton() {
+        const {
+            vocabulary,
+            getRemoteVocabulary,
+            remoteVocabulary,
+            setRemoteVocabulary,
+            updateRemoteVocabulary,
+            updateLocalVocabularyByRemote,
+        } = this.props;
+
+        if (vocabulary.syncStatus) {
+            return 'Is synced';
+
+        }
+
+        return (
+            <SyncButton
+                label="Sync"
+                vocabulary={vocabulary}
+                getRemoteVocabulary={getRemoteVocabulary}
+                setRemoteVocabulary={setRemoteVocabulary}
+                remoteVocabulary={remoteVocabulary}
+                updateRemoteVocabulary={updateRemoteVocabulary}
+                updateLocalVocabularyByRemote={updateLocalVocabularyByRemote}
+            />
+        );
+    }
+
     renderPhrasesButtons() {
         return (
             <div className="phrases-list__phrases-buttons">
-                <button
-                    onClick={this.handlePhraseFormVisibilityToggle}
-                    className="phrases-list__show-hide-phrase-form"
-                >
-                    Show/Hide Phrase Form
-                </button>
                 <button
                     onClick={this.handleReferenceVisibilityToggle}
                     className="phrases-list__show-hide-reference"
@@ -87,71 +108,116 @@ class Vocabulary extends Component {
 
         return (
             <div className="vocabulary">
-                <div className="vocabulary__content">
 
-                    <div className="vocabulary__content-list-form">
-
-                        <div className="vocabulary__phrases-list-container">
-                            <div className="vocabulary__phrases-list">
-
-                                <h1>{vocabulary.title}</h1>
-                                {ISO6391.getName(vocabulary.langFrom)} -> {ISO6391.getName(vocabulary.langTo)}<br/><br/>
-
-                                <div style={{display: 'flex', padding: '0 10px'}}>
-                                    <button
-                                        className="vocabulary__edit-button"
-                                        onClick={() => navigate(`/vocabulary/edit/${vocabulary.id}`)}
-                                    >
-                                        edit
-                                    </button>
-                                </div>
-
-                                <div className="vocabulary__delete-button">
-                                    <ButtonWithConfirmation
-                                        label="delete"
-                                        confirmationMessage="Do you want to delete this vocabulary?"
-                                        onConfirm={() => deleteVocabulary(vocabulary.id)}
-                                        buttonClassName=""
-                                    />
-                                </div>
-
-                                {this.renderPhrasesButtons()}
-
-                                <VocabularyPhraseList
-                                    vocabulary={vocabulary}
-                                    onDeleteClick={deletePhrase}
-                                    onEditClick={(phraseId) => {
-                                        onEditClick && onEditClick(vocabulary.phrases.find(phrase => phrase.id === phraseId));
-                                    }}
-                                    isReferenceVisible={isReferenceVisible}
-                                />
-
-                            <VocabularyPhraseListMenu
-                                primaryButtons={[
-                                    {
-                                        label: 'home',
-                                        onClick: () => navigate(`/`),
-                                    },
-                                    {
-                                        label: 'pdf',
-                                        onClick: () => navigate(`/vocabulary/pdf/${vocabulary.id}`),
-                                    },
-                                    {
-                                        label: 'add phrase',
-                                        onClick: () => onAddClick(),
-                                    },
-                                    {
-                                        label: 'export',
-                                        onClick: this.handleExportClick,
-                                    },
-                                ]}
-                            />
-                        </div>
-                    </div>
+                <div className="vocabulary__header">
+                    <h1 className="vocabulary__header-info">{vocabulary.title}</h1>
                 </div>
 
+                <div className="vocabulary__header-details">
+                    <div className="vocabulary__info">
+
+                        <div className="vocabulary__info-row">
+                            <div className="vocabulary__info-label">
+                                Translation:
+                            </div>
+                            <div className="vocabulary__info-value">
+                                {ISO6391.getName(vocabulary.langFrom)}
+                                <i className="fa fa-long-arrow-right vocabulary__info-arrow" />
+                                {ISO6391.getName(vocabulary.langTo)}
+                            </div>
+                        </div>
+
+                        <div className="vocabulary__info-row">
+                            <div className="vocabulary__info-label">
+                                Number of Phrases:
+                            </div>
+                            <div className="vocabulary__info-value">
+                                {vocabulary.numberOfPhrases}
+                            </div>
+                        </div>
+
+                        <div className="vocabulary__info-sub-header">
+                            Deviation from last sync:
+                        </div>
+                        <div className="vocabulary__info-sub">
+                            <div className="vocabulary__info-row">
+                                <div className="vocabulary__info-label">
+                                    Number of new phrases:
+                                </div>
+                                <div className="vocabulary__info-value">
+                                    {vocabulary.phrases.filter(p => p.isNew).length}
+                                </div>
+                            </div>
+
+                            <div className="vocabulary__info-row">
+                                <div className="vocabulary__info-label">
+                                    Number of deleted phrases:
+                                </div>
+                                <div className="vocabulary__info-value">
+                                    {vocabulary.syncDeletedPhrases}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div className="vocabulary__actions">
+                        <div style={{padding: '0 10px'}}>
+                            {this.renderSyncButton()}
+                        </div>
+
+                        <div style={{display: 'flex', padding: '0 10px', margin: '10px 0'}}>
+                            <button
+                                className="vocabulary__edit-button"
+                                onClick={() => navigate(`/vocabulary/edit/${vocabulary.id}`)}
+                            >
+                                edit
+                            </button>
+                        </div>
+
+                        <div className="vocabulary__delete-button">
+                            <ButtonWithConfirmation
+                                label="delete"
+                                confirmationMessage="Do you want to delete this vocabulary?"
+                                onConfirm={() => deleteVocabulary(vocabulary.id)}
+                                buttonClassName=""
+                            />
+                        </div>
+
+                        {this.renderPhrasesButtons()}
+                    </div>
+                </div>
+                <div className="vocabulary__phrases-list">
+                    <VocabularyPhraseList
+                        vocabulary={vocabulary}
+                        onDeleteClick={deletePhrase}
+                        onEditClick={(phraseId) => {
+                            onEditClick && onEditClick(vocabulary.phrases.find(phrase => phrase.id === phraseId));
+                        }}
+                        isReferenceVisible={isReferenceVisible}
+                    />
+                </div>
+                <VocabularyPhraseListMenu
+                    primaryButtons={[
+                        {
+                            label: 'home',
+                            onClick: () => navigate(`/`),
+                        },
+                        {
+                            label: 'pdf',
+                            onClick: () => navigate(`/vocabulary/pdf/${vocabulary.id}`),
+                        },
+                        {
+                            label: 'add phrase',
+                            onClick: () => onAddClick(),
+                        },
+                        {
+                            label: 'export',
+                            onClick: this.handleExportClick,
+                        },
+                    ]}
+                />
             </div>
-        </div>
         );
     }
 }

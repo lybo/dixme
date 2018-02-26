@@ -1,6 +1,71 @@
 @import '../../assets/scss/global.scss';
 
 .vocabulary {
+
+    &__header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        flex: 1 1 100%;
+
+        &-title {
+
+        }
+
+        &-details {
+            display: flex;
+            flex: 1 1 100%;
+            padding: 0 10px;
+            font-size: 12px;
+        }
+
+    }
+
+    &__info {
+        flex: 1 1 auto;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-right: 10px;
+
+        &-row {
+            margin: 0 0 10px 0;
+            display: flex;
+        }
+
+        &-label {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        &-value {
+
+        }
+
+        &-arrow {
+            margin: 0 5px;
+        }
+
+        &-sub {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
+            margin: 10px 0 0 10px;
+
+            &-header {
+                font-weight: 600;
+            }
+        }
+    }
+
+    &__actions {
+        max-width: 150px;
+        font-size: 12px;
+    }
+
     &__edit-button {
         @include button;
 
@@ -12,9 +77,6 @@
         @include button;
     }
 
-    &__content {
-        display: flex;
-    }
 
     &__delete-button {
         padding: 0 10px;
@@ -27,7 +89,9 @@
     }
 
     &__phrases-list {
-
+        text-align: center;
+        margin-bottom: 50px;
+        padding: 10px;
     }
 
     &__pdf-reader-header {
@@ -137,7 +201,7 @@
   transform: translateY(4px);
 }
 
-.phrases-list__show-hide-phrase-form {
+.phrases-list__sync-button {
     box-sizing: border-box;
     padding: 5px;
     background: #000;
@@ -150,7 +214,7 @@
     margin-right: 10px;
 }
 
-.phrases-list__show-hide-phrase-form:active {
+.phrases-list__sync-button:active {
   box-shadow: 0 0px #666;
   transform: translateY(4px);
 }

@@ -11,6 +11,7 @@ const initialState = {
     translationReference: '',
     definition: '',
     definitionReference: '',
+    isNew: true,
 };
 
 export default function(state = initialState, action = { type: '', payload: {} }) {

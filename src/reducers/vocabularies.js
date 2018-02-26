@@ -11,14 +11,44 @@ export default function vocabularies(state = initialState, action = { type: '', 
     const mapVocabulary2 = (vocabularyState) => {
         return vocabularyState.id === action.payload.vocabularyId ? vocabulary(vocabularyState, action) : vocabularyState;
     };
-    switch (action.type) {
-        case types.POPULATE_VOCABULARIES:
-            return action.payload.map((payload) => vocabulary(undefined, {
+
+    const populateVocabularies = () => {
+        const newVocabularies = action.payload.filter(payload => !state.find(v => v.id === payload.id));
+
+        if (!newVocabularies.length) {
+            return state;
+        }
+
+        return [].concat(state, action.payload
+            .map((payload) => vocabulary(undefined, {
                 payload,
-                type: types.ADD_VOCABULARY,
-            }));
+                type: types.POPULATE_VOCABULARY_FROM_LOCAL,
+            })));
+    };
+
+    const syncVocabularies = () => {
+        const newVocabularies = action.payload.filter(payload => !state.find(v => v.id === payload.id));
+
+        if (!newVocabularies.length) {
+            return state;
+        }
+
+        return [].concat(state, action.payload
+            .map((payload) => vocabulary(undefined, {
+                payload,
+                type: types.CHECK_VOCABULARY_SYNC_STATUS,
+            })));
+    };
+
+    switch (action.type) {
+        case types.POPULATE_VOCABULARIES_FROM_LOCAL:
+            return populateVocabularies();
+
+        case types.SYNC_VOCABULARIES:
+            return syncVocabularies();
 
         case types.ADD_VOCABULARY:
+        case types.IMPORT_VOCABULARY:
             return [
                 vocabulary(undefined, action),
                 ...state
@@ -30,14 +60,11 @@ export default function vocabularies(state = initialState, action = { type: '', 
             );
 
         case types.EDIT_VOCABULARY:
+        case types.SYNC_VOCABULARY:
             return state.map(mapVocabulary);
 
         case types.ADD_PHRASE:
-            return state.map(mapVocabulary2);
-
         case types.EDIT_PHRASE:
-            return state.map(mapVocabulary2);
-
         case types.DELETE_PHRASE:
             return state.map(mapVocabulary2);
 

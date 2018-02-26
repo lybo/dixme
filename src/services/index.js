@@ -1,4 +1,5 @@
 import * as integration from './localIntegration/';
+import * as sync from './sync/';
 
 //VOCABULARY
 export function getVocabularies() {
@@ -15,6 +16,22 @@ export function updateVocabulary(vocabulary) {
 
 export function deleteVocabulary(vocabularyId) {
     return integration.deleteVocabulary(vocabularyId);
+}
+
+export function getRemoteVocabulary(vocabularyId) {
+    return sync.getVocabulary(vocabularyId);
+}
+
+export function updateRemoteVocabulary(vocabulary) {
+    return sync.updateVocabulary(vocabulary);
+}
+
+export function updateRemoteVocabularyPhrases(vocabulary) {
+    return sync.getVocabularyPhrases(vocabulary);
+}
+
+export function getRemoteVocabularies(vocabularies) {
+    return sync.getUserVocabularies(vocabularies);
 }
 
 //PHRASE

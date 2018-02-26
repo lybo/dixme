@@ -44,6 +44,12 @@ class ButtonWithConfirmation extends Component {
             e.stopPropagation();
             e.preventDefault();
 
+            const {
+                onClick,
+            } = this.props;
+
+            onClick && onClick();
+
             this.setConfirmationVisible(true);
         };
     }
@@ -86,7 +92,12 @@ class ButtonWithConfirmation extends Component {
             confirmationClassName,
             confirmationButtonClassName,
             confirmationCancelClassName,
+            isConfimationButtonsVisible,
         } = this.props;
+
+        if (isConfimationButtonsVisible === false) {
+            return null;
+        }
 
         return (
             <div

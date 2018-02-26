@@ -16,3 +16,19 @@ export function setSelectedPhrase(data) {
         payload: data
     }
 }
+
+//SET_REMOTE_VOCABULARY
+export function setRemoteVocabulary(data) {
+    return {
+        type: types.SET_REMOTE_VOCABULARY,
+        payload: data
+    }
+}
+
+//SET_REQUEST
+export function setRequest(data) {
+    return {
+        type: types.SET_REQUEST,
+        payload: data
+    }
+}

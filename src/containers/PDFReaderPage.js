@@ -8,7 +8,7 @@ import {
     setSelectedPhrase,
     setPDFPath,
 } from '../actions/app';
-import { getPhraseModel } from '../reducers/phrase';
+// import { getPhraseModel } from '../reducers/phrase';
 
 function PDFReaderPage ({
     navigate,

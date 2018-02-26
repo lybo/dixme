@@ -8,22 +8,28 @@ import {
     requestAddVocabulary,
     requestUpdateVocabulary,
     requestDeleteVocabulary,
+    requestSyncVocabularies,
 } from '../actions/vocabulary';
 
 import {
     setPDFPath,
     setSelectedPhrase,
 } from '../actions/app';
+import { authActions } from '../reducers/auth/';
 
 export default connect(
     (state) => {
         return {
             vocabularies: state.vocabularies,
             app: state.app,
+            auth: state.auth,
         };
     },
     (dispatch) => {
         return {
+            syncVocabularies: () => {
+                dispatch(requestSyncVocabularies());
+            },
             setVocabularySelected: (vocabularyId) => {
                 dispatch(setVocabularySelected(vocabularyId));
             },
@@ -51,6 +57,8 @@ export default connect(
             deletePhrase: (data) => {
                 dispatch(requestDeletePhrase(data));
             },
+            loginSuccess: profile => dispatch(authActions.loginSuccess(profile)),
+            loginError: error => dispatch(authActions.loginError(error)),
         };
     }
 )(App);

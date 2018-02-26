@@ -1,0 +1,43 @@
+@import '../../assets/scss/global.scss';
+
+.notification {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: map-get($theme-2, background);
+    border: 1px solid map-get($theme-2, borderColor);
+    box-shadow: 0 2px 0 map-get($theme-2, borderColor);
+    color: map-get($theme-2, textColor);
+    padding: 20px;
+    margin: 10px;
+    width: 200px;
+    font-size: 12px;
+
+    &__message {
+        border-bottom: 1px solid map-get($theme-2, borderColor);
+        padding: 5px;
+        margin: 0 0 5px 0;
+
+        &:last-child {
+            border: none;
+            margin: 0;
+        }
+    }
+
+    &__icon {
+        margin-right: 5px;
+        font-size: 14px;
+    }
+
+    &--success {
+        color: map-get($theme-2, highlightTextColor);
+    }
+
+    &--error {
+        color: map-get($theme-2, textColorLight);
+    }
+
+    &__header {
+        font-size: 16px;
+    }
+}

@@ -45,7 +45,6 @@ class PDFReader extends Component {
             this.parsePDF(nextProps.pdfPath, this.renderPDFcontent);
         }
 
-        //TODO: remove layout prop from this component
         if (nextProps.isVisible && nextProps.isVisible !== this.isVisible) {
             setTimeout(() => {
                 document.documentElement.scrollTop = nextProps.vocabulary.pdfLastScrollPosition;
@@ -77,7 +76,7 @@ class PDFReader extends Component {
             .filter((v, i, a) => a.indexOf(v) === i)
             .forEach(enhancedPhrase => {
                 newText = newText.replace(
-                    new RegExp(`(\\b${enhancedPhrase}\\b)(?![^<]*>|[^<>]*<\/)`, 'gm'),
+                    new RegExp(`(\\b${enhancedPhrase}\\b)(?![^<]*>|[^<>]*</)`, 'gm'),
                     `<span class="${PDF_READER_ANNOTATION_CLASS_NAME}" id="${enhancedPhrase}">${enhancedPhrase}</span>`,
                 );
             });
@@ -218,14 +217,13 @@ class PDFReader extends Component {
             textContent.items.forEach(function (textItem) {
                 const text = content
                     .trim()
-                    .replace(/\t\t/g, ' ')
+                    .replace(/\t{2}/g, ' ')
                     .replace(/\t/g, ' ')
-                    .replace(/    /g, ' ')
-                    .replace(/    /g, ' ')
-                    .replace(/   /g, ' ')
-                    .replace(/   /g, ' ')
-                    .replace(/  /g, ' ')
-                    .replace(/  /g, ' ');
+                    .replace(/\s{4}/g, ' ')
+                    .replace(/\s{4}/g, ' ')
+                    .replace(/\s{3}/g, ' ')
+                    .replace(/\s{2}/g, ' ')
+                    .replace(/\s{2}/g, ' ');
                 content = `${text} ${textItem.str}`;
             });
             return content;

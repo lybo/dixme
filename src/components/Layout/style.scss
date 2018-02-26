@@ -1,33 +1,66 @@
 .App {
     text-align: center;
 
-    &-logo {
-        animation: App-logo-spin infinite 20s linear;
-        height: 20px;
+    &__logo {
+        height: 25px;
+
+        &-container {
+            overflow: hidden;
+            height: 25px;
+        }
     }
 
-    &-header {
+    &__header {
         background-color: #222;
         padding: 10px;
         color: white;
         display: flex;
+
+        &-left {
+            flex: 1 1 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        &-right {
+            display: flex;
+            justify-content: flex-end;
+            display: flex;
+        }
+
+        &-profile {
+            display: flex;
+            font-size: 12px;
+            justify-content: flex-end;
+            align-items: center;
+
+            &-image {
+                border-radius: 20px;
+                border: 2px solid #ccc;
+                margin-right: 5px;
+                height: 24px;
+            }
+        }
+
+        button {
+            background: #fff;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            margin-left: 5px;
+            padding: 5px 10px;
+        }
     }
 
-    &-title {
+    &__title {
         font-size: 20px;
         font-family: 'Black Ops One';
         font-weight: normal;
         margin: 0px;
-        padding: 0;
+        padding: 4px 0 0 0;
     }
 
-    &-intro {
+    &__intro {
         font-size: large;
     }
 }
-
-@keyframes App-logo-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-

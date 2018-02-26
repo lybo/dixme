@@ -1,5 +1,12 @@
 import { getModelVocabulary } from '../../reducers/vocabulary';
 
+export function updateVocabularies(vocabularies) {
+    return new Promise(function(resolve, reject) {
+        localStorage.setItem('vocabularies', JSON.stringify(vocabularies));
+        resolve(vocabularies);
+    });
+}
+
 export function getVocabularies() {
     return new Promise(function(resolve, reject) {
         const vocabularies = JSON.parse(localStorage.getItem('vocabularies')) || [];
