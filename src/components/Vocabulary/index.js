@@ -9,10 +9,12 @@ import ISO6391 from 'iso-639-1';
 
 // TODO: move it to utils
 function downloadObjectAsJson(exportObj, exportName){
-    var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportObj));
-    var downloadAnchorNode = document.createElement('a');
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportObj));
+    const container = document.getElementById('root');
+    const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute('href', dataStr);
     downloadAnchorNode.setAttribute('download', exportName + '.json');
+    container.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
 }
