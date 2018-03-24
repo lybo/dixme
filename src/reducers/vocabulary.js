@@ -30,20 +30,39 @@ const initialState = {
 };
 
 export default function(state = initialState, action = { type: '', payload: {} }) {
+
     const mapPhrase = (phraseState) => {
         return phraseState.id === action.payload.phrase.id ? phrase(phraseState, action) : phraseState;
     };
+
     const getPhrasePropValue  = (prop) => {
         const findingPhrase = state.phrases.find(phrase => phrase.id === action.payload.phraseId);
         return findingPhrase[prop];
     };
+
     const getDeletedPhrasesNumber = () => {
         return getPhrasePropValue('isNew') ? state.syncDeletedPhrases : state.syncDeletedPhrases + 1;
     };
+
     const getFileSystemSize = (phrases = []) => {
         return JSON.stringify(phrases).replace(/[[\],"]/g,'').length;
     };
+
+    const getSyncedVocabulary = () => {
+        if (!state.id) {
+
+        }
+
+    };
     switch (action.type) {
+        case types.POPULATE_VOCABULARY_FROM_REMOTE:
+            console.log(Object.assign({}, state, action.payload, {
+                syncStatus: true,
+            }));
+            return Object.assign({}, state, action.payload, {
+                syncStatus: true,
+            });
+
         case types.POPULATE_VOCABULARY_FROM_LOCAL:
             // keep temporaly the following for legacy data structure
             return Object.assign({}, state, action.payload, {
@@ -84,6 +103,11 @@ export default function(state = initialState, action = { type: '', payload: {} }
             });
 
         case types.CHECK_VOCABULARY_SYNC_STATUS:
+            console.log(
+                action.payload.title,
+                new Date(state.updatedAt),
+                new Date(action.payload.updatedAt)
+            );
             return Object.assign({}, state, {
                 syncStatus: !(state.updatedAt - action.payload.updatedAt > 0),
             });

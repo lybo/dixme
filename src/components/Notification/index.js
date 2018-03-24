@@ -12,7 +12,6 @@ class Notification extends Component {
         const {
             messages,
         } = this.state;
-        console.log(messages);
     }
 
     removeMessages() {

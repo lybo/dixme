@@ -12,37 +12,43 @@ export default function vocabularies(state = initialState, action = { type: '', 
         return vocabularyState.id === action.payload.vocabularyId ? vocabulary(vocabularyState, action) : vocabularyState;
     };
 
-    const populateVocabularies = () => {
-        const newVocabularies = action.payload.filter(payload => !state.find(v => v.id === payload.id));
-
-        if (!newVocabularies.length) {
-            return state;
-        }
-
-        return [].concat(state, action.payload
-            .map((payload) => vocabulary(undefined, {
+    const populateVocabulariesFromLocal = () => {
+        return [].concat(
+            state,
+            action.payload.map((payload) => vocabulary(undefined, {
                 payload,
                 type: types.POPULATE_VOCABULARY_FROM_LOCAL,
-            })));
+            }))
+        );
     };
 
     const syncVocabularies = () => {
-        const newVocabularies = action.payload.filter(payload => !state.find(v => v.id === payload.id));
+        const newVocabularies = action.payload
+            .filter(payload => !state.find(v => v.id === payload.id));
 
-        if (!newVocabularies.length) {
-            return state;
-        }
+        return [].concat(
+            state.map((vocabularyState) => {
+                const payload = action.payload.find(v => v.id === vocabularyState.id);
 
-        return [].concat(state, action.payload
-            .map((payload) => vocabulary(undefined, {
+                if (payload) {
+                    return vocabulary(vocabularyState, {
+                        payload,
+                        type: types.CHECK_VOCABULARY_SYNC_STATUS,
+                    });
+                }
+
+                return vocabularyState;
+            }),
+            newVocabularies.map((payload) => vocabulary(undefined, {
                 payload,
-                type: types.CHECK_VOCABULARY_SYNC_STATUS,
-            })));
+                type: types.POPULATE_VOCABULARY_FROM_REMOTE,
+            }))
+        );
     };
 
     switch (action.type) {
         case types.POPULATE_VOCABULARIES_FROM_LOCAL:
-            return populateVocabularies();
+            return populateVocabulariesFromLocal();
 
         case types.SYNC_VOCABULARIES:
             return syncVocabularies();
