@@ -8,12 +8,6 @@ class Notification extends Component {
        messages: [],
     }
 
-    componentDidMount() {
-        const {
-            messages,
-        } = this.state;
-    }
-
     removeMessages() {
         this.refreshIntervalId && clearInterval(this.refreshIntervalId);
         this.refreshIntervalId = setInterval(() => {

@@ -48,12 +48,6 @@ export default function(state = initialState, action = { type: '', payload: {} }
         return JSON.stringify(phrases).replace(/[[\],"]/g,'').length;
     };
 
-    const getSyncedVocabulary = () => {
-        if (!state.id) {
-
-        }
-
-    };
     switch (action.type) {
         case types.POPULATE_VOCABULARY_FROM_REMOTE:
             console.log(Object.assign({}, state, action.payload, {
