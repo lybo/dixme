@@ -91,9 +91,21 @@ export default function(state = initialState, action = { type: '', payload: {} }
                 updatedAt: new Date().getTime(),
             });
 
+        case types.POPULATE_REMOTE_VOCABULARY_PHRASES:
+            return Object.assign({}, state, action.payload, {
+                syncStatus: true,
+                syncDeletedPhrases: 0,
+                numberOfPhrases: action.payload.phrases.length,
+                numberOfPhrasesWithReference: action.payload.phrases.filter(phrase => phrase.translationReference !== '').length,
+                phrases: action.payload.phrases.map(phrase => ({
+                    ...phrase,
+                    isNew: false,
+                })),
+            });
+
         case types.SYNC_VOCABULARY:
             return Object.assign({}, state, {
-                updatedAt: new Date().getTime(),
+                // updatedAt: new Date().getTime(),
                 syncStatus: true,
                 syncDeletedPhrases: 0,
                 phrases: state.phrases.map(phrase => ({
@@ -106,10 +118,12 @@ export default function(state = initialState, action = { type: '', payload: {} }
             console.log(
                 action.payload.title,
                 new Date(state.updatedAt),
-                new Date(action.payload.updatedAt)
+                new Date(action.payload.updatedAt),
+                state.updatedAt - action.payload.updatedAt,
+                state.updatedAt - action.payload.updatedAt <= 0,
             );
             return Object.assign({}, state, {
-                syncStatus: !(state.updatedAt - action.payload.updatedAt > 0),
+                syncStatus: state.updatedAt - action.payload.updatedAt <= 0,
             });
 
         case types.ADD_PHRASE:

@@ -17,6 +17,14 @@ export function populateVocabularyFromLocal(data) {
     }
 }
 
+// POPULATE_REMOTE_VOCABULARY_PHRASES
+export function populateRemoteVocabularyPhrases(data) {
+    return {
+        type: types.POPULATE_REMOTE_VOCABULARY_PHRASES,
+        payload: data
+    }
+}
+
 // SYNC_VOCABULARIES
 export function syncVocabularies(data) {
     return {

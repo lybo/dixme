@@ -109,24 +109,18 @@ export const requestGetRemoteVocabularyPhrases = (action$, store) => {
     return action$
         .ofType(types.REQUEST_GET_REMOTE_VOCABULARY_PHRASES)
         .map(action => action.payload)
+        .do(x => console.log('requestGetRemoteVocabularyPhrases', x))
         .flatMap(vocabulary =>
             // Concat 2 observables so they fire sequentially
             Observable.concat(
                 Observable.fromPromise(api.updateRemoteVocabularyPhrases(vocabulary.id))
                     .do(x => console.log('getRemoteVocabularyPhrase', x))
-                    .flatMap(data =>
+                    .flatMap(phrases =>
                         // Concat 2 observables so they fire sequentially
                         Observable.concat(
-                            Observable.of(actions.updateVocabulary({
+                            Observable.of(actions.populateRemoteVocabularyPhrases({
                                 ...vocabulary,
-                                syncStatus: true,
-                                syncDeletedPhrases: 0,
-                                numberOfPhrases: data.length,
-                                numberOfPhrasesWithReference: data.filter(phrase => phrase.translationReference !== '').length,
-                                phrases: data.map(phrase => ({
-                                    ...phrase,
-                                    isNew: false,
-                                })),
+                                phrases,
                             })),
                             Observable.of(appActions.setRemoteVocabulary(null)),
                         )

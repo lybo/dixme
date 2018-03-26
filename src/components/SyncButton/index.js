@@ -73,7 +73,7 @@ class SyncButton extends Component {
                 label: 'Accept remote',
                 onClick: () => {
                     console.log('Save remote');
-                    updateLocalVocabularyByRemote(vocabulary);
+                    updateLocalVocabularyByRemote(remoteVocabulary);
                 },
             },
         ];

@@ -67,6 +67,7 @@ export default function vocabularies(state = initialState, action = { type: '', 
 
         case types.EDIT_VOCABULARY:
         case types.SYNC_VOCABULARY:
+        case types.POPULATE_REMOTE_VOCABULARY_PHRASES:
             return state.map(mapVocabulary);
 
         case types.ADD_PHRASE:
