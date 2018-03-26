@@ -50,11 +50,8 @@ export default function(state = initialState, action = { type: '', payload: {} }
 
     switch (action.type) {
         case types.POPULATE_VOCABULARY_FROM_REMOTE:
-            console.log(Object.assign({}, state, action.payload, {
-                syncStatus: true,
-            }));
             return Object.assign({}, state, action.payload, {
-                syncStatus: true,
+                syncStatus: false,
             });
 
         case types.POPULATE_VOCABULARY_FROM_LOCAL:
@@ -109,15 +106,8 @@ export default function(state = initialState, action = { type: '', payload: {} }
             });
 
         case types.CHECK_VOCABULARY_SYNC_STATUS:
-            console.log(
-                action.payload.title,
-                new Date(state.updatedAt),
-                new Date(action.payload.updatedAt),
-                state.updatedAt - action.payload.updatedAt,
-                state.updatedAt - action.payload.updatedAt <= 0,
-            );
             return Object.assign({}, state, {
-                syncStatus: state.updatedAt - action.payload.updatedAt <= 0,
+              syncStatus: state.numberOfPhrases === state.phrases.length && (state.updatedAt - action.payload.updatedAt <= 0),
             });
 
         case types.ADD_PHRASE:

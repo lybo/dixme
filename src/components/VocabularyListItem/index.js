@@ -27,7 +27,7 @@ class VocabularyListItem extends Component {
              return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
         };
         const { vocabulary } = this.props;
-        const pecentageOfPhraseWithReference = (100 * vocabulary.numberOfPhrasesWithReference) / vocabulary.phrases.length;
+        const pecentageOfPhraseWithReference = (100 * vocabulary.numberOfPhrasesWithReference) / vocabulary.numberOfPhrases;
         const details = `, ${vocabulary.numberOfPhrasesWithReference} phrases with reference (~${parseInt(pecentageOfPhraseWithReference, 10)}%), Size: ${bytesToSize(vocabulary.phrasesFileSystemSize)}`;
         const syncClassName = vocabulary.syncStatus ? '' : 'vocabulary-list-item--no-sync';
 
@@ -46,8 +46,8 @@ class VocabularyListItem extends Component {
                                 <span className="fa fa-refresh"/>
                             </div>
                             <div className="vocabulary-list-item__number-of-phrases">
-                                {vocabulary.phrases.length} phrases
-                                {vocabulary.phrases.length ? details : null}
+                                {vocabulary.numberOfPhrases} phrases
+                                {vocabulary.numberOfPhrases ? details : null}
                             </div>
                         </div>
                     </div>
