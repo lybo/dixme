@@ -6,6 +6,7 @@ class SyncButton extends Component {
     renderSyncComparison() {
         const {
             remoteVocabulary,
+            vocabulary,
         } = this.props;
 
         if (!remoteVocabulary) {
@@ -16,6 +17,14 @@ class SyncButton extends Component {
             return (
                 <div>
                     There is no remote vocabulary. Do you want to upload it?
+                </div>
+            );
+        }
+
+        if (vocabulary.phrases.length === 0 && vocabulary.numberOfPhrases && remoteVocabulary.numberOfPhrases) {
+            return (
+                <div>
+                    It looks like that you miss phrases
                 </div>
             );
         }
@@ -54,8 +63,18 @@ class SyncButton extends Component {
                 {
                     label: 'upload',
                     onClick: () => {
-                        console.log('upload', vocabulary);
                         updateRemoteVocabulary(vocabulary);
+                    },
+                },
+            ];
+        }
+
+        if (vocabulary.phrases.length === 0 && vocabulary.numberOfPhrases && remoteVocabulary.numberOfPhrases) {
+            return [
+                {
+                    label: 'Get phrases',
+                    onClick: () => {
+                        updateLocalVocabularyByRemote(remoteVocabulary);
                     },
                 },
             ];
@@ -65,14 +84,12 @@ class SyncButton extends Component {
             {
                 label: 'Accept local',
                 onClick: () => {
-                    console.log('Save local');
                     updateRemoteVocabulary(vocabulary);
                 },
             },
             {
                 label: 'Accept remote',
                 onClick: () => {
-                    console.log('Save remote');
                     updateLocalVocabularyByRemote(remoteVocabulary);
                 },
             },

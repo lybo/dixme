@@ -57,7 +57,6 @@ class Vocabulary extends Component {
 
         if (vocabulary.syncStatus) {
             return 'Is synced';
-
         }
 
         return (
