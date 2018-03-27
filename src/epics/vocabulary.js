@@ -4,6 +4,7 @@ import * as appActions from '../actions/app'
 import * as types from '../constants/vocabulary'
 import { Observable } from 'rxjs/Observable'
 import * as request from '../constants/request';
+import { errorHandler } from './utils';
 
 
 // POPULATE_VOCABULARIES
@@ -42,7 +43,7 @@ export const requestSyncVocabularies = (action$, store) => {
                     },
                 })),
                 Observable.fromPromise(api.getRemoteVocabularies(payload))
-                    //  .do(x => console.log('requestName', x))
+                    .do(x => console.log('getRemoteVocabularies', x))
                     .flatMap(data =>
                         // Concat 2 observables so they fire sequentially
                         Observable.concat(
@@ -63,15 +64,39 @@ export const requestSyncVocabularies = (action$, store) => {
                             })),
                         )
                     )
-                    .catch(err =>
+                    .catch(errorHandler(requestName))
+            )
+        );
+};
+
+// GET_REMOTE_VOCABULARY
+export const requestGetRemoteVocabulary = (action$, store) => {
+    const requestName = 'requestGetRemoteVocabulary';
+    return action$
+        .ofType(types.REQUEST_GET_REMOTE_VOCABULARY)
+        .map(action => action.payload)
+        .flatMap(vocabularyId =>
+            // Concat 2 observables so they fire sequentially
+            Observable.concat(
+                Observable.of(appActions.setRequest({
+                    requestName,
+                    requestData: {
+                        status: request.LOADING,
+                        error: '',
+                    },
+                })),
+                Observable.fromPromise(api.getRemoteVocabulary(vocabularyId))
+                    .flatMap(data =>
+                        // Concat 2 observables so they fire sequentially
                         Observable.concat(
                             Observable.of(appActions.setRequest({
                                 requestName,
                                 requestData: {
                                     status: request.DONE,
-                                    error: err.status,
+                                    error: '',
                                 },
                             })),
+                            Observable.of(appActions.setRemoteVocabulary(data)),
                             Observable.of(appActions.setRequest({
                                 requestName,
                                 requestData: {
@@ -81,31 +106,14 @@ export const requestSyncVocabularies = (action$, store) => {
                             })),
                         )
                     )
-            )
-        );
-};
-
-// GET_REMOTE_VOCABULARY
-export const requestGetRemoteVocabulary = (action$, store) => {
-    return action$
-        .ofType(types.REQUEST_GET_REMOTE_VOCABULARY)
-        .map(action => action.payload)
-        .flatMap(vocabularyId =>
-            // Concat 2 observables so they fire sequentially
-            Observable.concat(
-                Observable.fromPromise(api.getRemoteVocabulary(vocabularyId))
-                    .flatMap(data =>
-                        // Concat 2 observables so they fire sequentially
-                        Observable.concat(
-                            Observable.of(appActions.setRemoteVocabulary(data)),
-                        )
-                    )
+                    .catch(errorHandler(requestName))
             )
         );
 };
 
 // GET_REMOTE_VOCABULARY_PHRASES
 export const requestGetRemoteVocabularyPhrases = (action$, store) => {
+    const requestName = 'requestGetRemoteVocabularyPhrases';
     return action$
         .ofType(types.REQUEST_GET_REMOTE_VOCABULARY_PHRASES)
         .map(action => action.payload)
@@ -113,18 +121,40 @@ export const requestGetRemoteVocabularyPhrases = (action$, store) => {
         .flatMap(vocabulary =>
             // Concat 2 observables so they fire sequentially
             Observable.concat(
+                Observable.of(appActions.setRequest({
+                    requestName,
+                    requestData: {
+                        status: request.LOADING,
+                        error: '',
+                    },
+                })),
                 Observable.fromPromise(api.updateRemoteVocabularyPhrases(vocabulary.id))
                     .do(x => console.log('getRemoteVocabularyPhrase', x))
                     .flatMap(phrases =>
                         // Concat 2 observables so they fire sequentially
                         Observable.concat(
+                            Observable.of(appActions.setRequest({
+                                requestName,
+                                requestData: {
+                                    status: request.DONE,
+                                    error: '',
+                                },
+                            })),
                             Observable.of(actions.populateRemoteVocabularyPhrases({
                                 ...vocabulary,
                                 phrases,
                             })),
                             Observable.of(appActions.setRemoteVocabulary(null)),
+                            Observable.of(appActions.setRequest({
+                                requestName,
+                                requestData: {
+                                    status: request.IDLE,
+                                    error: '',
+                                },
+                            })),
                         )
                     )
+                    .catch(errorHandler(requestName))
             )
         );
 };
