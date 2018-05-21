@@ -1,4 +1,4 @@
-import * as types from './types';
+import * as types from '../constants/auth';
 
 export const requestLogin = () => ({
     type: types.REQUEST_LOGIN
@@ -17,4 +17,3 @@ export const loginError = error => ({
 export const logoutSuccess = () => ({
     type: types.LOGOUT_SUCCESS
 });
-

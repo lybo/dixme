@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 import {
     requestAddVocabulary,
 } from '../actions/vocabulary';
-import { authActions } from '../reducers/auth/';
+import * as authActions from '../actions/auth';
 import * as AuthService from '../services/authService/';
 
 export default connect(

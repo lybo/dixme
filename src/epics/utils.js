@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable'
 import * as appActions from '../actions/app'
 import * as request from '../constants/request';
-import * as auth from '../reducers/auth/actions';
+import * as auth from '../actions/auth';
 
 export function errorHandler(requestName) {
     return err => Observable.concat(

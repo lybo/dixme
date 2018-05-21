@@ -15,7 +15,7 @@ import {
     setPDFPath,
     setSelectedPhrase,
 } from '../actions/app';
-import { authActions } from '../reducers/auth/';
+import * as authActions from '../actions/auth';
 
 export default connect(
     (state) => {

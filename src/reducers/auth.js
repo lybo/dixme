@@ -1,5 +1,5 @@
-import * as types from './types';
-import * as AuthService from '../../services/authService/';
+import * as types from '../constants/auth';
+import * as AuthService from '../services/authService/';
 
 const authReducer = (
   state = {
@@ -44,3 +44,4 @@ const authReducer = (
 };
 
 export default authReducer;
+
