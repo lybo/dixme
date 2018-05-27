@@ -88,8 +88,8 @@ class PDFReaderView extends Component {
     handleSelection({ textPage, selection }) {
         const index = textPage.indexOf(selection.focusNode.data);
 
-        const { baseOffset, extentOffset } = selection;
-        const [selectionStart, selectionEnd] = [baseOffset, extentOffset].sort((a, b) => a - b);
+        const { anchorOffset, focusOffset } = selection;
+        const [selectionStart, selectionEnd] = [anchorOffset, focusOffset].sort((a, b) => a - b);
         const { richSentence } = getSentenceData(
             textPage,
             {
