@@ -138,17 +138,15 @@ class PDFReader extends Component {
     }
 
     handleSelectionChange() {
-        if (window.getSelection() &&
+        const isSelectionDialogVisible = window.getSelection() &&
             this.getSelectionNode() &&
             window.getSelection().type === 'Range' &&
             // window.getSelection().getRangeAt &&
             // window.getSelection().getRangeAt(0) &&
-            window.getSelection().toString().trim()
-        ) {
-            this.setState({
-                isSelectionDialogVisible: true,
-            });
-        }
+            window.getSelection().toString().trim();
+        this.setState({
+            isSelectionDialogVisible,
+        });
     }
 
     parsePDF(pdfPath, onLoad) {
@@ -215,16 +213,24 @@ class PDFReader extends Component {
 
             // processing all items
             textContent.items.forEach(function (textItem) {
-                const text = content
+                const space = ' ';
+                const text = `${content} ${textItem.str}`
                     .trim()
-                    .replace(/\t{2}/g, ' ')
-                    .replace(/\t/g, ' ')
-                    .replace(/\s{4}/g, ' ')
-                    .replace(/\s{4}/g, ' ')
-                    .replace(/\s{3}/g, ' ')
-                    .replace(/\s{2}/g, ' ')
-                    .replace(/\s{2}/g, ' ');
-                content = `${text} ${textItem.str}`;
+                    .replace(/\t{4}/g, space)
+                    .replace(/\t{4}/g, space)
+                    .replace(/\t{3}/g, space)
+                    .replace(/\t{3}/g, space)
+                    .replace(/\t{2}/g, space)
+                    .replace(/\t{2}/g, space)
+                    .replace(/\t/g, space)
+                    .replace(/\t/g, space)
+                    .replace(/\s{4}/g, space)
+                    .replace(/\s{4}/g, space)
+                    .replace(/\s{3}/g, space)
+                    .replace(/\s{3}/g, space)
+                    .replace(/\s{2}/g, space)
+                    .replace(/\s{2}/g, space);
+                content = text;
             });
             return content;
         }
@@ -299,6 +305,7 @@ class PDFReader extends Component {
         }
 
         const phrase = window.getSelection().toString().trim().replace(/\n/g, ' ');
+        // console.log(window.getSelection().getRangeAt());
 
         if (!phrase) {
             return null;
@@ -328,10 +335,10 @@ class PDFReader extends Component {
                             this.setState({
                                 isSelectionDialogVisible: false,
                             });
-                            onSelection && onSelection(
-                                phrase,
-                                this.getSelectionNode().textContent,
-                            );
+                            onSelection && onSelection({
+                                textPage: this.getSelectionNode().textContent,
+                                selection: window.getSelection(),
+                            });
                         }}
                     >
                         Edit

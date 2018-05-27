@@ -3,7 +3,69 @@ import './style.css';
 import PDFReader from '../PDFReader';
 import WebFileSystem from '../WebFileSystem';
 import { getPhraseModel } from '../../reducers/phrase';
+function getSentenceData(text, offset) {
+    function getPosition(string, subString, index) {
+        return string.split(subString, index).join(subString).length;
+    }
+    function getSentenceLimit(text) {
+        const limits = [
+            //text.indexOf('.'),
+            //text.indexOf('!'),
+            //text.indexOf('?'),
+            //text.indexOf('-'),
+            //text.indexOf(','),
+            getPosition(text, '.', 0),
+            getPosition(text, '!', 0),
+            getPosition(text, '?', 0),
+            getPosition(text, ';', 0),
+            //getPosition(text, ',', 0),
+            getPosition(text, '.', 1),
+            getPosition(text, '!', 1),
+            getPosition(text, '?', 1),
+            getPosition(text, ';', 1),
+            //getPosition(text, ',', 1),
+            getPosition(text, '.', 2),
+            getPosition(text, '!', 2),
+            getPosition(text, '?', 2),
+            getPosition(text, ';', 2),
+            //getPosition(text, ',', 2),
+        ].filter(limit => limit !== -1 && limit !== 0);
 
+        if (limits.length) {
+            const limit = Math.min(...limits);
+            return limit || text.length;
+        }
+
+        return text.length;
+    }
+
+    function getStartIndex() {
+        const beforeText = text.substring(0, offset.start).split('').reverse().join('');
+        return offset.start - getSentenceLimit(beforeText);
+    }
+
+    function getEndIndex() {
+        const endText = text.substring(offset.end, text.length);
+        return offset.end + getSentenceLimit(endText);
+    }
+
+    const selectedText = text.substring(offset.start, offset.end);
+    const start = getStartIndex();
+    const end = getEndIndex();
+    const sentence = text.substring(start, end).trim();
+
+
+    const richSentence = sentence.substring(0, offset.start - start - 1) +
+        '<b>' + selectedText + '</b>' +
+        sentence.substring(offset.end - start - 1, sentence.length)
+
+    return {
+        sentence,
+        richSentence,
+        start,
+        end,
+    };
+}
 class PDFReaderView extends Component {
     constructor(props) {
         super(props);
@@ -23,17 +85,23 @@ class PDFReaderView extends Component {
         onWebFileSystemChange && onWebFileSystemChange(pdfPath);
     }
 
-    handleSelection(text, pageTextContent) {
+    handleSelection({ textPage, selection }) {
+        const index = textPage.indexOf(selection.focusNode.data);
+
+        const { baseOffset, extentOffset } = selection;
+        const [selectionStart, selectionEnd] = [baseOffset, extentOffset].sort((a, b) => a - b);
+        const { richSentence } = getSentenceData(
+            textPage,
+            {
+                start: selectionStart + index,
+                end: selectionEnd + index,
+            },
+        );
         const { onSelection } = this.props;
-        const regexp = new RegExp(`[^.]*${text}[^.]*.`, 'g');
-        const result = pageTextContent.match(regexp, text);
-        if (result && result[0]) {
-            const sourceReference = result[0].replace(text, `<b>${text}</b>`)
-            onSelection && onSelection(getPhraseModel({
-                text,
-                sourceReference,
-            }));
-        }
+        onSelection && onSelection(getPhraseModel({
+            text: selection.toString().trim().replace(/\n/g, ' '),
+            sourceReference: richSentence,
+        }));
     }
 
     handlePageNumberChange(pageNumber) {
