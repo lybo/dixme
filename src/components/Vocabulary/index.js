@@ -26,7 +26,7 @@ class Vocabulary extends Component {
         this.state = {
             pdfPath: null,
             selectedPhrase: getPhraseModel(),
-            isReferenceVisible: true,
+            isReferenceVisible: false,
         };
 
         this.handleReferenceVisibilityToggle = this.handleReferenceVisibilityToggle.bind(this);

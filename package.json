@@ -3,14 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "auth0-lock": "^11.3.0",
-    "dotenv": "^5.0.1",
-    "font-awesome": "^4.7.0",
     "iso-639-1": "^2.0.3",
-    "jwt-decode": "^2.2.0",
-    "level-sublevel": "^6.6.1",
-    "leveldown": "^3.0.0",
-    "levelup": "^2.0.2",
     "node-sass-chokidar": "0.0.3",
     "npm-run-all": "^4.1.2",
     "pdfjs-dist": "^2.0.228",
@@ -18,25 +11,20 @@
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.0",
+    "react-scripts": "1.0.17",
     "redux": "^3.0.0",
     "redux-observable": "^0.14.1",
     "rxjs": "^5.4.2",
-    "superagent": "^3.8.2",
     "wordreference-api": "^1.1.0"
   },
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
-    "start-js": "sh -ac '. .env.local; react-scripts start'",
-    "doc": "jsdoc ./src -r",
+    "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
-    "build-js": "sh -ac '. .env; react-scripts build'",
+    "build-js": "react-scripts build",
     "build": "npm-run-all build-css build-js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "devDependencies": {
-    "jsdoc": "^3.5.5"
   }
 }

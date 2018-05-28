@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 import ButtonWithConfirmation from '../ButtonWithConfirmation';
+import TextToSpeechButton from '../TextToSpeechButton';
 
 class PhraseListItem extends Component {
     constructor(props) {
@@ -47,7 +48,7 @@ class PhraseListItem extends Component {
     }
 
     render() {
-        const { phrase } = this.props;
+        const { phrase, lang } = this.props;
 
         return (
             <div
@@ -61,6 +62,11 @@ class PhraseListItem extends Component {
                     {this.renderReference()}
                 </div>
                 <div className="phrase-item__buttons">
+                    <TextToSpeechButton
+                        text={phrase.text}
+                        classNames="phrase-item__edit"
+                        lang={lang}
+                    />
                     <button
                         className="phrase-item__edit"
                         onClick={this.handleEditClick(phrase.id)}

@@ -23,6 +23,7 @@ class VocabularyPhraseList extends Component {
                                     onDeleteClick={onDeleteClick}
                                     onEditClick={onEditClick}
                                     phrase={phrase}
+                                    lang={vocabulary.langFrom}
                                     isReferenceVisible={isReferenceVisible}
                                 />
                             );

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './style.css';
 import pdfjsLib from 'pdfjs-dist';
 import Load from '../Load/';
+import TextToSpeechButton from '../TextToSpeechButton';
 
 const DEFAULT_PAGE_NUMBER = 1;
 const PDF_READER_ANNOTATION_CLASS_NAME = 'pdf-reader__annotation';
@@ -350,7 +351,7 @@ class PDFReader extends Component {
     }
 
     renderAnnotationConfirmation(selectedPhrases) {
-        const { onPdfScrollPositionChange } = this.props;
+        const { onPdfScrollPositionChange, vocabulary } = this.props;
 
         if (!selectedPhrases || !selectedPhrases.length) {
             return null;
@@ -374,6 +375,10 @@ class PDFReader extends Component {
                                 className="pdf-reader__annotation_info-translation-container"
                                 key={selectedPhrase.id}
                             >
+                                <TextToSpeechButton
+                                    text={selectedPhrase.text}
+                                    lang={vocabulary.langFrom}
+                                />
                                 <div
                                     className="pdf-reader__annotation_info-translation"
                                 >
