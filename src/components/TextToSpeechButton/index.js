@@ -31,6 +31,10 @@ class TextToSpeechButton extends Component {
     }
 
     render() {
+        if (!('speechSynthesis' in window)) {
+          return null;
+        }
+
         const {
             text,
             lang,

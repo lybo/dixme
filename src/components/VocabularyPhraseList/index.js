@@ -1,8 +1,37 @@
 import React, { Component } from 'react';
+import Pagination from '../Pagination';
 import './style.css';
 import PhraseListItem from '../PhraseListItem';
 
+const PER_PAGE = 1;
+
 class VocabularyPhraseList extends Component {
+    state = {
+        offset: 0
+    }
+
+    handlePageClick = (data) => {
+        const offset = Math.ceil(data.selected * PER_PAGE);
+
+        this.setState({
+            offset
+        });
+    }
+
+    getList() {
+        const {
+            vocabulary: { phrases = [] },
+        } = this.props;
+        const {
+            offset,
+        } = this.state;
+
+        const start = offset;
+        const end = offset + PER_PAGE;
+
+        return phrases.slice(start, end);
+    }
+
     render() {
         const {
             vocabulary,
@@ -12,8 +41,9 @@ class VocabularyPhraseList extends Component {
         } = this.props;
 
         return (
-            <div className="vocabulary-phrase-list">
-                {vocabulary.phrases
+            <div>
+                <div className="vocabulary-phrase-list">
+                    {this.getList()
                         .filter(phrase => phrase)
                         .map((phrase) => {
                             return (
@@ -28,7 +58,13 @@ class VocabularyPhraseList extends Component {
                                 />
                             );
                         })
-                }
+                    }
+                </div>
+                <Pagination
+                    list={vocabulary.phrases}
+                    onPageChange={this.handlePageClick}
+                    perPage={PER_PAGE}
+                />
             </div>
         );
     }

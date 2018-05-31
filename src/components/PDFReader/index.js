@@ -492,3 +492,4 @@ class PDFReader extends Component {
 }
 
 export default PDFReader;
+
