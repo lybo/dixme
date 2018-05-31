@@ -3,7 +3,7 @@ import Pagination from '../Pagination';
 import './style.css';
 import PhraseListItem from '../PhraseListItem';
 
-const PER_PAGE = 1;
+const PER_PAGE = 10;
 
 class VocabularyPhraseList extends Component {
     state = {
@@ -42,6 +42,11 @@ class VocabularyPhraseList extends Component {
 
         return (
             <div>
+                <Pagination
+                    list={vocabulary.phrases}
+                    onPageChange={this.handlePageClick}
+                    perPage={PER_PAGE}
+                />
                 <div className="vocabulary-phrase-list">
                     {this.getList()
                         .filter(phrase => phrase)
