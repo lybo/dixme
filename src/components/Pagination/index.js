@@ -8,6 +8,7 @@ class Pagination extends Component {
             list,
             onPageChange,
             perPage,
+            forcePage,
         } = this.props;
 
         return (
@@ -19,6 +20,7 @@ class Pagination extends Component {
                 marginPagesDisplayed={1}
                 pageRangeDisplayed={2}
                 onPageChange={onPageChange}
+                forcePage={forcePage}
                 containerClassName="pagination"
                 pageLinkClassName="pagination__item"
                 previousLinkClassName="pagination__previous"

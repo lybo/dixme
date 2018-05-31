@@ -7,14 +7,16 @@ const PER_PAGE = 10;
 
 class VocabularyPhraseList extends Component {
     state = {
-        offset: 0
+        offset: 0,
+        page: 0,
     }
 
     handlePageClick = (data) => {
         const offset = Math.ceil(data.selected * PER_PAGE);
 
         this.setState({
-            offset
+            offset,
+            page: data.selected,
         });
     }
 
@@ -39,6 +41,9 @@ class VocabularyPhraseList extends Component {
             onDeleteClick,
             isReferenceVisible,
         } = this.props;
+        const {
+            page,
+        } = this.state;
 
         return (
             <div>
@@ -46,6 +51,7 @@ class VocabularyPhraseList extends Component {
                     list={vocabulary.phrases}
                     onPageChange={this.handlePageClick}
                     perPage={PER_PAGE}
+                    forcePage={page}
                 />
                 <div className="vocabulary-phrase-list">
                     {this.getList()
@@ -69,6 +75,7 @@ class VocabularyPhraseList extends Component {
                     list={vocabulary.phrases}
                     onPageChange={this.handlePageClick}
                     perPage={PER_PAGE}
+                    forcePage={page}
                 />
             </div>
         );
