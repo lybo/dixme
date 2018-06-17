@@ -31,6 +31,7 @@ export default connect(
         return {
             vocabulary,
             remoteVocabulary: state.app.remoteVocabulary,
+            pageNumber: ownProps.match.params.pageNumber,
         };
     },
     (dispatch, ownProps) => {

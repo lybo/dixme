@@ -99,6 +99,7 @@ class Vocabulary extends Component {
             onAddClick,
             deletePhrase,
             navigate,
+            pageNumber,
         } = this.props;
 
         if (!vocabulary) {
@@ -194,6 +195,8 @@ class Vocabulary extends Component {
                             onEditClick && onEditClick(vocabulary.phrases.find(phrase => phrase.id === phraseId));
                         }}
                         isReferenceVisible={isReferenceVisible}
+                        navigate={navigate}
+                        pageNumber={pageNumber}
                     />
                 </div>
                 <VocabularyPhraseListMenu

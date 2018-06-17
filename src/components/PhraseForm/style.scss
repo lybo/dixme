@@ -74,10 +74,11 @@
     &__translation-button {
         @include button;
         flex: 1;
+        margin-right: 10px;
     }
 
-    &__translation-button:first-child {
-        margin-right: 10px;
+    &__translation-button:last-child {
+        margin-right: 0;
     }
 
     .phrase-item__reference {
@@ -115,6 +116,7 @@
     & > span {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
     }
     &-tag {
         background: #FFFFFF;
@@ -126,6 +128,9 @@
     &-remove {
         margin-left: 5px;
         font-size: 24px;
+    }
+    &-input {
+        width: 120px;
     }
 }
 

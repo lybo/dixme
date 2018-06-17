@@ -86,6 +86,23 @@ class App extends Component {
 
                     <Route
                         exact
+                        path="/vocabulary/:vocabularyId/page/:pageNumber"
+                        render={(props) => {
+                            const newProps = {
+                                ...props,
+                                isVisible: false,
+                            };
+                            return (
+                                <Layout {...props}>
+                                    <PDFReaderPage {...newProps} />
+                                    <Vocabulary {...props} />
+                                </Layout>
+                            );
+                        }}
+                    />
+
+                    <Route
+                        exact
                         path="/vocabulary/:vocabularyId"
                         render={(props) => {
                             const newProps = {

@@ -6,28 +6,38 @@ import PhraseListItem from '../PhraseListItem';
 const PER_PAGE = 10;
 
 class VocabularyPhraseList extends Component {
-    state = {
-        offset: 0,
-        page: 0,
-    }
+    // state = {
+    //     offset: 0,
+    //     page: 0,
+    // }
 
     handlePageClick = (data) => {
-        const offset = Math.ceil(data.selected * PER_PAGE);
+        const {
+            navigate,
+            vocabulary,
+        } = this.props;
+        navigate(`/vocabulary/${vocabulary.id}/page/${data.selected}`);
+    }
 
-        this.setState({
-            offset,
-            page: data.selected,
-        });
+    getPageNumber() {
+        const {
+            pageNumber = 0,
+        } = this.props;
+        const pageNumberNumeric =  parseInt(pageNumber, 10);
+        if (isNaN(pageNumberNumeric)) {
+            return 0;
+        }
+        return pageNumberNumeric;
+    }
+    getOffset() {
+        return Math.ceil(this.getPageNumber() * PER_PAGE);
     }
 
     getList() {
         const {
             vocabulary: { phrases = [] },
         } = this.props;
-        const {
-            offset,
-        } = this.state;
-
+        const offset = this.getOffset();
         const start = offset;
         const end = offset + PER_PAGE;
 
@@ -40,10 +50,9 @@ class VocabularyPhraseList extends Component {
             onEditClick,
             onDeleteClick,
             isReferenceVisible,
+            navigate,
         } = this.props;
-        const {
-            page,
-        } = this.state;
+        const pageNumber = this.getPageNumber();
 
         return (
             <div>
@@ -51,7 +60,7 @@ class VocabularyPhraseList extends Component {
                     list={vocabulary.phrases}
                     onPageChange={this.handlePageClick}
                     perPage={PER_PAGE}
-                    forcePage={page}
+                    forcePage={pageNumber}
                 />
                 <div className="vocabulary-phrase-list">
                     {this.getList()
@@ -75,7 +84,7 @@ class VocabularyPhraseList extends Component {
                     list={vocabulary.phrases}
                     onPageChange={this.handlePageClick}
                     perPage={PER_PAGE}
-                    forcePage={page}
+                    forcePage={pageNumber}
                 />
             </div>
         );

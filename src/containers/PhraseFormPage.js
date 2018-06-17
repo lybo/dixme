@@ -49,7 +49,8 @@ class PhraseFormPage extends Component {
         const {
             destination,
             selectedPhrase,
-            navigate,
+            // navigate,
+            goBack,
             vocabulary,
             addPhrase,
             updatePhrase,
@@ -72,7 +73,8 @@ class PhraseFormPage extends Component {
                         phrase={selectedPhrase}
                         vocabulary={vocabulary}
                         onCancelClick={() => {
-                            navigate(`/vocabulary/${destination}${vocabulary.id}`);
+                            // navigate(`/vocabulary/${destination}${vocabulary.id}`);
+                            goBack();
                         }}
                         onSubmit={(phrase) => {
 
@@ -84,7 +86,8 @@ class PhraseFormPage extends Component {
                                     },
                                     vocabularyId: vocabulary.id,
                                 });
-                                navigate(`/vocabulary/${destination}${vocabulary.id}`);
+                                // navigate(`/vocabulary/${destination}${vocabulary.id}`);
+                                goBack();
                                 return;
                             }
 
@@ -96,14 +99,16 @@ class PhraseFormPage extends Component {
                                 },
                                 vocabularyId: vocabulary.id,
                             });
-                            navigate(`/vocabulary/${destination}${vocabulary.id}`);
+                            // navigate(`/vocabulary/${destination}${vocabulary.id}`);
+                            goBack();
                         }}
                         onDeleteClick={(phraseId) => {
                             deletePhrase({
                                 phraseId,
                                 vocabularyId: vocabulary.id,
                             });
-                            navigate(`/vocabulary/${destination}${vocabulary.id}`);
+                            // navigate(`/vocabulary/${destination}${vocabulary.id}`);
+                            goBack();
                         }}
                     />
                     {this.renderTranslationLinks(selectedPhrase.text)}
@@ -125,9 +130,11 @@ export default connect(
         };
     },
     (dispatch, ownProps) => {
-        const navigate = ownProps.history.push;
+        // const navigate = ownProps.history.push;
+        const goBack = ownProps.history.goBack;
         return {
-            navigate,
+            // navigate,
+            goBack,
             addPhrase: (data) => {
                 dispatch(requestAddPhrase(data));
             },

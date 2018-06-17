@@ -55,7 +55,7 @@ class PhraseForm extends Component {
             sourceReference,
             translationFrom: translationFrom || text,
             translationFromType,
-            translationTo: translationTo.split(',').map(word => word.trim()),
+            translationTo: translationTo.split(',').map(word => word.trim()).filter(word => word),
             translationReference,
             definition,
             definitionReference,
@@ -78,6 +78,8 @@ class PhraseForm extends Component {
                 })
                 .catch(console.log);
         }
+
+        window.scrollTo(0, 0);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -102,7 +104,7 @@ class PhraseForm extends Component {
                 sourceReference,
                 translationFrom: translationFrom || text,
                 translationFromType,
-                translationTo: translationTo.split(',').map(word => word.trim()),
+                translationTo: translationTo.split(',').map(word => word.trim()).filter(word => word),
                 translationReference,
                 definition,
                 definitionReference,
@@ -254,15 +256,26 @@ class PhraseForm extends Component {
                     })}
                     <div className="phrase-form__form">
                         {/* {this.renderInput('text', 'Translation to', 'translationTo', translationTo, id)} */}
-                        <TagsInput
-                            value={this.state.translationTo}
-                            onChange={(translationTo) => {
-                                this.setState({
-                                    translationTo,
-                                });
-                            }}
-                            onlyUnique
-                        />
+                        <div>
+                            <label
+                                className="phrase-form__input-label"
+                            >
+                                Translation to
+                            </label>
+                            <TagsInput
+                                value={this.state.translationTo}
+                                onChange={(translationTo) => {
+                                    this.setState({
+                                        translationTo,
+                                    });
+                                }}
+                                inputProps={{
+                                    className: 'react-tagsinput-input',
+                                    placeholder: 'Add a translation'
+                                }}
+                                onlyUnique
+                            />
+                        </div>
                         {this.renderInput('text', 'Translation Reference', 'translationReference', translationReference, id)}
                         {this.renderInput('text', 'Definition', 'definition', definition, id)}
                         {this.renderInput('text', 'Definition Reference', 'definitionReference', definitionReference, id)}
@@ -306,13 +319,31 @@ class PhraseForm extends Component {
                                                     this.setState({
                                                         translationFrom: translation.from,
                                                         translationFromType: translation.fromType,
-                                                        translationTo: translation.to.split(',').map(word => word.trim()),
+                                                        translationTo: translation.to.split(',').map(word => word.trim()).filter(word => word),
                                                         translationReference: 'wordreference.com',
                                                     });
                                                 }}
                                             >
-                                                {this.state.translationTo ? 'Replace translation' : 'Add translation'}
+                                                {this.state.translationTo.length > 0 ? 'Replace translation' : 'Add translation'}
                                             </button>
+                                            {this.state.translationTo.length > 0 ? (
+                                                <button
+                                                    className="phrase-form__translation-button"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        this.setState({
+                                                            translationFrom: translation.from,
+                                                            translationFromType: translation.fromType,
+                                                            translationTo: []
+                                                              .concat(this.state.translationTo, translation.to.split(',').map(word => word.trim()).filter(word => word))
+                                                              .filter((elem, pos, arr) => arr.indexOf(elem) === pos),
+                                                            translationReference: 'wordreference.com',
+                                                        });
+                                                    }}
+                                                >
+                                                    {'Add translation'}
+                                                </button>
+                                            ) : null}
                                             <button
                                                 className="phrase-form__translation-button"
                                                 onClick={(e) => {
@@ -325,24 +356,6 @@ class PhraseForm extends Component {
                                             >
                                               Add definition
                                             </button>
-                                            {this.state.translationTo ? (
-                                                <button
-                                                    className="phrase-form__translation-button"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        this.setState({
-                                                            translationFrom: translation.from,
-                                                            translationFromType: translation.fromType,
-                                                            translationTo: []
-                                                              .concat(this.state.translationTo, translation.to.split(',').map(word => word.trim()))
-                                                              .filter((elem, pos, arr) => arr.indexOf(elem) === pos),
-                                                            translationReference: 'wordreference.com',
-                                                        });
-                                                    }}
-                                                >
-                                                    {'Add translation'}
-                                                </button>
-                                            ) : null}
                                         </div>
                                     </div>
                                 );
