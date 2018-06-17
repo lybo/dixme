@@ -107,3 +107,25 @@
     }
 }
 
+.react-tagsinput {
+    text-align: left;
+    border: solid #ddd;
+    border-width: 2px;
+    border-radius: 5px;
+    & > span {
+        display: flex;
+        align-items: center;
+    }
+    &-tag {
+        background: #FFFFFF;
+        border-color: #CCCCCC;
+        color: #000000;
+        display: flex;
+        align-items: center;
+    }
+    &-remove {
+        margin-left: 5px;
+        font-size: 24px;
+    }
+}
+

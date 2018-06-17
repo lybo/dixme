@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import  TagsInput  from 'react-tagsinput'
+import 'react-tagsinput/react-tagsinput.css'
 import './style.css';
 import ButtonWithConfirmation from '../ButtonWithConfirmation';
-import wordreferenceAPI from 'wordreference-api';
+import { translate } from '../../services/translation/';
 
 const wordreferenceCodeLanguagesAPI = {
     'en': 'en',
@@ -53,7 +55,7 @@ class PhraseForm extends Component {
             sourceReference,
             translationFrom: translationFrom || text,
             translationFromType,
-            translationTo,
+            translationTo: translationTo.split(',').map(word => word.trim()),
             translationReference,
             definition,
             definitionReference,
@@ -70,7 +72,7 @@ class PhraseForm extends Component {
         const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
 
         if ([langFrom, langTo].includes('en')) {
-            wordreferenceAPI(this.state.text, langFrom, langTo)
+            translate(this.state.text, langFrom, langTo)
                 .then(result => {
                     this.updateTranslations(result);
                 })
@@ -100,7 +102,7 @@ class PhraseForm extends Component {
                 sourceReference,
                 translationFrom: translationFrom || text,
                 translationFromType,
-                translationTo,
+                translationTo: translationTo.split(',').map(word => word.trim()),
                 translationReference,
                 definition,
                 definitionReference,
@@ -132,7 +134,7 @@ class PhraseForm extends Component {
                 sourceReference,
                 translationFrom,
                 translationFromType,
-                translationTo,
+                translationTo: translationTo.join(', '),
                 translationReference,
                 definition,
                 definitionReference,
@@ -222,7 +224,7 @@ class PhraseForm extends Component {
             id,
             sourceReference,
             translationFrom,
-            translationTo,
+            // translationTo,
             translationReference,
             definition,
             definitionReference,
@@ -243,7 +245,7 @@ class PhraseForm extends Component {
                         const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
 
                         if ([langFrom, langTo].includes('en')) {
-                            wordreferenceAPI(value, langFrom, langTo)
+                            translate(value, langFrom, langTo)
                                 .then(result => {
                                     this.updateTranslations(result);
                                 })
@@ -251,7 +253,16 @@ class PhraseForm extends Component {
                         }
                     })}
                     <div className="phrase-form__form">
-                        {this.renderInput('text', 'Translation to', 'translationTo', translationTo, id)}
+                        {/* {this.renderInput('text', 'Translation to', 'translationTo', translationTo, id)} */}
+                        <TagsInput
+                            value={this.state.translationTo}
+                            onChange={(translationTo) => {
+                                this.setState({
+                                    translationTo,
+                                });
+                            }}
+                            onlyUnique
+                        />
                         {this.renderInput('text', 'Translation Reference', 'translationReference', translationReference, id)}
                         {this.renderInput('text', 'Definition', 'definition', definition, id)}
                         {this.renderInput('text', 'Definition Reference', 'definitionReference', definitionReference, id)}
@@ -282,6 +293,11 @@ class PhraseForm extends Component {
                                         >
                                             {translation.from} ({translation.fromType}) - {translation.to}
                                         </div>
+                                        <div
+                                            className="phrase-form__translation-text"
+                                        >
+                                            {translation.definition}
+                                        </div>
                                         <div className="phrase-form__translation-buttons">
                                             <button
                                                 className="phrase-form__translation-button"
@@ -290,12 +306,24 @@ class PhraseForm extends Component {
                                                     this.setState({
                                                         translationFrom: translation.from,
                                                         translationFromType: translation.fromType,
-                                                        translationTo: translation.to.trim(),
+                                                        translationTo: translation.to.split(',').map(word => word.trim()),
                                                         translationReference: 'wordreference.com',
                                                     });
                                                 }}
                                             >
                                                 {this.state.translationTo ? 'Replace translation' : 'Add translation'}
+                                            </button>
+                                            <button
+                                                className="phrase-form__translation-button"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    this.setState({
+                                                        definition: translation.definition,
+                                                        definitionReference: 'wordreference.com',
+                                                    });
+                                                }}
+                                            >
+                                              Add definition
                                             </button>
                                             {this.state.translationTo ? (
                                                 <button
@@ -305,7 +333,9 @@ class PhraseForm extends Component {
                                                         this.setState({
                                                             translationFrom: translation.from,
                                                             translationFromType: translation.fromType,
-                                                            translationTo: this.state.translationTo + ', ' + translation.to.trim(),
+                                                            translationTo: []
+                                                              .concat(this.state.translationTo, translation.to.split(',').map(word => word.trim()))
+                                                              .filter((elem, pos, arr) => arr.indexOf(elem) === pos),
                                                             translationReference: 'wordreference.com',
                                                         });
                                                     }}

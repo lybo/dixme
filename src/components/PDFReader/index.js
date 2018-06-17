@@ -367,6 +367,11 @@ class PDFReader extends Component {
                         const translation = selectedPhrase.translationTo ? (
                             <div>
                                 {selectedPhrase.translationFrom} ({selectedPhrase.translationFromType}): {selectedPhrase.translationTo}
+                                {selectedPhrase.definition ? (
+                                  <div className="pdf-reader__definition">{`(${selectedPhrase.definition})`}</div>
+                                ) : (
+                                  <div className="pdf-reader__definition">missing definition</div>
+                                )}
                             </div>
                         ) : 'Missing translation';
 

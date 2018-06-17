@@ -58,7 +58,11 @@ class PhraseListItem extends Component {
                 <div className="phrase-item__content">
                     <div className="phrase-item__text">{phrase.text}</div>
                     <div className="phrase-item__translation">{phrase.translationFrom} ({phrase.translationFromType}) - {phrase.translationTo}</div>
-                    {/* <div className="phrase-item__definition">{`(${phrase.definition})`}</div> */}
+                    {phrase.definition ? (
+                      <div className="phrase-item__definition">{`(${phrase.definition})`}</div>
+                    ) : (
+                      <div className="phrase-item__definition">missing definition</div>
+                    )}
                     {this.renderReference()}
                 </div>
                 <div className="phrase-item__buttons">

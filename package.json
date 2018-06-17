@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "auth0-lock": "^11.6.1",
+    "cheerio": "^0.22.0",
     "font-awesome": "^4.7.0",
     "iso-639-1": "^2.0.3",
     "jwt-decode": "^2.2.0",
@@ -16,10 +17,11 @@
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
+    "react-tagsinput": "^3.19.0",
     "redux": "^3.0.0",
     "redux-observable": "^0.14.1",
-    "rxjs": "^5.4.2",
-    "wordreference-api": "^1.1.0"
+    "request-promise-native": "^1.0.5",
+    "rxjs": "^5.4.2"
   },
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
