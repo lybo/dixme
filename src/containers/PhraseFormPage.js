@@ -47,7 +47,7 @@ class PhraseFormPage extends Component {
 
     render() {
         const {
-            destination,
+            // destination,
             selectedPhrase,
             // navigate,
             goBack,

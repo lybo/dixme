@@ -50,7 +50,7 @@ class VocabularyPhraseList extends Component {
             onEditClick,
             onDeleteClick,
             isReferenceVisible,
-            navigate,
+            // navigate,
         } = this.props;
         const pageNumber = this.getPageNumber();
 
