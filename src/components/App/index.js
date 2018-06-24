@@ -10,6 +10,7 @@ import Vocabulary from '../../containers/Vocabulary';
 import Home from '../../containers/Home';
 import EditVocabularyPage from '../../containers/EditVocabularyPage';
 import PhraseFormPage from '../../containers/PhraseFormPage';
+import Game from '../../containers/Game';
 import * as AuthService from '../../services/authService/';
 
 class App extends Component {
@@ -62,6 +63,23 @@ class App extends Component {
                                 <Layout {...props}>
                                     <PDFReaderPage {...newProps} />
                                     <Home {...props} />
+                                </Layout>
+                            );
+                        }}
+                    />
+
+                    <Route
+                        exact
+                        path="/vocabulary/game/:vocabularyId"
+                        render={(props) => {
+                            const newProps = {
+                                ...props,
+                                isVisible: false,
+                            };
+                            return (
+                                <Layout {...props}>
+                                    <PDFReaderPage {...newProps} />
+                                    <Game {...props} />
                                 </Layout>
                             );
                         }}

@@ -166,12 +166,21 @@ class Vocabulary extends Component {
                             {this.renderSyncButton()}
                         </div>
 
-                        <div style={{display: 'flex', padding: '0 10px', margin: '10px 0'}}>
+                        <div style={{display: 'flex', padding: '0 10px', margin: '20px 0 10px'}}>
                             <button
                                 className="vocabulary__edit-button"
                                 onClick={() => navigate(`/vocabulary/edit/${vocabulary.id}`)}
                             >
                                 edit
+                            </button>
+                        </div>
+
+                        <div style={{display: 'flex', padding: '0 10px', margin: '10px 0'}}>
+                            <button
+                                className="vocabulary__edit-button"
+                                onClick={() => navigate(`/vocabulary/game/${vocabulary.id}`)}
+                            >
+                                play
                             </button>
                         </div>
 

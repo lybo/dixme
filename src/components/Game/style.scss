@@ -1,0 +1,44 @@
+@import '../../assets/scss/global.scss';
+.game {
+    &__play {
+        @include button;
+
+        min-width: 100px;
+        margin: 10px 0;
+    }
+
+    &__game {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    &__countdown {
+    }
+
+    &__results {
+        &-score {
+            padding: 10px;
+        }
+
+        &-phrase {
+            padding: 10px 10px;
+        }
+    }
+
+
+    &__word {
+        font-size: 24px;
+    }
+
+    &__options {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__option {
+        @include button;
+
+        margin-bottom: 10px;
+    }
+}
