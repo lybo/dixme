@@ -32,9 +32,6 @@ class Game extends Component {
             index,
             status,
         } = this.state;
-        const {
-            vocabulary,
-        } = this.props;
 
         if (status === START) {
             return null;
@@ -123,7 +120,6 @@ class Game extends Component {
         }
 
         const {
-            index,
             phrases,
             status,
         } = this.state;
