@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 
-const START_SEC = 120;
+const START_SEC = 90;
 const removeItemByIndex = (array, index) => {
     return [].concat(array.slice(0, index), array.slice(index + 1, array.length));
 };
@@ -95,7 +95,14 @@ class Game extends Component {
             <div
                 className="game__game"
             >
-                {countdown}
+                <div className="game__countdown">
+                    <div className="game__countdown-number">
+                        {countdown}
+                    </div>
+                    <svg>
+                        <circle r="18" cx="20" cy="20"></circle>
+                    </svg>
+                </div>
                 <div
                     className="game__word"
                 >
