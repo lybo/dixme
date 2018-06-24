@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 
-const START_SEC = 10;
+const START_SEC = 120;
 const removeItemByIndex = (array, index) => {
     return [].concat(array.slice(0, index), array.slice(index + 1, array.length));
 };
