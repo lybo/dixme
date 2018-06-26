@@ -73,26 +73,30 @@ class Game extends Component {
                 return phrase.isCorrect ? acc + 1 : acc;
             }, 0);
             return (
-                <div>
-                        <div
-                            className="game__results-score"
-                        >
-                            {correctAnswers}/{answerPhrases.length} ({Math.round((correctAnswers * 100) / answerPhrases.length)}%)
-                        </div>
-                    {phrases.map(phrase => (
-                        <PhraseListItem
-                          key={phrase.id}
-                          vocabulary={vocabulary}
-                          onDeleteClick={deletePhrase}
-                          onEditClick={(phraseId) => {
-                            onEditClick && onEditClick(vocabulary.phrases.find(phrase => phrase.id === phraseId));
-                          }}
-                          phrase={phrase}
-                          lang={vocabulary.langFrom}
-                          isCorrect={phrase.isCorrect}
-                          isReferenceVisible={true}
-                        />
-                    ))}
+                <div className="game__results">
+                    <div
+                      className="game__results-score"
+                    >
+                      {correctAnswers}/{answerPhrases.length} ({Math.round((correctAnswers * 100) / answerPhrases.length)}%)
+                    </div>
+                    <div
+                      className="game__results-phrases"
+                    >
+                      {answerPhrases.map(phrase => (
+                          <PhraseListItem
+                            key={phrase.id}
+                            vocabulary={vocabulary}
+                            onDeleteClick={deletePhrase}
+                            onEditClick={(phraseId) => {
+                              onEditClick && onEditClick(vocabulary.phrases.find(phrase => phrase.id === phraseId));
+                            }}
+                            phrase={phrase}
+                            lang={vocabulary.langFrom}
+                            isCorrect={phrase.isCorrect}
+                            isReferenceVisible={true}
+                          />
+                      ))}
+                  </div>
                 </div>
             );
         }
