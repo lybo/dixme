@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PhraseListItem from '../PhraseListItem';
 import './style.css';
 
 const START_SEC = 90;
@@ -32,10 +33,17 @@ class Game extends Component {
             index,
             status,
         } = this.state;
+        const {
+            vocabulary,
+            deletePhrase,
+            onEditClick,
+        } = this.props;
 
         if (status === START) {
             return null;
         }
+
+        const answerPhrases = phrases.filter(phrase => phrase.isCorrect !== undefined);
 
         const renderOption = phrase => (
             <button
@@ -61,7 +69,7 @@ class Game extends Component {
         );
 
         if (status === RESULTS) {
-            const correctAnswers = phrases.reduce((acc, phrase) => {
+            const correctAnswers = answerPhrases.reduce((acc, phrase) => {
                 return phrase.isCorrect ? acc + 1 : acc;
             }, 0);
             return (
@@ -69,23 +77,21 @@ class Game extends Component {
                         <div
                             className="game__results-score"
                         >
-                            {correctAnswers}/{phrases.length} ({Math.round((correctAnswers * 100) / phrases.length)}%)
+                            {correctAnswers}/{answerPhrases.length} ({Math.round((correctAnswers * 100) / answerPhrases.length)}%)
                         </div>
                     {phrases.map(phrase => (
-                        <div
-                            key={phrase.id}
-                            className="game__results-phrase"
-                        >
-                            {phrase.translationFrom}
-                            -
-                            {phrase.translationTo}
-                            :
-                            {phrase.isCorrect ? (
-                                <i className="fa fa-thumbs-up" />
-                            ) : (
-                                <i className="fa fa-thumbs-down" />
-                            )}
-                        </div>
+                        <PhraseListItem
+                          key={phrase.id}
+                          vocabulary={vocabulary}
+                          onDeleteClick={deletePhrase}
+                          onEditClick={(phraseId) => {
+                            onEditClick && onEditClick(vocabulary.phrases.find(phrase => phrase.id === phraseId));
+                          }}
+                          phrase={phrase}
+                          lang={vocabulary.langFrom}
+                          isCorrect={phrase.isCorrect}
+                          isReferenceVisible={true}
+                        />
                     ))}
                 </div>
             );
@@ -104,6 +110,11 @@ class Game extends Component {
                     </svg>
                 </div>
                 <div
+                    className=""
+                >
+                  {answerPhrases.length}/{phrases.length}
+                </div>
+                <div
                     className="game__word"
                 >
                     {phrases[index].translationFrom}
@@ -120,6 +131,7 @@ class Game extends Component {
     render() {
         const {
             vocabulary,
+            navigate,
         } = this.props;
 
         if (!vocabulary) {
@@ -134,46 +146,57 @@ class Game extends Component {
         return (
             <div className="game">
                 {[START, RESULTS].indexOf(status) !== -1 && (
-                    <button
-                        className="game__play"
-                        onClick={() => {
-                            const phrases = shuffle(vocabulary.phrases.filter(phrase => {
-                                return phrase.translationTo && phrase.translationFrom;
-                            }));
-                            this.setState({
-                                phrases: phrases.map((phrase, index) => {
-                                    const getOptions = () => {
-                                        const wrongPhrases = shuffle(removeItemByIndex(phrases, index)).slice(0, 3);
-                                        return shuffle([].concat(wrongPhrases, phrases[index]));
-                                    };
-
-                                    const options = getOptions();
-                                    return {
-                                        ...phrase,
-                                        options,
-                                        isCorrect: false,
-                                    }
-                                }),
-                                status: PLAYING,
-                            });
-
-                            this.interval = setInterval(() => {
-                                const isPlaying = this.state.countdown !== 1;
-                                if (!isPlaying) {
-                                    clearInterval(this.interval);
-                                }
-
+                    <div className="game__buttons">
+                        <button
+                            className="game__back-button"
+                            onClick={()=> {
+                                navigate(`/vocabulary/${vocabulary.id}`);
+                            }}
+                        >
+                            Back to vocabulary
+                        </button>
+                        <button
+                            className="game__play"
+                            onClick={() => {
+                                const phrases = shuffle(vocabulary.phrases.filter(phrase => {
+                                    return phrase.translationTo && phrase.translationFrom;
+                                }));
                                 this.setState({
-                                    countdown: isPlaying ? this.state.countdown - 1 : START_SEC,
-                                    index: isPlaying ? this.state.index : 0,
-                                    status: isPlaying ? PLAYING : RESULTS,
-                                });
-                            }, 1000);
+                                    phrases: phrases.map((phrase, index) => {
+                                        const getOptions = () => {
+                                            const wrongPhrases = shuffle(removeItemByIndex(phrases, index)).slice(0, 3);
+                                            return shuffle([].concat(wrongPhrases, phrases[index]));
+                                        };
 
-                        }}
-                    >
-                        {phrases.length > 0 ? 'Play Again' : 'Play'}
-                    </button>
+                                        const options = getOptions();
+                                        return {
+                                            ...phrase,
+                                            options,
+                                            isCorrect: undefined,
+                                        }
+                                    }),
+                                    status: PLAYING,
+                                });
+
+                                this.interval = setInterval(() => {
+                                    const isPlaying = this.state.countdown !== 1;
+                                    if (!isPlaying) {
+                                        clearInterval(this.interval);
+                                    }
+
+                                    this.setState({
+                                        countdown: isPlaying ? this.state.countdown - 1 : START_SEC,
+                                        index: isPlaying ? this.state.index : 0,
+                                        status: isPlaying ? PLAYING : RESULTS,
+                                    });
+                                }, 1000);
+
+                            }}
+                        >
+                            {phrases.length > 0 ? 'Play Again' : 'Play'}
+                        </button>
+                    </div>
+
                 )}
                 {this.renderGame()}
             </div>

@@ -47,6 +47,20 @@ class PhraseListItem extends Component {
         );
     }
 
+    renderResult() {
+        const { isCorrect } = this.props;
+
+        if (isCorrect === undefined) {
+            return null;
+        }
+
+      return isCorrect ? (
+          <i className="fa fa-thumbs-up phrase-item__result" />
+      ) : (
+          <i className="fa fa-thumbs-down phrase-item__result" />
+      );
+    }
+
     render() {
         const { phrase, lang } = this.props;
 
@@ -66,6 +80,7 @@ class PhraseListItem extends Component {
                     {this.renderReference()}
                 </div>
                 <div className="phrase-item__buttons">
+                    {this.renderResult()}
                     <TextToSpeechButton
                         text={phrase.text}
                         classNames="phrase-item__edit"

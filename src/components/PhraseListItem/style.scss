@@ -61,6 +61,10 @@
         width: 150px;
     }
 
+    &__result {
+        margin-bottom: 10px;
+    }
+
     &__edit {
         @include button;
 
