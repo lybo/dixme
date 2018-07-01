@@ -1,5 +1,18 @@
 import { getModelVocabulary } from '../../reducers/vocabulary';
 
+export function getGame() {
+    return new Promise(function(resolve, reject) {
+        const game = JSON.parse(localStorage.getItem('game')) || {};
+        resolve(game);
+    });
+}
+export function updateGame(game) {
+    return new Promise(function(resolve, reject) {
+        localStorage.setItem('game', JSON.stringify(game));
+        resolve(game);
+    });
+}
+
 export function updateVocabularies(vocabularies) {
     return new Promise(function(resolve, reject) {
         localStorage.setItem('vocabularies', JSON.stringify(vocabularies));

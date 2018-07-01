@@ -46,3 +46,12 @@ export function updatePhrase(phrase) {
 export function deletePhrase(phraseId) {
     return integration.deletePhrase(phraseId);
 }
+
+//GAME
+export function getGame() {
+    return integration.getGame();
+}
+
+export function updateGame(game) {
+    return integration.updateGame(game);
+}

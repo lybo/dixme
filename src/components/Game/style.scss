@@ -102,4 +102,117 @@
         padding: 10px 10px;
         font-size: 16px;
     }
+
+    &__current-level {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        &-label {
+            font-size: 50px;
+            margin: 30px 0 5px 0;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+        &-number {
+            font-size: 35px;
+            margin: 0 0 20px 0;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    &__start-header {
+        display: flex;
+        margin: 20px 0 0 0;
+        align-items: center;
+        padding: 0 20px;
+
+        &-left {
+            flex: 1 1 auto;
+            text-align: left;
+        }
+        &-right {
+            text-align: left;
+        }
+    }
+
+    &__levels {
+        padding: 5px 10px 50px 10px;
+        position: relative;
+        &-list {
+
+        }
+
+        &-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+        }
+    }
+
+    &__level {
+        border: 1px solid #CCCCCC;
+        border-width: 0 0 1px 0;
+        padding: 10px 0;
+
+        &:last-child {
+            border-width: 0 0 0 0;
+        }
+
+        &-title {
+            font-size: 20px;
+        }
+        &-score {
+
+        }
+    }
+
+    &__new-status {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 20px;
+        animation-name: stretch;
+        animation-duration: 2.5s;
+        animation-timing-function: ease-out;
+        animation-delay: 0;
+        animation-direction: alternate;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        animation-play-state: running;
+        @keyframes stretch {
+            0% {
+                transform: scale(0);
+                color: yellow;
+                border-radius: 100%;
+            }
+            50% {
+                color: orange;
+            }
+            80% {
+                transform: scale(1.5);
+                color: red;
+                opacity: 1;
+            }
+            99% {
+                transform: scale(1.5);
+                display: none;
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1.5);
+                display: none;
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+        }
+
+    }
 }
+
