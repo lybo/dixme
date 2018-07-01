@@ -4,9 +4,6 @@ import AnimatedNumber from '../AnimatedNumber';
 import './style.css';
 
 const START_SEC = 90;
-const removeItemByIndex = (array, index) => {
-    return [].concat(array.slice(0, index), array.slice(index + 1, array.length));
-};
 function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -192,15 +189,12 @@ class Game extends Component {
     renderPlayButton() {
         const {
             vocabulary,
-            navigate,
             gamePhrases,
-            levels,
             phrasesPerRound,
         } = this.props;
 
         const {
             phrases,
-            status,
         } = this.state;
 
         return (
@@ -257,11 +251,7 @@ class Game extends Component {
 
     renderCurrentLevel() {
         const {
-            gamePhrases,
-            validPhrases,
-            totalNumberOfLevels,
             currentLevel,
-            gameScore,
         } = this.props;
         const {
             status,
@@ -322,10 +312,7 @@ class Game extends Component {
     render() {
         const {
             vocabulary,
-            navigate,
-            gamePhrases,
             levels,
-            phrasesPerRound,
         } = this.props;
 
         if (!vocabulary) {
@@ -333,7 +320,6 @@ class Game extends Component {
         }
 
         const {
-            phrases,
             status,
         } = this.state;
 
