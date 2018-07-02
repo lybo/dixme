@@ -10,7 +10,8 @@
     &__play {
         @include button;
 
-        min-width: 100px;
+        font-size: 20px;
+        padding: 10px 50px;
     }
 
     &__back-button {

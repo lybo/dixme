@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import GameResults from '../GameResults';
 import AnimatedNumber from '../AnimatedNumber';
+import { shuffle } from '../../utils/generic';
 import './style.css';
 
-const START_SEC = 90;
-function shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-}
-
+const START_SEC = 100;
 const START = 'START';
 const PLAYING = 'PLAYING';
 const RESULTS = 'RESULTS';
@@ -33,13 +26,6 @@ class Game extends Component {
             acc[phrase.id] = phrase.isCorrect;
             return acc;
         }, {});
-        console.log(answerPhrases.reduce((acc, phrase) => {
-            acc[phrase.id] = {
-                isCorrect: phrase.isCorrect,
-                translationFrom: phrase.translationFrom,
-            };
-            return acc;
-        }, {}));
         updateGame(vocabularyId, words);
     }
 
@@ -244,7 +230,7 @@ class Game extends Component {
 
                 }}
             >
-                {phrases.length > 0 ? 'Play Again' : 'Play'}
+                Play
             </button>
         );
     }

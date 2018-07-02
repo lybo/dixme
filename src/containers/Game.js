@@ -16,7 +16,7 @@ let oldGameScore = 0;
 const MINIMUM_ATTEMPTS = 20; // 20
 const MINIMUM_SCORE_PHRASE = 80; // 80
 const DEFAULT_NUMBER_OF_LEVEL_PHRASES = 30; // 30
-const phrasesPerRound = 25; // 25
+const phrasesPerRound = 30; // 25
 
 export default connect(
     (state, ownProps) => {
