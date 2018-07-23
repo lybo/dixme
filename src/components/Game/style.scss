@@ -98,10 +98,21 @@
 
     &__option {
         @include button;
-
         margin: 20px 0;
         padding: 10px 10px;
         font-size: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        &-translation {
+            margin: 0 0 5px 0;
+        }
+
+        &-defintion {
+            font-size: 12px;
+        }
     }
 
     &__current-level {

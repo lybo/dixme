@@ -4,7 +4,7 @@ import AnimatedNumber from '../AnimatedNumber';
 import { shuffle } from '../../utils/generic';
 import './style.css';
 
-const START_SEC = 100;
+const START_SEC = 90;
 const START = 'START';
 const PLAYING = 'PLAYING';
 const RESULTS = 'RESULTS';
@@ -16,6 +16,12 @@ class Game extends Component {
         phrases: [],
         index: 0,
         status: START,
+    }
+
+    componentWillUnmount() {
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
     }
 
     updateGame(vocabularyId, answerPhrases) {
@@ -59,6 +65,9 @@ class Game extends Component {
                     const isPlaying = index + 1 !== phrases.length;
                     if (!isPlaying) {
                         clearInterval(this.interval);
+                        this.setState({
+                            countdown: START_SEC,
+                        });
                         this.updateGame(vocabulary.id, phrases);
                     }
 
@@ -69,7 +78,12 @@ class Game extends Component {
                     });
                 }}
             >
-                {phrase.translationTo}
+                <div className="game__option-translation">
+                    {phrase.translationTo}
+                </div>
+                <div className="game__option-defintion">
+                    ({phrase.definition})
+                </div>
             </button>
         );
 
@@ -177,6 +191,7 @@ class Game extends Component {
             vocabulary,
             gamePhrases,
             phrasesPerRound,
+            validPhrases,
         } = this.props;
 
         const {
@@ -188,20 +203,29 @@ class Game extends Component {
                 className="game__play"
                 onClick={() => {
                     const numberOfGamePhrases = gamePhrases.length > phrasesPerRound ? phrasesPerRound : gamePhrases.length;
-                    const weakPhrases = Math.round((numberOfGamePhrases * 25) / 100);
+                    const numberOfWeakPhrases = Math.round((numberOfGamePhrases * 25) / 100);
                     const shuffledGamePhrases = shuffle([].concat(
-                        gamePhrases.slice(0, weakPhrases),
-                        gamePhrases.slice(weakPhrases, gamePhrases.length).slice(0, numberOfGamePhrases - weakPhrases),
+                        gamePhrases.slice(0, numberOfWeakPhrases),
+                        shuffle(gamePhrases.slice(numberOfWeakPhrases, gamePhrases.length)).slice(0, numberOfGamePhrases - numberOfWeakPhrases),
                     ));
 
                     this.setState({
                         phrases: shuffledGamePhrases.map((phrase, index) => {
                             const getOptions = () => {
-                                const wrongPhrases = shuffle(gamePhrases
-                                    .filter(p => p.id !== phrase.id))
-                                    .sort((a, b) => b.translationFromType === 'vtr' ? 1 : -1)
-                                    .slice(0, 3);
-                                return shuffle([].concat(wrongPhrases, shuffledGamePhrases[index]));
+                                const get3TrimmedPhrases = (ps) => shuffle(ps).slice(0, 3);
+                                const getWrongPhrases = () => {
+                                    const allWrongPhrases = validPhrases
+                                        .filter(p => p.id !== phrase.id);
+                                    const wrongPhrasesWithTheSameTranslationFromType = allWrongPhrases
+                                        .filter(p => p.translationFromType === phrase.translationFromType);
+                                    if (wrongPhrasesWithTheSameTranslationFromType.length > 4) {
+                                        return get3TrimmedPhrases(wrongPhrasesWithTheSameTranslationFromType);
+
+                                    };
+
+                                    return get3TrimmedPhrases(allWrongPhrases);
+                                };
+                                return shuffle([].concat(getWrongPhrases(), shuffledGamePhrases[index]));
                             };
 
                             const options = getOptions();

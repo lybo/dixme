@@ -13,10 +13,10 @@ import {
 
 
 let oldGameScore = 0;
-const MINIMUM_ATTEMPTS = 20; // 20
-const MINIMUM_SCORE_PHRASE = 80; // 80
+const MINIMUM_ATTEMPTS = 5; // 5
+const MINIMUM_SCORE_PHRASE = 70; // 870
 const DEFAULT_NUMBER_OF_LEVEL_PHRASES = 30; // 30
-const phrasesPerRound = 30; // 25
+const phrasesPerRound = 30; // 30
 
 export default connect(
     (state, ownProps) => {
@@ -110,7 +110,7 @@ export default connect(
         const gamePhrases = getPlayablePhrases();
         const totalNumberOfLevels = Math.round(validPhrases.length / numberOfLevelPhrases) || 0;
 
-        const additionalScore = oldGameScore ? gameData.score - oldGameScore : 0;
+        const additionalScore = oldGameScore ? gameData.score - oldGameScore : gameData.score;
         oldGameScore = gameData.score;
 
         return {
@@ -127,20 +127,20 @@ export default connect(
                 if (totalNumberOfLevels === 1) {
                     return {
                         number: i + 1,
-                        score: numberOfLevelPhrases * 80,
+                        score: numberOfLevelPhrases * MINIMUM_SCORE_PHRASE,
                     };
                 }
 
                 if (totalNumberOfLevels === i + 1) {
                     return {
                         number: i + 1,
-                        score: ((i + 1) * DEFAULT_NUMBER_OF_LEVEL_PHRASES * 80) + (gamePhrases.length * 80),
+                        score: ((i + 1) * DEFAULT_NUMBER_OF_LEVEL_PHRASES * MINIMUM_SCORE_PHRASE) + (gamePhrases.length * MINIMUM_SCORE_PHRASE),
                     };
                 }
 
                 return {
                     number: i + 1,
-                    score: (i + 1) * DEFAULT_NUMBER_OF_LEVEL_PHRASES * 80,
+                    score: (i + 1) * DEFAULT_NUMBER_OF_LEVEL_PHRASES * MINIMUM_SCORE_PHRASE,
                 };
             }),
         };
