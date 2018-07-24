@@ -58,12 +58,12 @@
     &__footer {
         display: flex;
         position: fixed;
+        transform: translate3d(0, 0, 0);
         bottom: 0;
         left: 0;
         right: 0;
         width: 100%;
         z-index: 1;
-        transform: translateZ(0);
         box-sizing: border-box;
         border-top: 1px solid #999;
         background: #bbb;
