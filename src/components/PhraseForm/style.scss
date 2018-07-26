@@ -5,6 +5,7 @@
 
     &__input-label {
         text-align: center;
+        font-weight: 800;
     }
 
     &__text-input {
@@ -79,6 +80,21 @@
 
     &__translation-button:last-child {
         margin-right: 0;
+    }
+
+    &__footer {
+        padding: 10px;
+        flex: 1 1 100%;
+
+        &-label {
+            margin-top: 10px;
+            text-align: center;
+            font-weight: 800;
+        }
+        &-value {
+            margin-top: 5px;
+            text-align: center;
+        }
     }
 
     .phrase-item__reference {

@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import  TagsInput  from 'react-tagsinput'
 import 'react-tagsinput/react-tagsinput.css'
 import './style.css';
 import ButtonWithConfirmation from '../ButtonWithConfirmation';
+import FixedFooter from '../FixedFooter';
 import { translate } from '../../services/translation/';
 
 const wordreferenceCodeLanguagesAPI = {
@@ -66,12 +67,12 @@ class PhraseForm extends Component {
     }
 
     componentWillMount() {
-        const { vocabulary } = this.props;
+        const {
+            langFrom,
+            langTo,
+        } = this.getTranslationLangKeys();
 
-        const langFrom = getSupportedLanguage(vocabulary.langFrom) || 'en';
-        const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
-
-        if ([langFrom, langTo].includes('en')) {
+        if (this.hasTranslationAPI()) {
             translate(this.state.text, langFrom, langTo)
                 .then(result => {
                     this.updateTranslations(result);
@@ -110,7 +111,25 @@ class PhraseForm extends Component {
                 definitionReference,
             });
         }
+    }
 
+    getTranslationLangKeys() {
+        const { vocabulary } = this.props;
+
+        const langFrom = getSupportedLanguage(vocabulary.langFrom) || 'en';
+        const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
+        return {
+            langFrom,
+            langTo,
+        };
+    }
+
+    hasTranslationAPI() {
+        const {
+            langFrom,
+            langTo,
+        } = this.getTranslationLangKeys();
+        return [langFrom, langTo].includes('en');
     }
 
     handleSubmit() {
@@ -136,7 +155,7 @@ class PhraseForm extends Component {
                 sourceReference,
                 translationFrom,
                 translationFromType,
-                translationTo: translationTo.join(', '),
+                translationTo: Array.isArray(translationTo) ? translationTo.join(', ') : translationTo,
                 translationReference,
                 definition,
                 definitionReference,
@@ -233,6 +252,8 @@ class PhraseForm extends Component {
             translations,
         } = this.state || {};
 
+        const hasTranslationAPI = this.hasTranslationAPI();
+
         return (
             <div className="phrase-form">
                 <form onSubmit={this.handleSubmit()}>
@@ -240,61 +261,64 @@ class PhraseForm extends Component {
                         className="phrase-item__reference"
                         dangerouslySetInnerHTML={{__html: `... ${sourceReference} ...`}}
                     />) : null}
-                    {this.renderInput('text', 'Translation from', 'translationFrom', translationFrom, id, (value) => {
-                        const { vocabulary } = this.props;
+                    {!hasTranslationAPI && (
+                        <div className="phrase-form__form">
+                            {/* {this.renderInput('text', 'Translation to', 'translationTo', translationTo, id)} */}
+                            {this.renderInput('text', 'Translation from', 'translationFrom', translationFrom, id, (value) => {
+                                const { vocabulary } = this.props;
 
-                        const langFrom = getSupportedLanguage(vocabulary.langFrom) || 'en';
-                        const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
+                                const langFrom = getSupportedLanguage(vocabulary.langFrom) || 'en';
+                                const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
 
-                        if ([langFrom, langTo].includes('en')) {
-                            translate(value, langFrom, langTo)
-                                .then(result => {
-                                    this.updateTranslations(result);
-                                })
-                                .catch(console.log);
-                        }
-                    })}
-                    <div className="phrase-form__form">
-                        {/* {this.renderInput('text', 'Translation to', 'translationTo', translationTo, id)} */}
-                        <div>
-                            <label
-                                className="phrase-form__input-label"
-                            >
-                                Translation to
-                            </label>
-                            <TagsInput
-                                value={this.state.translationTo}
-                                onChange={(translationTo) => {
-                                    this.setState({
-                                        translationTo,
-                                    });
-                                }}
-                                inputProps={{
-                                    className: 'react-tagsinput-input',
-                                    placeholder: 'Add a translation'
-                                }}
-                                onlyUnique
-                            />
+                                if ([langFrom, langTo].includes('en')) {
+                                    translate(value, langFrom, langTo)
+                                        .then(result => {
+                                            this.updateTranslations(result);
+                                        })
+                                        .catch(console.log);
+                                }
+                            })}
+                            <div>
+                                <label
+                                    className="phrase-form__input-label"
+                                >
+                                    Translation to
+                                </label>
+                                <TagsInput
+                                    value={this.state.translationTo}
+                                    onChange={(translationTo) => {
+                                        this.setState({
+                                            translationTo,
+                                        });
+                                    }}
+                                    inputProps={{
+                                        className: 'react-tagsinput-input',
+                                        placeholder: 'Add a translation'
+                                    }}
+                                    onlyUnique
+                                />
+                            </div>
+                            {this.renderInput('text', 'Translation Reference', 'translationReference', translationReference, id)}
+                            {this.renderInput('text', 'Definition', 'definition', definition, id)}
+                            {this.renderInput('text', 'Definition Reference', 'definitionReference', definitionReference, id)}
+                            <div className="phrase-form__buttons">
+                                <button
+                                    className="phrase-form__cancel-button"
+                                    onClick={this.handleCancelClick}
+                                >
+                                    Cancel
+                                </button>
+                                <input type="submit" className="phrase-form__submit-button" />
+                            </div>
+                            <div className="phrase-form__delete-button-wrapper">
+                                {this.renderDeleteButton()}
+                            </div>
                         </div>
-                        {this.renderInput('text', 'Translation Reference', 'translationReference', translationReference, id)}
-                        {this.renderInput('text', 'Definition', 'definition', definition, id)}
-                        {this.renderInput('text', 'Definition Reference', 'definitionReference', definitionReference, id)}
-                        <div className="phrase-form__buttons">
-                            <button
-                                className="phrase-form__cancel-button"
-                                onClick={this.handleCancelClick}
-                            >
-                                Cancel
-                            </button>
-                            <input type="submit" className="phrase-form__submit-button" />
-                        </div>
-                        <div className="phrase-form__delete-button-wrapper">
-                            {this.renderDeleteButton()}
-                        </div>
+                    )}
 
-                        {'Source: wordreference.com'}
-
+                    {hasTranslationAPI && (
                         <div className="phrase-form__translations">
+                            {'Source: wordreference.com'}
                             {translations.map((translation, i) => {
                                 return (
                                     <div
@@ -335,8 +359,8 @@ class PhraseForm extends Component {
                                                             translationFrom: translation.from,
                                                             translationFromType: translation.fromType,
                                                             translationTo: []
-                                                              .concat(this.state.translationTo, translation.to.split(',').map(word => word.trim()).filter(word => word))
-                                                              .filter((elem, pos, arr) => arr.indexOf(elem) === pos),
+                                                            .concat(this.state.translationTo, translation.to.split(',').map(word => word.trim()).filter(word => word))
+                                                            .filter((elem, pos, arr) => arr.indexOf(elem) === pos),
                                                             translationReference: 'wordreference.com',
                                                         });
                                                     }}
@@ -354,14 +378,67 @@ class PhraseForm extends Component {
                                                     });
                                                 }}
                                             >
-                                              Add definition
+                                                Add definition
                                             </button>
                                         </div>
                                     </div>
                                 );
                             })}
                         </div>
-                    </div>
+                    )}
+
+                    {hasTranslationAPI && (
+                        <FixedFooter>
+                            <div className="phrase-form__footer">
+                                {this.renderInput('text', 'Translation from', 'translationFrom', translationFrom, id, (value) => {
+                                    const { vocabulary } = this.props;
+
+                                    const langFrom = getSupportedLanguage(vocabulary.langFrom) || 'en';
+                                    const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
+
+                                    if ([langFrom, langTo].includes('en')) {
+                                        translate(value, langFrom, langTo)
+                                            .then(result => {
+                                                this.updateTranslations(result);
+                                            })
+                                            .catch(console.log);
+                                    }
+                                })}
+                                <div
+                                    className="phrase-form__footer-label"
+                                >
+                                    Translation to
+                                </div>
+                                <div
+                                    className="phrase-form__footer-value"
+                                >
+                                    {this.state.translationTo.join(', ')}
+                                </div>
+                                <div
+                                    className="phrase-form__footer-label"
+                                >
+                                    Definition
+                                </div>
+                                <div
+                                    className="phrase-form__footer-value"
+                                >
+                                    {this.state.definition}
+                                </div>
+                                <div className="phrase-form__buttons">
+                                    <button
+                                        className="phrase-form__cancel-button"
+                                        onClick={this.handleCancelClick}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <input type="submit" className="phrase-form__submit-button" />
+                                </div>
+                                <div className="phrase-form__delete-button-wrapper">
+                                    {this.renderDeleteButton()}
+                                </div>
+                            </div>
+                        </FixedFooter>
+                    )}
                 </form>
             </div>
         );
