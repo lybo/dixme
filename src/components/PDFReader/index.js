@@ -3,6 +3,7 @@ import './style.css';
 import pdfjsLib from 'pdfjs-dist';
 import Load from '../Load/';
 import TextToSpeechButton from '../TextToSpeechButton';
+import FixedFooter from '../FixedFooter';
 
 const DEFAULT_PAGE_NUMBER = 1;
 const PDF_READER_ANNOTATION_CLASS_NAME = 'pdf-reader__annotation';
@@ -88,6 +89,7 @@ class PDFReader extends Component {
     handleAnnotationClick(evt) {
         this.setState({
             selectedPhrase: evt.currentTarget.id,
+            isSelectionDialogVisible: false,
         });
     }
 
@@ -147,6 +149,7 @@ class PDFReader extends Component {
             window.getSelection().toString().trim();
         this.setState({
             isSelectionDialogVisible,
+            selectedPhrase: null,
         });
     }
 
@@ -456,13 +459,15 @@ class PDFReader extends Component {
         );
 
         return (
-            <div
-                className="pdf-reader__footer"
-            >
-                {this.renderAnnotationConfirmation(selectedPhrases)}
-                {this.renderAnnotationDialog()}
-                {!isSelectionDialogVisible && !selectedPhrase ? nav : null}
-            </div>
+            <FixedFooter>
+                <div
+                    className="pdf-reader__footer"
+                >
+                    {this.renderAnnotationConfirmation(selectedPhrases)}
+                    {this.renderAnnotationDialog()}
+                    {!isSelectionDialogVisible && !selectedPhrase ? nav : null}
+                </div>
+            </FixedFooter>
         );
     }
 
