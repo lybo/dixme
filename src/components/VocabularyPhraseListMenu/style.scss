@@ -3,16 +3,7 @@
 .vocabulary-phrase-list-menu {
     display: flex;
     padding: 10px;
-    background: #bbb;
-    border-top: 1px solid #999;
-    position: fixed;
-    transform: translate3d(0, 0, 0);
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 1;
+    flex: 1 1 100%;
 
     &__button {
         @include button;
