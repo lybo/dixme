@@ -66,7 +66,7 @@ class PhraseFormPage extends Component {
         }
 
         return (
-            <div>
+            <div style={{marginBottom: `${window.innerHeight}px`}}>
                 <PDFReaderView {...pdfProps} />
                 <div className="vocabulary__form">
                     <PhraseForm
@@ -120,13 +120,14 @@ class PhraseFormPage extends Component {
 
 export default connect(
     (state, ownProps) => {
-        const { vocabularyId, returnPage } = ownProps.match.params;
+        const { vocabularyId, returnPage, phraseId } = ownProps.match.params;
         const vocabulary = state.vocabularies.find(v => v.id === vocabularyId);
         const destination = returnPage && returnPage !== 'null' ? `${returnPage}/` : '';
+        const selectedPhrase = state.app.selectedPhrase ? state.app.selectedPhrase : vocabulary.phrases.find(p => p.id === phraseId);
         return {
             vocabulary,
             destination,
-            selectedPhrase: state.app.selectedPhrase,
+            selectedPhrase,
         };
     },
     (dispatch, ownProps) => {
