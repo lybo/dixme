@@ -61,25 +61,14 @@ class PhraseForm extends Component {
             definition,
             definitionReference,
             translations: [],
+            isLoading: false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCancelClick = this.handleCancelClick.bind(this);
     }
 
     componentWillMount() {
-        const {
-            langFrom,
-            langTo,
-        } = this.getTranslationLangKeys();
-
-        if (this.hasTranslationAPI()) {
-            translate(this.state.text, langFrom, langTo)
-                .then(result => {
-                    this.updateTranslations(result);
-                })
-                .catch(console.log);
-        }
-
+        this.translate(this.state.text);
         window.scrollTo(0, 0);
     }
 
@@ -110,6 +99,30 @@ class PhraseForm extends Component {
                 definition,
                 definitionReference,
             });
+        }
+    }
+
+    translate(text) {
+        const {
+            langFrom,
+            langTo,
+        } = this.getTranslationLangKeys();
+
+        if (this.hasTranslationAPI()) {
+            this.setState({
+                isLoading: true,
+            });
+
+            translate(text, langFrom, langTo)
+                .then(result => {
+                    this.updateTranslations(result);
+                })
+                .catch(console.log)
+                .then(result => {
+                    this.setState({
+                        isLoading: false,
+                    });
+                });
         }
     }
 
@@ -250,6 +263,7 @@ class PhraseForm extends Component {
             definition,
             definitionReference,
             translations,
+            isLoading,
         } = this.state || {};
 
         const hasTranslationAPI = this.hasTranslationAPI();
@@ -265,18 +279,7 @@ class PhraseForm extends Component {
                         <div className="phrase-form__form">
                             {/* {this.renderInput('text', 'Translation to', 'translationTo', translationTo, id)} */}
                             {this.renderInput('text', 'Translation from', 'translationFrom', translationFrom, id, (value) => {
-                                const { vocabulary } = this.props;
-
-                                const langFrom = getSupportedLanguage(vocabulary.langFrom) || 'en';
-                                const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
-
-                                if ([langFrom, langTo].includes('en')) {
-                                    translate(value, langFrom, langTo)
-                                        .then(result => {
-                                            this.updateTranslations(result);
-                                        })
-                                        .catch(console.log);
-                                }
+                                this.translate(value);
                             })}
                             <div>
                                 <label
@@ -319,7 +322,9 @@ class PhraseForm extends Component {
                     {hasTranslationAPI && (
                         <div className="phrase-form__translations">
                             {'Source: wordreference.com'}
-                            {translations.map((translation, i) => {
+                            {isLoading ? (
+                                <span>Loading</span>
+                            ) : translations.map((translation, i) => {
                                 return (
                                     <div
                                         key={i}
@@ -391,18 +396,7 @@ class PhraseForm extends Component {
                         <FixedFooter>
                             <div className="phrase-form__footer">
                                 {this.renderInput('text', 'Translation from', 'translationFrom', translationFrom, id, (value) => {
-                                    const { vocabulary } = this.props;
-
-                                    const langFrom = getSupportedLanguage(vocabulary.langFrom) || 'en';
-                                    const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
-
-                                    if ([langFrom, langTo].includes('en')) {
-                                        translate(value, langFrom, langTo)
-                                            .then(result => {
-                                                this.updateTranslations(result);
-                                            })
-                                            .catch(console.log);
-                                    }
+                                    this.translate(value);
                                 })}
                                 <div
                                     className="phrase-form__footer-label"
