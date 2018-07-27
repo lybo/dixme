@@ -95,10 +95,10 @@ class PDFReaderView extends Component {
     }
 
     handleSelection({ textPage, selection }) {
-        const index = textPage.indexOf(selection.focusNode.data);
+        const index = textPage.indexOf(selection.text);
 
-        const { anchorOffset, focusOffset } = selection;
-        const [selectionStart, selectionEnd] = [anchorOffset, focusOffset].sort((a, b) => a - b);
+        const { startOffset, endOffset } = selection;
+        const [selectionStart, selectionEnd] = [ startOffset, endOffset ].sort((a, b) => a - b);
         const { richSentence } = getSentenceData(
             textPage,
             {
@@ -108,7 +108,7 @@ class PDFReaderView extends Component {
         );
         const { onSelection } = this.props;
         onSelection && onSelection(getPhraseModel({
-            text: selection.toString().trim().replace(/\n/g, ' '),
+            text: selection.phrase,
             sourceReference: richSentence,
         }));
     }

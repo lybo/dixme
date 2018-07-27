@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import  TagsInput  from 'react-tagsinput'
 import 'react-tagsinput/react-tagsinput.css'
 import './style.css';

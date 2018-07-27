@@ -7,6 +7,10 @@ import FixedFooter from '../FixedFooter';
 
 const DEFAULT_PAGE_NUMBER = 1;
 const PDF_READER_ANNOTATION_CLASS_NAME = 'pdf-reader__annotation';
+const SELECTED_PHRASE_TYPE = {
+    ANNOTATION: 'ANNOTATION',
+    FREE_TEXT: 'FREE_TEXT',
+};
 
 class PDFReader extends Component {
     constructor(props) {
@@ -16,7 +20,7 @@ class PDFReader extends Component {
             pageNumber: props.vocabulary.lastPageNumber ||  DEFAULT_PAGE_NUMBER,
             pdfPagesNumber: 0,
             selectedPhrase: null,
-            isSelectionDialogVisible: false,
+            selectedPhraseType: null,
             isLoading: false,
         };
 
@@ -87,9 +91,20 @@ class PDFReader extends Component {
     }
 
     handleAnnotationClick(evt) {
+        const phrase = evt.currentTarget.id;
+        const text = evt.currentTarget.previousSibling.textContent +
+            evt.currentTarget.id +
+            evt.currentTarget.nextSibling.textContent;
+        const startOffset = evt.currentTarget.previousSibling.textContent.length;
+        const endOffset = evt.currentTarget.id.length + startOffset;
         this.setState({
-            selectedPhrase: evt.currentTarget.id,
-            isSelectionDialogVisible: false,
+            selectedPhrase: {
+                text,
+                startOffset,
+                endOffset,
+                phrase,
+            },
+            selectedPhraseType: SELECTED_PHRASE_TYPE.ANNOTATION,
         });
     }
 
@@ -147,9 +162,16 @@ class PDFReader extends Component {
             // window.getSelection().getRangeAt &&
             // window.getSelection().getRangeAt(0) &&
             window.getSelection().toString().trim();
+
+        const selection = window.getSelection();
         this.setState({
-            isSelectionDialogVisible,
-            selectedPhrase: null,
+            selectedPhraseType: isSelectionDialogVisible ? SELECTED_PHRASE_TYPE.FREE_TEXT : null,
+            selectedPhrase: isSelectionDialogVisible ? {
+                text: selection.focusNode.data,
+                phrase: selection.toString().trim().replace(/\n/g, ' '),
+                startOffset: selection.anchorOffset,
+                endOffset: selection.focusOffset,
+            } : null,
         });
     }
 
@@ -301,10 +323,10 @@ class PDFReader extends Component {
     }
 
     renderAnnotationDialog() {
-        const { isSelectionDialogVisible } = this.state;
+        const { selectedPhraseType } = this.state;
         const { onSelection, onPdfScrollPositionChange } = this.props;
-
-        if (!isSelectionDialogVisible) {
+        const isFreeText = selectedPhraseType === SELECTED_PHRASE_TYPE.FREE_TEXT;
+        if (!isFreeText) {
             return null;
         }
 
@@ -325,7 +347,8 @@ class PDFReader extends Component {
                         className="pdf-reader__annotation_info-cancel-button"
                         onClick={() => {
                             this.setState({
-                                isSelectionDialogVisible: false,
+                                selectedPhrase: null,
+                                selectedPhraseType: null,
                             });
                         }}
                     >
@@ -337,11 +360,12 @@ class PDFReader extends Component {
                         onClick={() => {
                             onPdfScrollPositionChange(document.documentElement.scrollTop);
                             this.setState({
-                                isSelectionDialogVisible: false,
+                                selectedPhrase: null,
+                                selectedPhraseType: null,
                             });
                             onSelection && onSelection({
-                                textPage: this.getSelectionNode().textContent,
-                                selection: window.getSelection(),
+                                textPage: document.getElementById('pdfReader').textContent,
+                                selection: this.state.selectedPhrase,
                             });
                         }}
                     >
@@ -354,11 +378,14 @@ class PDFReader extends Component {
     }
 
     renderAnnotationConfirmation(selectedPhrases) {
-        const { onPdfScrollPositionChange, vocabulary } = this.props;
-
-        if (!selectedPhrases || !selectedPhrases.length) {
+        const { selectedPhraseType } = this.state;
+        const hasSelectedPhrases = selectedPhrases && selectedPhrases.length;
+        const isAnnotation = selectedPhraseType === SELECTED_PHRASE_TYPE.ANNOTATION;
+        if (!isAnnotation || !hasSelectedPhrases) {
             return null;
         }
+
+        const { onPdfScrollPositionChange, vocabulary } = this.props;
 
         return (
             <div
@@ -412,6 +439,7 @@ class PDFReader extends Component {
                         onClick={() => {
                             this.setState({
                                 selectedPhrase: null,
+                                selectedPhraseType: null,
                             });
                         }}
                     >
@@ -422,11 +450,11 @@ class PDFReader extends Component {
                         onClick={() => {
                             const { onSelection } = this.props;
                             onPdfScrollPositionChange(document.documentElement.scrollTop);
-                            // onNewClick && onNewClick();
-                            onSelection && onSelection(
-                                selectedPhrases[0].text,
-                                document.getElementById('pdfReader').textContent,
-                            );
+
+                            onSelection && onSelection({
+                                textPage: document.getElementById('pdfReader').textContent,
+                                selection: this.state.selectedPhrase,
+                            });
                         }}
                     >
                         New phrase
@@ -438,8 +466,8 @@ class PDFReader extends Component {
 
     renderFooter() {
         const { vocabulary } = this.props;
-        const { isSelectionDialogVisible, selectedPhrase } = this.state;
-        const selectedPhrases = vocabulary.phrases.filter((phrase) => phrase.text === selectedPhrase);
+        const { selectedPhraseType, selectedPhrase } = this.state;
+        const selectedPhrases = selectedPhrase ? vocabulary.phrases.filter((phrase) => phrase.text === selectedPhrase.phrase) : [];
 
         const nav = (
             <div
@@ -465,7 +493,7 @@ class PDFReader extends Component {
                 >
                     {this.renderAnnotationConfirmation(selectedPhrases)}
                     {this.renderAnnotationDialog()}
-                    {!isSelectionDialogVisible && !selectedPhrase ? nav : null}
+                    {!selectedPhraseType ? nav : null}
                 </div>
             </FixedFooter>
         );

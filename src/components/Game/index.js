@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GameResults from '../GameResults';
 import AnimatedNumber from '../AnimatedNumber';
+import FixedFooter from '../FixedFooter';
 import { shuffle } from '../../utils/generic';
 import './style.css';
 
@@ -363,20 +364,22 @@ class Game extends Component {
                                 </div>
                             ))}
                         </div>
-                        <div
+                        <FixedFooter>
+                          <div
                             className="game__levels-footer"
-                        >
+                          >
                             <button
-                                className="game__back-button"
-                                onClick={()=> {
-                                    this.setState({
-                                        status: START,
-                                    });
-                                }}
+                              className="game__back-button"
+                              onClick={()=> {
+                                this.setState({
+                                  status: START,
+                                });
+                              }}
                             >
-                                CLOSE
+                              CLOSE
                             </button>
-                        </div>
+                          </div>
+                        </FixedFooter>
                     </div>
                 )}
                 {this.renderGame()}
