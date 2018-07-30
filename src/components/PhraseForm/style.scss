@@ -2,6 +2,45 @@
 
 .phrase-form {
     padding: 10px;
+    position: relative;
+
+
+    &__notification {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #F7F7F7;
+        border-bottom: 1px solid #ECECEC;
+        box-shadow: 0px 4px 18px 1px rgba(209, 205, 209, 1);
+        z-index: 1;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+
+        &-row {
+            margin: 0 0 5px 0;
+            display: flex;
+
+            &:last-child {
+                margin: 0;
+            }
+        }
+
+        &-label {
+            font-weight: 800;
+            margin-right: 5px;
+            width: 150px;
+            text-align: right;
+        }
+
+        &-button {
+            flex: 1 1 100%;
+            @include button;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    }
 
     &__input-label {
         text-align: center;
@@ -31,12 +70,14 @@
 
     &__submit-button {
         @include button;
+        padding: 10px;
         flex: 1;
     }
 
     &__cancel-button {
         @include button;
         flex: 1;
+        padding: 10px;
         margin-right: 10px;
     }
 
@@ -75,6 +116,7 @@
     &__translation-button {
         @include button;
         flex: 1;
+        padding: 10px;
         margin-right: 10px;
     }
 

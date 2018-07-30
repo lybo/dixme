@@ -12,6 +12,7 @@
     "npm-run-all": "^4.1.2",
     "pdfjs-dist": "^2.0.228",
     "react": "^16.2.0",
+    "react-debounce-input": "^3.2.0",
     "react-dom": "^16.2.0",
     "react-paginate": "^5.2.3",
     "react-redux": "^5.0.5",
