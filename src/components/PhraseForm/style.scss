@@ -5,6 +5,22 @@
     position: relative;
 
 
+    fieldset {
+        border: 1px solid #ECECEC;
+        border: none;
+        border-top: 1px solid #000000;
+        margin: 0 0 10px 0;
+        padding: 10px 0;
+    }
+
+    legend {
+        color: #FFF;
+        background: #000;
+        font-size: 1.5em;
+        padding: 5px;
+        text-align: left;
+    }
+
     &__notification {
         position: fixed;
         top: 0;
@@ -20,7 +36,6 @@
 
         &-row {
             margin: 0 0 5px 0;
-            display: flex;
 
             &:last-child {
                 margin: 0;
@@ -29,9 +44,6 @@
 
         &-label {
             font-weight: 800;
-            margin-right: 5px;
-            width: 150px;
-            text-align: right;
         }
 
         &-button {

@@ -349,105 +349,97 @@ class PhraseForm extends Component {
                         className="phrase-item__reference"
                         dangerouslySetInnerHTML={{__html: `... ${sourceReference} ...`}}
                     />) : null}
-
-                    <div className="phrase-form__form">
-                        <div>
-                            <label
-                                className="phrase-form__input-label"
-                            >
-                                Translation from
-                            </label>
-                            <DebounceInput
-                                debounceTimeout={1000}
-                                ref={input => {
-                                    this.translationFrom = input;
-                                }}
-                                value={translationFrom}
-                                onChange={event => {
-                                    this.setState({
-                                        ...this.state,
-                                        translationFrom: event.target.value,
-                                    });
-                                    this.translate(event.target.value);
-                                }}
-                                className="phrase-form__text-input"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                className="phrase-form__input-label"
-                            >
-                                Translation to
-                            </label>
-                            <TagsInput
-                                value={this.state.translationTo}
-                                onChange={(translationTo) => {
-                                    this.setState({
-                                        translationTo,
-                                    });
-                                }}
-                                inputProps={{
-                                    className: 'react-tagsinput-input',
-                                    placeholder: 'Add a translation'
-                                }}
-                                onlyUnique
-                            />
-                        </div>
-                        {this.renderInput('text', 'Translation Reference', 'translationReference', translationReference, id)}
-                        {this.renderInput('text', 'Definition', 'definition', definition, id)}
-                        {this.renderInput('text', 'Definition Reference', 'definitionReference', definitionReference, id)}
-                        <div className="phrase-form__buttons">
-                            <button
-                                className="phrase-form__cancel-button"
-                                onClick={this.handleCancelClick}
-                            >
-                                Cancel
-                            </button>
-                            <input type="submit" className="phrase-form__submit-button" />
+                    <fieldset>
+                        <legend>
+                            Edit Phrase
+                        </legend>
+                        <div className="phrase-form__form">
+                            <div>
+                                <label
+                                    className="phrase-form__input-label"
+                                >
+                                    Translation from
+                                </label>
+                                <DebounceInput
+                                    debounceTimeout={1000}
+                                    ref={input => {
+                                        this.translationFrom = input;
+                                    }}
+                                    value={translationFrom}
+                                    onChange={event => {
+                                        this.setState({
+                                            ...this.state,
+                                            translationFrom: event.target.value,
+                                        });
+                                        this.translate(event.target.value);
+                                    }}
+                                    className="phrase-form__text-input"
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    className="phrase-form__input-label"
+                                >
+                                    Translation to
+                                </label>
+                                <TagsInput
+                                    value={this.state.translationTo}
+                                    onChange={(translationTo) => {
+                                        this.setState({
+                                            translationTo,
+                                        });
+                                    }}
+                                    inputProps={{
+                                        className: 'react-tagsinput-input',
+                                        placeholder: 'Add a translation'
+                                    }}
+                                    onlyUnique
+                                />
+                            </div>
+                            {this.renderInput('text', 'Translation Reference', 'translationReference', translationReference, id)}
+                            {this.renderInput('text', 'Definition', 'definition', definition, id)}
+                            {this.renderInput('text', 'Definition Reference', 'definitionReference', definitionReference, id)}
+                            <div className="phrase-form__buttons">
+                                <button
+                                    className="phrase-form__cancel-button"
+                                    onClick={this.handleCancelClick}
+                                >
+                                    Cancel
+                                </button>
+                                <input type="submit" className="phrase-form__submit-button" />
+                            </div>
                         </div>
                         <div className="phrase-form__delete-button-wrapper">
                             {this.renderDeleteButton()}
                         </div>
-                    </div>
+                    </fieldset>
 
                     {hasTranslationAPI && (
-                        <div className="phrase-form__translations">
+                        <fieldset>
+                            <legend>
+                                Translations
+                            </legend>
                             {'Source: wordreference.com'}
-                            {isLoading ? (
-                                <span>Loading</span>
-                            ) : translations.map((translation, i) => {
-                                return (
-                                    <div
-                                        key={i}
-                                        className="phrase-form__translation"
-                                    >
+                            <div className="phrase-form__translations">
+                                {isLoading ? (
+                                    <span>Loading</span>
+                                ) : translations.map((translation, i) => {
+                                    return (
                                         <div
-                                            className="phrase-form__translation-text"
+                                            key={i}
+                                            className="phrase-form__translation"
                                         >
-                                            {translation.from} ({translation.fromType}) - {translation.to}
-                                        </div>
-                                        <div
-                                            className="phrase-form__translation-text"
-                                        >
-                                            {translation.definition}
-                                        </div>
-                                        <div className="phrase-form__translation-buttons">
-                                            <button
-                                                className="phrase-form__translation-button"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    this.setState({
-                                                        translationFrom: translation.from,
-                                                        translationFromType: translation.fromType,
-                                                        translationTo: translation.to.split(',').map(word => word.trim()).filter(word => word),
-                                                        translationReference: 'wordreference.com',
-                                                    });
-                                                    this.startNotification();
-                                                }}
+                                            <div
+                                                className="phrase-form__translation-text"
                                             >
-                                                {this.state.translationTo.length > 0 ? 'Replace translation' : 'Add translation'}
-                                            </button>
-                                            {this.state.translationTo.length > 0 ? (
+                                                {translation.from} ({translation.fromType}) - {translation.to}
+                                            </div>
+                                            <div
+                                                className="phrase-form__translation-text"
+                                            >
+                                                {translation.definition}
+                                            </div>
+                                            <div className="phrase-form__translation-buttons">
                                                 <button
                                                     className="phrase-form__translation-button"
                                                     onClick={(e) => {
@@ -455,35 +447,52 @@ class PhraseForm extends Component {
                                                         this.setState({
                                                             translationFrom: translation.from,
                                                             translationFromType: translation.fromType,
-                                                            translationTo: []
-                                                            .concat(this.state.translationTo, translation.to.split(',').map(word => word.trim()).filter(word => word))
-                                                            .filter((elem, pos, arr) => arr.indexOf(elem) === pos),
+                                                            translationTo: translation.to.split(',').map(word => word.trim()).filter(word => word),
                                                             translationReference: 'wordreference.com',
                                                         });
                                                         this.startNotification();
                                                     }}
                                                 >
-                                                    {'Add translation'}
+                                                    {this.state.translationTo.length > 0 ? 'Replace translation' : 'Add translation'}
                                                 </button>
-                                            ) : null}
-                                            <button
-                                                className="phrase-form__translation-button"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    this.setState({
-                                                        definition: translation.definition,
-                                                        definitionReference: 'wordreference.com',
-                                                    });
-                                                    this.startNotification();
-                                                }}
-                                            >
-                                                Add definition
-                                            </button>
+                                                {this.state.translationTo.length > 0 ? (
+                                                    <button
+                                                        className="phrase-form__translation-button"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            this.setState({
+                                                                translationFrom: translation.from,
+                                                                translationFromType: translation.fromType,
+                                                                translationTo: []
+                                                                .concat(this.state.translationTo, translation.to.split(',').map(word => word.trim()).filter(word => word))
+                                                                .filter((elem, pos, arr) => arr.indexOf(elem) === pos),
+                                                                translationReference: 'wordreference.com',
+                                                            });
+                                                            this.startNotification();
+                                                        }}
+                                                    >
+                                                        {'Add translation'}
+                                                    </button>
+                                                ) : null}
+                                                <button
+                                                    className="phrase-form__translation-button"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        this.setState({
+                                                            definition: translation.definition,
+                                                            definitionReference: 'wordreference.com',
+                                                        });
+                                                        this.startNotification();
+                                                    }}
+                                                >
+                                                    Add definition
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                                    );
+                                })}
+                            </div>
+                        </fieldset>
                     )}
 
                 </form>
