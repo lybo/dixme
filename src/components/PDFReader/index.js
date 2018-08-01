@@ -106,6 +106,8 @@ class PDFReader extends Component {
             },
             selectedPhraseType: SELECTED_PHRASE_TYPE.ANNOTATION,
         });
+
+        window.scrollTo(0, window.scrollY - 20);
     }
 
     renderPDFcontent(text, phrases, scroll) {
@@ -487,7 +489,7 @@ class PDFReader extends Component {
         );
 
         return (
-            <FixedFooter>
+            <FixedFooter byPassScrolling={selectedPhraseType === SELECTED_PHRASE_TYPE.FREE_TEXT}>
                 <div
                     className="pdf-reader__footer"
                 >
