@@ -31,9 +31,11 @@ class Vocabulary extends Component {
 
         this.handleReferenceVisibilityToggle = this.handleReferenceVisibilityToggle.bind(this);
         this.handleExportClick = this.handleExportClick.bind(this);
+        // TODO: delete it
         this.handlePageNumberChange = this.handlePageNumberChange.bind(this);
     }
 
+    // TODO: delete it
     handlePageNumberChange(pageNumber) {
         const { onPageNumberChange } = this.props;
         onPageNumberChange && onPageNumberChange(pageNumber);
@@ -99,7 +101,7 @@ class Vocabulary extends Component {
             onAddClick,
             deletePhrase,
             navigate,
-            pageNumber,
+            navigateToPhraseForm,
         } = this.props;
 
         if (!vocabulary) {
@@ -199,13 +201,13 @@ class Vocabulary extends Component {
                 <div className="vocabulary__phrases-list">
                     <VocabularyPhraseList
                         vocabulary={vocabulary}
+                        navigateToPhraseForm={navigateToPhraseForm}
                         onDeleteClick={deletePhrase}
                         onEditClick={(phraseId) => {
                             onEditClick && onEditClick(vocabulary.phrases.find(phrase => phrase.id === phraseId));
                         }}
                         isReferenceVisible={isReferenceVisible}
                         navigate={navigate}
-                        pageNumber={pageNumber}
                     />
                 </div>
                 <VocabularyPhraseListMenu

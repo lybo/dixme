@@ -38,6 +38,13 @@ export default connect(
         const navigate = ownProps.history.push;
         return {
             navigate,
+            navigateToPhraseForm: (text) => {
+                const selectedPhrase = getPhraseModel({
+                    text,
+                });
+                dispatch(setSelectedPhrase(selectedPhrase));
+                navigate(`/vocabulary/${ownProps.match.params.vocabularyId}/phrase/${selectedPhrase.id}/null`);
+            },
             setRemoteVocabulary: (vocabulary) => {
                 dispatch(setRemoteVocabulary(vocabulary));
             },

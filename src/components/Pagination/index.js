@@ -11,6 +11,10 @@ class Pagination extends Component {
             forcePage,
         } = this.props;
 
+        if (list.length <= perPage) {
+            return null;
+        }
+
         return (
             <ReactPaginate previousLabel={"previous"}
                 nextLabel={"next"}
