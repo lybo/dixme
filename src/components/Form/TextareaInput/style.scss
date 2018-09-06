@@ -1,0 +1,6 @@
+@import '../style.scss';
+
+.textarea-input {
+    @include input;
+}
+

@@ -59,7 +59,7 @@ class VocabularyPhraseList extends Component {
             onEditClick,
             onDeleteClick,
             isReferenceVisible,
-            navigate,
+            // navigate,
             navigateToPhraseForm,
         } = this.props;
         const {

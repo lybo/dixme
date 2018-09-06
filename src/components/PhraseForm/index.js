@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import  TagsInput  from 'react-tagsinput'
 import 'react-tagsinput/react-tagsinput.css'
 import './style.css';
 import ButtonWithConfirmation from '../ButtonWithConfirmation';
 import { translate } from '../../services/translation/';
-import { DebounceInput } from 'react-debounce-input';
+import DebounceTextInput from '../Form/DebounceTextInput';
+import TextInput from '../Form/TextInput';
+import TextareaInput from '../Form/TextareaInput';
+import TagsInput from '../Form/TagsInput';
+import Fieldset from '../Fieldset';
 
 const wordreferenceCodeLanguagesAPI = {
     'en': 'en',
@@ -263,27 +266,21 @@ class PhraseForm extends Component {
 
     renderInput(type, label, name, value, id, handleChange) {
         const props = {
-            type: 'text',
-            name: name,
-            ref: (input) => this[name] =  input,
-            value: value,
+            name,
+            value,
+            label: name,
+            inputRef: (input) => this[name] = input,
             id: `phrase-form__text-input-${name}-${id}`,
-            className: 'phrase-form__text-input',
+            // className: 'phrase-form__text-input',
             onChange: this.handleInputChange(name, handleChange),
             rows: 4,
         };
-        const input = type === 'text' ? (<input {...props} />) : (<textarea {...props}></textarea>);
-        return (
-            <div>
-                <label
-                    htmlFor={`phrase-form__text-input-${name}-${id}`}
-                    className="phrase-form__input-label"
-                >
-                    {label}
-                </label>
-                {input}
-            </div>
-        );
+
+        return type === 'text' ? (
+            <TextInput {...props} />
+        ) : (
+            <TextareaInput {...props} />
+            );
     }
 
     renderDeleteButton() {
@@ -349,53 +346,42 @@ class PhraseForm extends Component {
                         className="phrase-item__reference"
                         dangerouslySetInnerHTML={{__html: `... ${sourceReference} ...`}}
                     />) : null}
-                    <fieldset>
-                        <legend>
-                            Edit Phrase
-                        </legend>
+                    <Fieldset
+                        title="Edit Phrase"
+                    >
                         <div className="phrase-form__form">
-                            <div>
-                                <label
-                                    className="phrase-form__input-label"
-                                >
-                                    Translation from
-                                </label>
-                                <DebounceInput
-                                    debounceTimeout={1000}
-                                    ref={input => {
-                                        this.translationFrom = input;
-                                    }}
-                                    value={translationFrom}
-                                    onChange={event => {
-                                        this.setState({
-                                            ...this.state,
-                                            translationFrom: event.target.value,
-                                        });
-                                        this.translate(event.target.value);
-                                    }}
-                                    className="phrase-form__text-input"
-                                />
-                            </div>
-                            <div>
-                                <label
-                                    className="phrase-form__input-label"
-                                >
-                                    Translation to
-                                </label>
-                                <TagsInput
-                                    value={this.state.translationTo}
-                                    onChange={(translationTo) => {
-                                        this.setState({
-                                            translationTo,
-                                        });
-                                    }}
-                                    inputProps={{
-                                        className: 'react-tagsinput-input',
-                                        placeholder: 'Add a translation'
-                                    }}
-                                    onlyUnique
-                                />
-                            </div>
+                            <DebounceTextInput
+                                id="translationFrom"
+                                label="Translation from"
+                                debounceTimeout={1000}
+                                inputRef={input => {
+                                    this.translationFrom = input;
+                                }}
+                                value={translationFrom}
+                                onChange={event => {
+                                    this.setState({
+                                        ...this.state,
+                                        translationFrom: event.target.value,
+                                    });
+                                    this.translate(event.target.value);
+                                }}
+                            />
+                            <TagsInput
+                                id="translationTo"
+                                name="translationTo"
+                                label="Translation to"
+                                value={this.state.translationTo}
+                                onChange={(translationTo) => {
+                                    this.setState({
+                                        translationTo,
+                                    });
+                                }}
+                                inputProps={{
+                                    className: 'react-tagsinput-input',
+                                    placeholder: 'Add a translation'
+                                }}
+                                onlyUnique
+                            />
                             {this.renderInput('text', 'Translation Reference', 'translationReference', translationReference, id)}
                             {this.renderInput('text', 'Definition', 'definition', definition, id)}
                             {this.renderInput('text', 'Definition Reference', 'definitionReference', definitionReference, id)}
@@ -412,13 +398,13 @@ class PhraseForm extends Component {
                         <div className="phrase-form__delete-button-wrapper">
                             {this.renderDeleteButton()}
                         </div>
-                    </fieldset>
+                    </Fieldset>
+
 
                     {hasTranslationAPI && (
-                        <fieldset>
-                            <legend>
-                                Translations
-                            </legend>
+                        <Fieldset
+                            title="Translations"
+                        >
                             {'Source: wordreference.com'}
                             <div className="phrase-form__translations">
                                 {isLoading ? (
@@ -492,7 +478,7 @@ class PhraseForm extends Component {
                                     );
                                 })}
                             </div>
-                        </fieldset>
+                        </Fieldset>
                     )}
 
                 </form>

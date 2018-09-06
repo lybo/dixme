@@ -1,0 +1,35 @@
+@import '../style.scss';
+
+.tags-input {
+    @include input;
+    border: none;
+    padding: 0;
+
+    .react-tagsinput {
+        text-align: left;
+        border: solid $borderColor;
+        border-width: $borderWidth;
+        border-radius: $borderRadius;
+        & > span {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        &-tag {
+            background: #FFFFFF;
+            border-color: #CCCCCC;
+            color: #000000;
+            display: flex;
+            align-items: center;
+        }
+        &-remove {
+            margin-left: 5px;
+            font-size: 24px;
+        }
+        &-input {
+            width: 120px;
+        }
+    }
+}
+
+
