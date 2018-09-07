@@ -1,227 +1,227 @@
 @import '../../assets/scss/global.scss';
 .game {
-    &__buttons {
-        margin: 10px 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+  &__buttons {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__play {
+    @include button;
+
+    font-size: 20px;
+    padding: 10px 50px;
+  }
+
+  &__back-button {
+    @include button;
+
+    min-width: 100px;
+    margin: 0 20px 0 0;
+  }
+
+  &__game {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  &__countdown {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+
+    &-number {
+      color: #000000;
+      display: inline-block;
+      line-height: 40px;
     }
 
-    &__play {
-        @include button;
-
-        font-size: 20px;
-        padding: 10px 50px;
+    svg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      transform: rotateY(-180deg) rotateZ(-90deg);
     }
 
-    &__back-button {
-        @include button;
-
-        min-width: 100px;
-        margin: 0 20px 0 0;
+    svg circle {
+      stroke-dasharray: 113px;
+      stroke-dashoffset: 0px;
+      stroke-linecap: round;
+      stroke-width: 2px;
+      stroke: #000000;
+      fill: none;
+      animation: countdown 90s linear infinite forwards;
     }
 
-    &__game {
-        display: flex;
-        flex-direction: column;
-        padding: 10px;
+    @keyframes countdown {
+      from {
+        stroke-dashoffset: 0px;
+      }
+      to {
+        stroke-dashoffset: 113px;
+      }
+    }
+  }
+
+  &__results {
+    &-score {
+      padding: 10px;
     }
 
-    &__countdown {
-        position: relative;
-        height: 40px;
-        width: 40px;
-        text-align: center;
-
-        &-number {
-            color: #000000;
-            display: inline-block;
-            line-height: 40px;
-        }
-
-        svg {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 40px;
-            height: 40px;
-            transform: rotateY(-180deg) rotateZ(-90deg);
-        }
-
-        svg circle {
-            stroke-dasharray: 113px;
-            stroke-dashoffset: 0px;
-            stroke-linecap: round;
-            stroke-width: 2px;
-            stroke: #000000;
-            fill: none;
-            animation: countdown 90s linear infinite forwards;
-        }
-
-        @keyframes countdown {
-            from {
-                stroke-dashoffset: 0px;
-            }
-            to {
-                stroke-dashoffset: 113px;
-            }
-        }
+    &-phrase {
+      padding: 10px 10px;
+      font-size: 18px;
+      border: 1px solid #ccc;
+      border-width: 0 0 1px 0;
+      margin: 10px;
     }
 
-    &__results {
-        &-score {
-            padding: 10px;
-        }
+    &-phrases {
+      padding: 0px 10px;
+    }
+  }
 
-        &-phrase {
-            padding: 10px 10px;
-            font-size: 18px;
-            border: 1px solid #ccc;
-            border-width: 0 0 1px 0;
-            margin: 10px;
-        }
 
-        &-phrases {
-            padding: 0px 10px;
-        }
+  &__word {
+    font-size: 24px;
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__option {
+    @include button;
+    margin: 20px 0;
+    padding: 10px 10px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &-translation {
+      margin: 0 0 5px 0;
     }
 
+    &-defintion {
+      font-size: 12px;
+    }
+  }
 
-    &__word {
-        font-size: 24px;
+  &__current-level {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    &-label {
+      font-size: 50px;
+      margin: 30px 0 5px 0;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+    }
+    &-number {
+      font-size: 35px;
+      margin: 0 0 20px 0;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  &__start-header {
+    display: flex;
+    margin: 20px 0 0 0;
+    align-items: center;
+    padding: 0 20px;
+
+    &-left {
+      flex: 1 1 auto;
+      text-align: left;
+    }
+    &-right {
+      text-align: left;
+    }
+  }
+
+  &__levels {
+    padding: 5px 10px 50px 10px;
+    position: relative;
+    &-list {
+
     }
 
-    &__options {
-        display: flex;
-        flex-direction: column;
+    &-footer {
+      padding: 20px 10px;
+      flex: 1 1 100%;
+    }
+  }
+
+  &__level {
+    border: 1px solid #CCCCCC;
+    border-width: 0 0 1px 0;
+    padding: 10px 0;
+
+    &:last-child {
+      border-width: 0 0 0 0;
     }
 
-    &__option {
-        @include button;
-        margin: 20px 0;
-        padding: 10px 10px;
-        font-size: 16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-
-        &-translation {
-            margin: 0 0 5px 0;
-        }
-
-        &-defintion {
-            font-size: 12px;
-        }
+    &-title {
+      font-size: 20px;
     }
-
-    &__current-level {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%,-50%);
-        &-label {
-            font-size: 50px;
-            margin: 30px 0 5px 0;
-            cursor: pointer;
-            width: 100%;
-            text-align: center;
-        }
-        &-number {
-            font-size: 35px;
-            margin: 0 0 20px 0;
-            cursor: pointer;
-            width: 100%;
-            text-align: center;
-        }
-    }
-
-    &__start-header {
-        display: flex;
-        margin: 20px 0 0 0;
-        align-items: center;
-        padding: 0 20px;
-
-        &-left {
-            flex: 1 1 auto;
-            text-align: left;
-        }
-        &-right {
-            text-align: left;
-        }
-    }
-
-    &__levels {
-        padding: 5px 10px 50px 10px;
-        position: relative;
-        &-list {
-
-        }
-
-        &-footer {
-            padding: 20px 10px;
-            flex: 1 1 100%;
-        }
-    }
-
-    &__level {
-        border: 1px solid #CCCCCC;
-        border-width: 0 0 1px 0;
-        padding: 10px 0;
-
-        &:last-child {
-            border-width: 0 0 0 0;
-        }
-
-        &-title {
-            font-size: 20px;
-        }
-        &-score {
-
-        }
-    }
-
-    &__new-status {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        font-size: 20px;
-        animation-name: stretch;
-        animation-duration: 2.5s;
-        animation-timing-function: ease-out;
-        animation-delay: 0;
-        animation-direction: alternate;
-        animation-iteration-count: 1;
-        animation-fill-mode: forwards;
-        animation-play-state: running;
-        @keyframes stretch {
-            0% {
-                transform: scale(0);
-                color: yellow;
-                border-radius: 100%;
-            }
-            50% {
-                color: orange;
-            }
-            80% {
-                transform: scale(1.5);
-                color: red;
-                opacity: 1;
-            }
-            99% {
-                transform: scale(1.5);
-                display: none;
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1.5);
-                display: none;
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-        }
+    &-score {
 
     }
+  }
+
+  &__new-status {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 20px;
+    animation-name: stretch;
+    animation-duration: 2.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    @keyframes stretch {
+      0% {
+        transform: scale(0);
+        color: yellow;
+        border-radius: 100%;
+      }
+      50% {
+        color: orange;
+      }
+      80% {
+        transform: scale(1.5);
+        color: red;
+        opacity: 1;
+      }
+      99% {
+        transform: scale(1.5);
+        display: none;
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1.5);
+        display: none;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+    }
+
+  }
 }
 

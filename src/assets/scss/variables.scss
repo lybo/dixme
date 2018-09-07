@@ -12,22 +12,22 @@ $textColor-4: #FFFFFF;
 $borderColor-1: #ECECEC;
 
 $theme-1: (
-    background: $background-1,
-    textColor: $textColor-2,
-    hightlighTextColor: $textColor-1
+  background: $background-1,
+  textColor: $textColor-2,
+  hightlighTextColor: $textColor-1
 );
 
 
 $theme-2: (
-    background: $background-2,
-    textColor: $textColor-3,
-    textColorLight: lighten($textColor-3, 20%),
-    highlightTextColor: $textColor-1,
-    borderColor: $borderColor-1
+  background: $background-2,
+  textColor: $textColor-3,
+  textColorLight: lighten($textColor-3, 20%),
+  highlightTextColor: $textColor-1,
+  borderColor: $borderColor-1
 );
 
 $theme-3: (
-    background: $background-3,
-    textColor: $textColor-4,
-    highlightTextColor: $textColor-1
+  background: $background-3,
+  textColor: $textColor-4,
+  highlightTextColor: $textColor-1
 );

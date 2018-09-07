@@ -13,22 +13,22 @@ import { UPDATE_GAME } from './constants/game';
 store.dispatch(requestPopulateVocabulariesFromLocal());
 store.dispatch(requestPopulateGameAnswersFromLocal());
 store.subscribe(() => {
-    const state = JSON.parse(JSON.stringify(store.getState()));
-    console.log(state.lastAction.type, state.lastAction.payload, state);
-    updateVocabularies(state.vocabularies);
+  const state = JSON.parse(JSON.stringify(store.getState()));
+  console.log(state.lastAction.type, state.lastAction.payload, state);
+  updateVocabularies(state.vocabularies);
 
-    if (state.lastAction.type === UPDATE_GAME) {
-        updateGame(state.game);
-    }
+  if (state.lastAction.type === UPDATE_GAME) {
+    updateGame(state.game);
+  }
 });
 
 
 setTimeout(() => {
-    ReactDOM.render(
-        <Provider store={store}>
-            <App />
-        </Provider>,
-        document.getElementById('root')
-    );
-    registerServiceWorker();
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root')
+  );
+  registerServiceWorker();
 }, 10);

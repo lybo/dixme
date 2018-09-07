@@ -1,79 +1,79 @@
 @import '../../assets/scss/global.scss';
 
 .phrase-item {
-    margin-bottom: 10px;
-    padding: 0 0 10px 0;
-    border: solid #ccc;
-    border-width: 0 0 1px 0;
-    width: 100%;
+  margin-bottom: 10px;
+  padding: 0 0 10px 0;
+  border: solid #ccc;
+  border-width: 0 0 1px 0;
+  width: 100%;
+  display: flex;
+
+  &__content {
+    flex: 1;
+  }
+
+  &__text {
+    font-size: 18px;
+  }
+
+  &__translation {
+    font-size: 16px;
+    margin: 0 0 5px 0;
+  }
+
+  &__reference {
+    font-size: 14px;
+    background:#f9f9f9;
+    border-left:1em solid #eee;
+    margin:1.5em 1em;
+    padding:.5em 1em;
+    quotes:"\201C""\201D";
+  }
+
+  &__reference:before{
+    color:#808080;
+    content:open-quote;
+    font-size:4em;
+    line-height:.1em;
+    margin-right:.25em;
+    vertical-align:-.4em;
+  }
+
+  &__reference:first-child{
+    display:inline;
+  }
+
+  &__reference:last-child{
+    margin-bottom:0;
+  }
+
+  &__definition {
+    font-size: 14px;
+  }
+
+  &__buttons {
     display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    user-select: none;
 
-    &__content {
-        flex: 1;
-    }
+    width: 150px;
+  }
 
-    &__text {
-        font-size: 18px;
-    }
+  &__result {
+    margin-bottom: 10px;
+  }
 
-    &__translation {
-        font-size: 16px;
-        margin: 0 0 5px 0;
-    }
+  &__edit {
+    @include button;
 
-    &__reference {
-        font-size: 14px;
-        background:#f9f9f9;
-        border-left:1em solid #eee;
-        margin:1.5em 1em;
-        padding:.5em 1em;
-        quotes:"\201C""\201D";
-    }
+    min-width: 100px;
+    margin-bottom: 10px;
+  }
 
-    &__reference:before{
-        color:#808080;
-        content:open-quote;
-        font-size:4em;
-        line-height:.1em;
-        margin-right:.25em;
-        vertical-align:-.4em;
-    }
-
-    &__reference:first-child{
-        display:inline;
-    }
-
-    &__reference:last-child{
-        margin-bottom:0;
-    }
-
-    &__definition {
-        font-size: 14px;
-    }
-
-    &__buttons {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        flex-direction: column;
-        user-select: none;
-
-        width: 150px;
-    }
-
-    &__result {
-        margin-bottom: 10px;
-    }
-
-    &__edit {
-        @include button;
-
-        min-width: 100px;
-        margin-bottom: 10px;
-    }
-
-    &__delete {
-        min-width: 100px;
-    }
+  &__delete {
+    min-width: 100px;
+  }
 
 }

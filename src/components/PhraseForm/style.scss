@@ -2,147 +2,147 @@
 @import '../Form/style.scss';
 
 .phrase-form {
+  padding: 10px;
+  position: relative;
+
+  &__notification {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #F7F7F7;
+    border-bottom: 1px solid #ECECEC;
+    box-shadow: 0px 4px 18px 1px rgba(209, 205, 209, 1);
+    z-index: 1;
     padding: 10px;
-    position: relative;
+    display: flex;
+    flex-direction: column;
 
-    &__notification {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: #F7F7F7;
-        border-bottom: 1px solid #ECECEC;
-        box-shadow: 0px 4px 18px 1px rgba(209, 205, 209, 1);
-        z-index: 1;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
+    &-row {
+      margin: 0 0 5px 0;
 
-        &-row {
-            margin: 0 0 5px 0;
-
-            &:last-child {
-                margin: 0;
-            }
-        }
-
-        &-label {
-            font-weight: 800;
-        }
-
-        &-button {
-            flex: 1 1 100%;
-            @include button;
-            padding: 10px;
-            margin: 10px 0;
-        }
-    }
-
-    &__text-input {
-        @include input;
-    }
-
-
-    &__buttons {
-        display: flex;
-        margin-top: 5px;
-        user-select: none;
-    }
-
-    &__submit-button {
-        @include button;
-        padding: 10px;
-        flex: 1;
-    }
-
-    &__cancel-button {
-        @include button;
-        flex: 1;
-        padding: 10px;
-        margin-right: 10px;
-    }
-
-    &__delete-button-wrapper {
-        margin: 20px 0;
-    }
-
-    &__form {
-        display: flex;
-        flex-direction: column;
-    }
-
-    &__translations {
-        display: flex;
-        flex-direction: column;
-    }
-
-    &__translation {
-        padding: 10px;
-        margin: 10px 0;
-        border-top: 1px solid #ccc;
-    }
-
-    &__translation-text {
-        padding: 10px;
-        border: none;
-        /* background: #ccc; */
-    }
-
-    &__translation-buttons {
-        display: flex;
-        padding: 0;
+      &:last-child {
         margin: 0;
+      }
     }
 
-    &__translation-button {
-        @include button;
-        flex: 1;
-        padding: 10px;
-        margin-right: 10px;
+    &-label {
+      font-weight: 800;
     }
 
-    &__translation-button:last-child {
-        margin-right: 0;
+    &-button {
+      flex: 1 1 100%;
+      @include button;
+      padding: 10px;
+      margin: 10px 0;
     }
+  }
 
-    &__footer {
-        padding: 10px;
-        flex: 1 1 100%;
+  &__text-input {
+    @include input;
+  }
 
-        &-label {
-            margin-top: 10px;
-            text-align: center;
-            font-weight: 800;
-        }
-        &-value {
-            margin-top: 5px;
-            text-align: center;
-        }
+
+  &__buttons {
+    display: flex;
+    margin-top: 5px;
+    user-select: none;
+  }
+
+  &__submit-button {
+    @include button;
+    padding: 10px;
+    flex: 1;
+  }
+
+  &__cancel-button {
+    @include button;
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+  }
+
+  &__delete-button-wrapper {
+    margin: 20px 0;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__translations {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__translation {
+    padding: 10px;
+    margin: 10px 0;
+    border-top: 1px solid #ccc;
+  }
+
+  &__translation-text {
+    padding: 10px;
+    border: none;
+    /* background: #ccc; */
+  }
+
+  &__translation-buttons {
+    display: flex;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__translation-button {
+    @include button;
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+  }
+
+  &__translation-button:last-child {
+    margin-right: 0;
+  }
+
+  &__footer {
+    padding: 10px;
+    flex: 1 1 100%;
+
+    &-label {
+      margin-top: 10px;
+      text-align: center;
+      font-weight: 800;
     }
-
-    .phrase-item__reference {
-        font-size: 14px;
-        background: #f9f9f9;
-        border-left: 1em solid #eee;
-        margin: 1.5em 1em;
-        padding: .5em 1em;
-        quotes: "\201C""\201D";
+    &-value {
+      margin-top: 5px;
+      text-align: center;
     }
+  }
 
-    .phrase-item__reference:before{
-        color: #808080;
-        content: open-quote;
-        font-size: 4em;
-        line-height: .1em;
-        margin-right: .25em;
-        vertical-align: -.4em;
-    }
+  .phrase-item__reference {
+    font-size: 14px;
+    background: #f9f9f9;
+    border-left: 1em solid #eee;
+    margin: 1.5em 1em;
+    padding: .5em 1em;
+    quotes: "\201C""\201D";
+  }
 
-    .phrase-item__reference:first-child{
-        display: block;
-    }
+  .phrase-item__reference:before{
+    color: #808080;
+    content: open-quote;
+    font-size: 4em;
+    line-height: .1em;
+    margin-right: .25em;
+    vertical-align: -.4em;
+  }
 
-    .phrase-item__reference:last-child{
-        margin-bottom: 0;
-    }
+  .phrase-item__reference:first-child{
+    display: block;
+  }
+
+  .phrase-item__reference:last-child{
+    margin-bottom: 0;
+  }
 }

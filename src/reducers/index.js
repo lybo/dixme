@@ -5,15 +5,15 @@ import game from './game';
 import auth from './auth';
 
 function lastAction(state = null, action) {
-    return action;
+  return action;
 }
 
 const App = combineReducers({
-    vocabularies,
-    app,
-    auth,
-    game,
-    lastAction,
+  vocabularies,
+  app,
+  auth,
+  game,
+  lastAction,
 });
 
 export default App;

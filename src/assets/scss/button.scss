@@ -1,16 +1,16 @@
 @mixin button {
-    box-sizing: border-box;
-    padding: 10px;
-    background: #000;
-    color: #fff;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    box-shadow: 0 4px #444;
-    cursor: pointer;
+  box-sizing: border-box;
+  padding: 10px;
+  background: #000;
+  color: #fff;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  box-shadow: 0 4px #444;
+  cursor: pointer;
 
-    &:active {
-        box-shadow: 0 0px #666;
-        transform: translateY(4px);
-    }
+  &:active {
+    box-shadow: 0 0px #666;
+    transform: translateY(4px);
+  }
 }

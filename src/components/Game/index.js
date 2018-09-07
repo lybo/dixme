@@ -12,380 +12,380 @@ const RESULTS = 'RESULTS';
 const LEVELS = 'LEVELS';
 
 class Game extends Component {
-    state = {
-        countdown: START_SEC,
-        phrases: [],
-        index: 0,
-        status: START,
+  state = {
+    countdown: START_SEC,
+    phrases: [],
+    index: 0,
+    status: START,
+  }
+
+  componentWillUnmount() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+
+  updateGame(vocabularyId, answerPhrases) {
+    const {
+      updateGame,
+    } = this.props;
+    const words = answerPhrases.reduce((acc, phrase) => {
+      acc[phrase.id] = phrase.isCorrect;
+      return acc;
+    }, {});
+    updateGame(vocabularyId, words);
+  }
+
+  renderGame() {
+    const {
+      countdown,
+      phrases,
+      index,
+      status,
+    } = this.state;
+    const {
+      vocabulary,
+      additionalScore,
+      deletePhrase,
+      onEditClick,
+    } = this.props;
+
+    if ([START, LEVELS].indexOf(status) !== -1) {
+      return null;
     }
 
-    componentWillUnmount() {
-        if (this.interval) {
+    const answerPhrases = phrases.filter(phrase => phrase.isCorrect !== undefined);
+
+    const renderOption = phrase => (
+      <button
+        className="game__option"
+        key={phrase.id}
+        onClick={() => {
+          const isCorrect = phrases[index].translationTo === phrase.translationTo;
+          phrases[index].isCorrect = isCorrect;
+          const isPlaying = index + 1 !== phrases.length;
+          if (!isPlaying) {
             clearInterval(this.interval);
-        }
-    }
+            this.setState({
+              countdown: START_SEC,
+            });
+            this.updateGame(vocabulary.id, phrases);
+          }
 
-    updateGame(vocabularyId, answerPhrases) {
-        const {
-            updateGame,
-        } = this.props;
-        const words = answerPhrases.reduce((acc, phrase) => {
-            acc[phrase.id] = phrase.isCorrect;
-            return acc;
-        }, {});
-        updateGame(vocabularyId, words);
-    }
-
-    renderGame() {
-        const {
-            countdown,
+          this.setState({
+            index: isPlaying ? index + 1 : 0,
+            status: isPlaying ? PLAYING : RESULTS,
             phrases,
-            index,
-            status,
-        } = this.state;
-        const {
-            vocabulary,
-            additionalScore,
-            deletePhrase,
-            onEditClick,
-        } = this.props;
+          });
+        }}
+      >
+        <div className="game__option-translation">
+          {phrase.translationTo}
+        </div>
+        <div className="game__option-defintion">
+          ({phrase.definition})
+        </div>
+      </button>
+    );
 
-        if ([START, LEVELS].indexOf(status) !== -1) {
-            return null;
-        }
+    if (status === RESULTS) {
+      const correctAnswers = answerPhrases.reduce((acc, phrase) => {
+        return phrase.isCorrect ? acc + 1 : acc;
+      }, 0);
+      return (
+        <GameResults
+          vocabulary={vocabulary}
+          correctAnswers={correctAnswers}
+          phrases={phrases}
+          answerPhrases={answerPhrases}
+          additionalScore={additionalScore}
+          deletePhrase={deletePhrase}
+          onEditClick={onEditClick}
+          onClose={() => {
+            this.setState({
+              status: START,
+            });
+          }}
+        />
+      );
+    }
 
-        const answerPhrases = phrases.filter(phrase => phrase.isCorrect !== undefined);
+    return (
+      <div
+        className="game__game"
+      >
+        <div className="game__countdown">
+          <div className="game__countdown-number">
+            {countdown}
+          </div>
+          <svg>
+            <circle r="18" cx="20" cy="20" />
+          </svg>
+        </div>
+        <div
+          className=""
+        >
+          {answerPhrases.length}/{phrases.length}
+        </div>
+        <div
+          className="game__word"
+        >
+          {phrases[index].translationFrom}
+        </div>
+        <div
+          className="game__options"
+        >
+          {phrases[index].options.map(renderOption)}
+        </div>
+      </div>
+    );
+  }
 
-        const renderOption = phrase => (
-            <button
-                className="game__option"
-                key={phrase.id}
-                onClick={() => {
-                    const isCorrect = phrases[index].translationTo === phrase.translationTo;
-                    phrases[index].isCorrect = isCorrect;
-                    const isPlaying = index + 1 !== phrases.length;
-                    if (!isPlaying) {
-                        clearInterval(this.interval);
-                        this.setState({
-                            countdown: START_SEC,
-                        });
-                        this.updateGame(vocabulary.id, phrases);
-                    }
+  renderGameInfo() {
+    const {
+      vocabulary,
+      navigate,
+      gamePhrases,
+      validPhrases,
+      totalNumberOfLevels,
+      currentLevel,
+      gameScore,
+    } = this.props;
+    const {
+      status,
+      phrases,
+    } = this.state;
 
-                    this.setState({
-                        index: isPlaying ? index + 1 : 0,
-                        status: isPlaying ? PLAYING : RESULTS,
-                        phrases,
-                    });
-                }}
-            >
-                <div className="game__option-translation">
-                    {phrase.translationTo}
-                </div>
-                <div className="game__option-defintion">
-                    ({phrase.definition})
-                </div>
-            </button>
-        );
+    if ([PLAYING, LEVELS, RESULTS].indexOf(status) !== -1) {
+      return null;
+    }
 
-        if (status === RESULTS) {
-            const correctAnswers = answerPhrases.reduce((acc, phrase) => {
-                return phrase.isCorrect ? acc + 1 : acc;
-            }, 0);
-            return (
-                <GameResults
-                    vocabulary={vocabulary}
-                    correctAnswers={correctAnswers}
-                    phrases={phrases}
-                    answerPhrases={answerPhrases}
-                    additionalScore={additionalScore}
-                    deletePhrase={deletePhrase}
-                    onEditClick={onEditClick}
-                    onClose={() => {
-                        this.setState({
-                            status: START,
-                        });
-                    }}
-                />
-            );
-        }
+    return (
+      <div className="game__start-header">
+        <div className="game__start-header-left">
+          <button
+            className="game__back-button"
+            onClick={()=> {
+              navigate(`/vocabulary/${vocabulary.id}`);
+            }}
+          >
+            Back to vocabulary
+          </button>
+        </div>
+        <div className="game__start-header-right">
+          <div>Current Level: {currentLevel} / {totalNumberOfLevels}</div>
+          <div>Current phrases: {gamePhrases.length}</div>
+          <div>Locked phrases: {validPhrases.length - gamePhrases.length}</div>
+          {phrases.length ? (
 
-        return (
+            <div>Score: <AnimatedNumber value={gameScore} /></div>
+          ) : (
+            <div>Score: {gameScore}</div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  renderPlayButton() {
+    const {
+      vocabulary,
+      gamePhrases,
+      phrasesPerRound,
+      validPhrases,
+    } = this.props;
+
+    const {
+      phrases,
+    } = this.state;
+
+    return (
+      <button
+        className="game__play"
+        onClick={() => {
+          const numberOfGamePhrases = gamePhrases.length > phrasesPerRound ? phrasesPerRound : gamePhrases.length;
+          const numberOfWeakPhrases = Math.round((numberOfGamePhrases * 25) / 100);
+          const shuffledGamePhrases = shuffle([].concat(
+            gamePhrases.slice(0, numberOfWeakPhrases),
+            shuffle(gamePhrases.slice(numberOfWeakPhrases, gamePhrases.length)).slice(0, numberOfGamePhrases - numberOfWeakPhrases),
+          ));
+
+          this.setState({
+            phrases: shuffledGamePhrases.map((phrase, index) => {
+              const getOptions = () => {
+                const get3TrimmedPhrases = (ps) => shuffle(ps).slice(0, 3);
+                const getWrongPhrases = () => {
+                  const allWrongPhrases = validPhrases
+                    .filter(p => p.id !== phrase.id);
+                  const wrongPhrasesWithTheSameTranslationFromType = allWrongPhrases
+                    .filter(p => p.translationFromType === phrase.translationFromType);
+                  if (wrongPhrasesWithTheSameTranslationFromType.length > 4) {
+                    return get3TrimmedPhrases(wrongPhrasesWithTheSameTranslationFromType);
+
+                  };
+
+                  return get3TrimmedPhrases(allWrongPhrases);
+                };
+                return shuffle([].concat(getWrongPhrases(), shuffledGamePhrases[index]));
+              };
+
+              const options = getOptions();
+              return {
+                ...phrase,
+                options,
+                isCorrect: undefined,
+              }
+            }),
+            status: PLAYING,
+          });
+
+          this.interval = setInterval(() => {
+            const isPlaying = this.state.countdown !== 1;
+            if (!isPlaying) {
+              clearInterval(this.interval);
+              this.updateGame(vocabulary.id, phrases);
+            }
+
+            this.setState({
+              countdown: isPlaying ? this.state.countdown - 1 : START_SEC,
+              index: isPlaying ? this.state.index : 0,
+              status: isPlaying ? PLAYING : RESULTS,
+            });
+          }, 1000);
+
+        }}
+      >
+        Play
+      </button>
+    );
+  }
+
+  renderCurrentLevel() {
+    const {
+      currentLevel,
+    } = this.props;
+    const {
+      status,
+    } = this.state;
+
+    if ([PLAYING, LEVELS, RESULTS].indexOf(status) !== -1) {
+      return null;
+    }
+
+    return (
+      <div className="game__current-level">
+        <div
+          className="game__current-level-label"
+          onClick={()=> {
+            this.setState({
+              status: LEVELS,
+            });
+          }}
+        >
+          Level
+        </div>
+        <div
+          className="game__current-level-number"
+          onClick={()=> {
+            this.setState({
+              status: LEVELS,
+            });
+          }}
+        >
+          {currentLevel}
+        </div>
+        {this.renderPlayButton()}
+      </div>
+    );
+  }
+
+  renderGameStatus() {
+    const {
+      gameStatus,
+    } = this.props;
+
+    if (gameStatus === 'CURRENT_LEVEL') {
+      return null;
+    }
+
+    const messages = {
+      'FIRST_TIME': 'First Time!',
+      'NEXT_LEVEL': 'LEVEL UP!',
+    };
+
+    return (
+      <div className="game__new-status">
+        {messages[gameStatus]}
+      </div>
+    );
+  }
+
+  render() {
+    const {
+      vocabulary,
+      levels,
+    } = this.props;
+
+    if (!vocabulary) {
+      return null;
+    }
+
+    const {
+      status,
+    } = this.state;
+
+    return (
+      <div className="game">
+        {this.renderGameInfo()}
+        {this.renderGameStatus()}
+        {this.renderCurrentLevel()}
+        {[LEVELS].indexOf(status) !== -1 && (
+          <div
+            className="game__levels"
+          >
             <div
-                className="game__game"
+              className="game__levels-list"
             >
-                <div className="game__countdown">
-                    <div className="game__countdown-number">
-                        {countdown}
-                    </div>
-                    <svg>
-                        <circle r="18" cx="20" cy="20" />
-                    </svg>
-                </div>
+              {levels.map(level => (
                 <div
-                    className=""
+                  key={level.number}
+                  className="game__level"
                 >
-                  {answerPhrases.length}/{phrases.length}
+                  <div
+                    className="game__level-title"
+                  >
+                    Level: {level.number}
+                  </div>
+                  <div
+                    className="game__level-score"
+                  >
+                    Score: {level.score}+
+                  </div>
                 </div>
-                <div
-                    className="game__word"
-                >
-                    {phrases[index].translationFrom}
-                </div>
-                <div
-                    className="game__options"
-                >
-                    {phrases[index].options.map(renderOption)}
-                </div>
+              ))}
             </div>
-        );
-    }
-
-    renderGameInfo() {
-        const {
-            vocabulary,
-            navigate,
-            gamePhrases,
-            validPhrases,
-            totalNumberOfLevels,
-            currentLevel,
-            gameScore,
-        } = this.props;
-        const {
-            status,
-            phrases,
-        } = this.state;
-
-        if ([PLAYING, LEVELS, RESULTS].indexOf(status) !== -1) {
-            return null;
-        }
-
-        return (
-            <div className="game__start-header">
-                <div className="game__start-header-left">
-                    <button
-                        className="game__back-button"
-                        onClick={()=> {
-                            navigate(`/vocabulary/${vocabulary.id}`);
-                        }}
-                    >
-                        Back to vocabulary
-                    </button>
-                </div>
-                <div className="game__start-header-right">
-                    <div>Current Level: {currentLevel} / {totalNumberOfLevels}</div>
-                    <div>Current phrases: {gamePhrases.length}</div>
-                    <div>Locked phrases: {validPhrases.length - gamePhrases.length}</div>
-                    {phrases.length ? (
-
-                        <div>Score: <AnimatedNumber value={gameScore} /></div>
-                    ) : (
-                        <div>Score: {gameScore}</div>
-                    )}
-                </div>
-            </div>
-        );
-    }
-
-    renderPlayButton() {
-        const {
-            vocabulary,
-            gamePhrases,
-            phrasesPerRound,
-            validPhrases,
-        } = this.props;
-
-        const {
-            phrases,
-        } = this.state;
-
-        return (
-            <button
-                className="game__play"
-                onClick={() => {
-                    const numberOfGamePhrases = gamePhrases.length > phrasesPerRound ? phrasesPerRound : gamePhrases.length;
-                    const numberOfWeakPhrases = Math.round((numberOfGamePhrases * 25) / 100);
-                    const shuffledGamePhrases = shuffle([].concat(
-                        gamePhrases.slice(0, numberOfWeakPhrases),
-                        shuffle(gamePhrases.slice(numberOfWeakPhrases, gamePhrases.length)).slice(0, numberOfGamePhrases - numberOfWeakPhrases),
-                    ));
-
+            <FixedFooter>
+              <div
+                className="game__levels-footer"
+              >
+                <button
+                  className="game__back-button"
+                  onClick={()=> {
                     this.setState({
-                        phrases: shuffledGamePhrases.map((phrase, index) => {
-                            const getOptions = () => {
-                                const get3TrimmedPhrases = (ps) => shuffle(ps).slice(0, 3);
-                                const getWrongPhrases = () => {
-                                    const allWrongPhrases = validPhrases
-                                        .filter(p => p.id !== phrase.id);
-                                    const wrongPhrasesWithTheSameTranslationFromType = allWrongPhrases
-                                        .filter(p => p.translationFromType === phrase.translationFromType);
-                                    if (wrongPhrasesWithTheSameTranslationFromType.length > 4) {
-                                        return get3TrimmedPhrases(wrongPhrasesWithTheSameTranslationFromType);
-
-                                    };
-
-                                    return get3TrimmedPhrases(allWrongPhrases);
-                                };
-                                return shuffle([].concat(getWrongPhrases(), shuffledGamePhrases[index]));
-                            };
-
-                            const options = getOptions();
-                            return {
-                                ...phrase,
-                                options,
-                                isCorrect: undefined,
-                            }
-                        }),
-                        status: PLAYING,
+                      status: START,
                     });
-
-                    this.interval = setInterval(() => {
-                        const isPlaying = this.state.countdown !== 1;
-                        if (!isPlaying) {
-                            clearInterval(this.interval);
-                            this.updateGame(vocabulary.id, phrases);
-                        }
-
-                        this.setState({
-                            countdown: isPlaying ? this.state.countdown - 1 : START_SEC,
-                            index: isPlaying ? this.state.index : 0,
-                            status: isPlaying ? PLAYING : RESULTS,
-                        });
-                    }, 1000);
-
-                }}
-            >
-                Play
-            </button>
-        );
-    }
-
-    renderCurrentLevel() {
-        const {
-            currentLevel,
-        } = this.props;
-        const {
-            status,
-        } = this.state;
-
-        if ([PLAYING, LEVELS, RESULTS].indexOf(status) !== -1) {
-            return null;
-        }
-
-        return (
-            <div className="game__current-level">
-                <div
-                    className="game__current-level-label"
-                    onClick={()=> {
-                        this.setState({
-                            status: LEVELS,
-                        });
-                    }}
+                  }}
                 >
-                    Level
-                </div>
-                <div
-                    className="game__current-level-number"
-                    onClick={()=> {
-                        this.setState({
-                            status: LEVELS,
-                        });
-                    }}
-                >
-                    {currentLevel}
-                </div>
-                {this.renderPlayButton()}
-            </div>
-        );
-    }
-
-    renderGameStatus() {
-        const {
-            gameStatus,
-        } = this.props;
-
-        if (gameStatus === 'CURRENT_LEVEL') {
-            return null;
-        }
-
-        const messages = {
-            'FIRST_TIME': 'First Time!',
-            'NEXT_LEVEL': 'LEVEL UP!',
-        };
-
-        return (
-            <div className="game__new-status">
-                {messages[gameStatus]}
-            </div>
-        );
-    }
-
-    render() {
-        const {
-            vocabulary,
-            levels,
-        } = this.props;
-
-        if (!vocabulary) {
-            return null;
-        }
-
-        const {
-            status,
-        } = this.state;
-
-        return (
-            <div className="game">
-                {this.renderGameInfo()}
-                {this.renderGameStatus()}
-                {this.renderCurrentLevel()}
-                {[LEVELS].indexOf(status) !== -1 && (
-                    <div
-                        className="game__levels"
-                    >
-                        <div
-                            className="game__levels-list"
-                        >
-                            {levels.map(level => (
-                                <div
-                                    key={level.number}
-                                    className="game__level"
-                                >
-                                    <div
-                                        className="game__level-title"
-                                    >
-                                        Level: {level.number}
-                                    </div>
-                                    <div
-                                        className="game__level-score"
-                                    >
-                                        Score: {level.score}+
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <FixedFooter>
-                          <div
-                            className="game__levels-footer"
-                          >
-                            <button
-                              className="game__back-button"
-                              onClick={()=> {
-                                this.setState({
-                                  status: START,
-                                });
-                              }}
-                            >
-                              CLOSE
-                            </button>
-                          </div>
-                        </FixedFooter>
-                    </div>
-                )}
-                {this.renderGame()}
-            </div>
-        );
-    }
+                  CLOSE
+                </button>
+              </div>
+            </FixedFooter>
+          </div>
+        )}
+        {this.renderGame()}
+      </div>
+    );
+  }
 }
 
 export default Game;

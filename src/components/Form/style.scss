@@ -4,17 +4,17 @@ $borderWidth: 2px;
 $borderRadius: 5px;
 
 @mixin input {
-    box-sizing: border-box;
-    padding: 5px;
-    margin-bottom: 10px;
-    width: 100%;
-    border: solid $borderColor;
-    border-width: $borderWidth;
-    border-radius: $borderRadius;
-    font-size: 16px;
+  box-sizing: border-box;
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+  border: solid $borderColor;
+  border-width: $borderWidth;
+  border-radius: $borderRadius;
+  font-size: 16px;
 
-    &:focus {
-        outline-color: $outlineColor;
-    }
+  &:focus {
+    outline-color: $outlineColor;
+  }
 }
 

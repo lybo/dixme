@@ -22,16 +22,16 @@ const vocabulariesDB = require('./db/vocabulary/');
 const router = express.Router();
 
 const mapUser = (req, res, next) => {
-    if (req.user) {
-        req.user.id = req.user.sub;
-    }
-    next();
+  if (req.user) {
+    req.user.id = req.user.sub;
+  }
+  next();
 };
 const checkJwtDev = (req, res, next) => {
-    req.user = {
-        sub: '1',
-    };
-    next();
+  req.user = {
+    sub: '1',
+  };
+  next();
 };
 const checkJwt = process.env.ENV !== 'development' ? jwt({
   // Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
@@ -50,69 +50,69 @@ const checkJwt = process.env.ENV !== 'development' ? jwt({
 }) : checkJwtDev;
 
 app.get('/api/v1/vocabulary/:vocabularyId',
-    checkJwt,
-    mapUser,
-    async function(req, res) {
-        const {
-            user,
-            params: { vocabularyId },
-        } = req;
-        try {
-            const vocabulary = await vocabulariesDB.get(vocabularyId, user.id);
-            res.json(vocabulary);
-        } catch (e) {
-            res.json({
-                id: 0,
-            });
-        }
-    },
+  checkJwt,
+  mapUser,
+  async function(req, res) {
+    const {
+      user,
+      params: { vocabularyId },
+    } = req;
+    try {
+      const vocabulary = await vocabulariesDB.get(vocabularyId, user.id);
+      res.json(vocabulary);
+    } catch (e) {
+      res.json({
+        id: 0,
+      });
+    }
+  },
 );
 
 app.get('/api/v1/vocabulary-phrases/:vocabularyId',
-    checkJwt,
-    mapUser,
-    async function(req, res) {
-        const {
-            user,
-            params: { vocabularyId },
-        } = req;
-        const phrases = await utils.readJSONFile(`./db/phrase/${user.id}.${vocabularyId}.json`);
+  checkJwt,
+  mapUser,
+  async function(req, res) {
+    const {
+      user,
+      params: { vocabularyId },
+    } = req;
+    const phrases = await utils.readJSONFile(`./db/phrase/${user.id}.${vocabularyId}.json`);
 
-        res.json(phrases);
-    },
+    res.json(phrases);
+  },
 );
 
 app.post('/api/v1/vocabulary',
-    checkJwt,
-    mapUser,
-    async function(req, res) {
-        const {
-            user,
-            body,
-        } = req;
-        const {
-            phrases,
-        } = body.vocabulary;
-        const agent = useragent.parse(req.headers['user-agent']);
-        delete body.vocabulary.phrases;
-        body.vocabulary.syncSource = agent.toString();
-        const vocabulary = await vocabulariesDB.put(body.vocabulary, req.user.id);
-        await utils.writeJSONFile(`./db/phrase/${user.id}.${vocabulary.id}.json`, phrases);
+  checkJwt,
+  mapUser,
+  async function(req, res) {
+    const {
+      user,
+      body,
+    } = req;
+    const {
+      phrases,
+    } = body.vocabulary;
+    const agent = useragent.parse(req.headers['user-agent']);
+    delete body.vocabulary.phrases;
+    body.vocabulary.syncSource = agent.toString();
+    const vocabulary = await vocabulariesDB.put(body.vocabulary, req.user.id);
+    await utils.writeJSONFile(`./db/phrase/${user.id}.${vocabulary.id}.json`, phrases);
 
-        res.json(vocabulary);
-    },
+    res.json(vocabulary);
+  },
 );
 
 app.get('/api/v1/user/vocabularies',
-    checkJwt,
-    mapUser,
-    async function(req, res) {
-        const {
-            user,
-        } = req;
-        const vocabularies = await vocabulariesDB.getAllByUser(user.id);
-        res.json(vocabularies);
-    },
+  checkJwt,
+  mapUser,
+  async function(req, res) {
+    const {
+      user,
+    } = req;
+    const vocabularies = await vocabulariesDB.getAllByUser(user.id);
+    res.json(vocabularies);
+  },
 );
 
 app.use(express.static(path.join(__dirname, 'build')));

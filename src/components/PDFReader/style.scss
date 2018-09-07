@@ -1,102 +1,102 @@
 @import '../../assets/scss/global.scss';
 
 .pdf-reader {
-    position: relative;
-    padding: 0 0 200px;
+  position: relative;
+  padding: 0 0 200px;
 
-    &__annotation {
-        display: inline-block;
-        padding: 0 2px;
-        margin: 1px 0;
-        background: #000;
-        color: #FFF;
-        cursor: pointer;
-        user-select: none;
-    }
+  &__annotation {
+    display: inline-block;
+    padding: 0 2px;
+    margin: 1px 0;
+    background: #000;
+    color: #FFF;
+    cursor: pointer;
+    user-select: none;
+  }
 
-    &__annotation_info-buttons {
-        display: flex;
-        margin: 10px 0 0 0;
-    }
+  &__annotation_info-buttons {
+    display: flex;
+    margin: 10px 0 0 0;
+  }
 
-    &__annotation_info-translations {
-    }
+  &__annotation_info-translations {
+  }
 
-    &__annotation_info-translation-container {
-        display: flex;
-        padding: 20px 0 20px;
-        border-bottom: 1px solid #ccc;
-    }
+  &__annotation_info-translation-container {
+    display: flex;
+    padding: 20px 0 20px;
+    border-bottom: 1px solid #ccc;
+  }
 
-    &__annotation_info-translation-container:last-child {
-        border: none;
-    }
+  &__annotation_info-translation-container:last-child {
+    border: none;
+  }
 
-    &__annotation_info-translation {
-        flex: 1 1 100%;
-    }
+  &__annotation_info-translation {
+    flex: 1 1 100%;
+  }
 
-    &__annotation_info-cancel-button {
-        @include button;
-        padding: 10px 5px;
-        flex: 1;
-    }
+  &__annotation_info-cancel-button {
+    @include button;
+    padding: 10px 5px;
+    flex: 1;
+  }
 
-    &__annotation_info-edit-button {
-        @include button;
-        flex: 1;
-        padding: 10px 5px;
-        margin: 0 10px 0 10px;
-    }
+  &__annotation_info-edit-button {
+    @include button;
+    flex: 1;
+    padding: 10px 5px;
+    margin: 0 10px 0 10px;
+  }
 
-    &__annotation_info {
-        padding: 10px;
-        user-select: none;
-        flex: 1;
-    }
+  &__annotation_info {
+    padding: 10px;
+    user-select: none;
+    flex: 1;
+  }
 
-    &__footer {
-        display: flex;
-        flex: 1 1 100%;
-        box-sizing: border-box;
-        user-select: none;
-    }
+  &__footer {
+    display: flex;
+    flex: 1 1 100%;
+    box-sizing: border-box;
+    user-select: none;
+  }
 
-    &__nav-container {
-        display: flex;
-        flex: 1;
-        align-items: center;
-        padding: 10px;
-    }
+  &__nav-container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    padding: 10px;
+  }
 
-    &__nav-text-input {
-        width: 50px;
-    }
+  &__nav-text-input {
+    width: 50px;
+  }
 
-    &__nav-button {
-        @include button;
-        flex: 1;
-    }
+  &__nav-button {
+    @include button;
+    flex: 1;
+  }
 
-    &__content {
-        padding: 5px 10px;
-        font-size: 1.2em;
-        line-height: 2em;
-        text-align: left;
-    }
+  &__content {
+    padding: 5px 10px;
+    font-size: 1.2em;
+    line-height: 2em;
+    text-align: left;
+  }
 }
 
 @media only screen and (max-width: 800px) {
-    .pdf-reader__nav-button {
-        padding: 15px 0;
-    }
+  .pdf-reader__nav-button {
+    padding: 15px 0;
+  }
 }
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-    .pdf-reader__content {
-        line-height: 2em;
-        /* font-size: 1.4em; */
-    }
-    .pdf-reader__content br {
-        display: none;
-    }
+  .pdf-reader__content {
+    line-height: 2em;
+    /* font-size: 1.4em; */
+  }
+  .pdf-reader__content br {
+    display: none;
+  }
 }

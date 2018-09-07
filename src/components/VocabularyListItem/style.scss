@@ -1,64 +1,64 @@
 @import '../../assets/scss/global.scss';
 
 .vocabulary-list-item {
-    margin: 10px 0;
+  margin: 10px 0;
+  display: flex;
+
+  &__left {
+    flex: 1 1 100%;
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    &__left {
-        flex: 1 1 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+  &__right {
+    font-size: 36px;
+    color: map-get($theme-2, textColorLight);
+  }
+
+  &__link {
+    font-size: 16px;
+    text-decoration: none;
+    color: #000;
+    display: flex;
+    background: map-get($theme-2, background);
+    border: 1px solid map-get($theme-2, borderColor);
+    box-shadow: 0 2px 0 map-get($theme-2, borderColor);
+    margin: 10px 0;
+    padding: 10px;
+    flex: 1 1 100%;
+    align-items: flex-start;
+    justify-content: center;
+    outline: none;
+  }
+
+  &__title {
+    font-size: 20px;
+    color: #000;
+    margin: 0 0 5px 0;
+    color: map-get($theme-2, textColor);
+  }
+
+  &__details {
+    display: flex;
+    font-size: 12px;
+    color: map-get($theme-2, textColorLight);
+
+    div {
+      margin-right: 5px;
     }
+  }
 
-    &__right {
-        font-size: 36px;
-        color: map-get($theme-2, textColorLight);
-    }
+  &__sync-status {
+    color: map-get($theme-2, highlightTextColor);
+  }
 
-    &__link {
-        font-size: 16px;
-        text-decoration: none;
-        color: #000;
-        display: flex;
-        background: map-get($theme-2, background);
-        border: 1px solid map-get($theme-2, borderColor);
-        box-shadow: 0 2px 0 map-get($theme-2, borderColor);
-        margin: 10px 0;
-        padding: 10px;
-        flex: 1 1 100%;
-        align-items: flex-start;
-        justify-content: center;
-        outline: none;
-    }
+  &--no-sync {
+    color: map-get($theme-2, textColorLight);
+  }
 
-    &__title {
-        font-size: 20px;
-        color: #000;
-        margin: 0 0 5px 0;
-        color: map-get($theme-2, textColor);
-    }
-
-    &__details {
-        display: flex;
-        font-size: 12px;
-        color: map-get($theme-2, textColorLight);
-
-        div {
-            margin-right: 5px;
-        }
-    }
-
-    &__sync-status {
-        color: map-get($theme-2, highlightTextColor);
-    }
-
-    &--no-sync {
-        color: map-get($theme-2, textColorLight);
-    }
-
-    &__number-of-phrases {
-        font-size: 12px;
-    }
+  &__number-of-phrases {
+    font-size: 12px;
+  }
 }
 

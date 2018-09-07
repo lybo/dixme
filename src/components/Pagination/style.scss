@@ -1,45 +1,45 @@
 @import '../../assets/scss/global.scss';
 
 .pagination {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    margin: 60px 10px;
-    // margin-left: -150px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  margin: 60px 10px;
+  // margin-left: -150px;
 
-    &__previous {
-        @include button;
-        display: block;
-        .disabled & {
-            background: #444;
-            box-shadow: 0 4px #666;
-            color: #AAAAAA;
-        }
+  &__previous {
+    @include button;
+    display: block;
+    .disabled & {
+      background: #444;
+      box-shadow: 0 4px #666;
+      color: #AAAAAA;
     }
+  }
 
-    &__next {
-        @include button;
-        display: block;
-        .disabled & {
-            background: #444;
-            box-shadow: 0 4px #666;
-            color: #AAAAAA;
-        }
+  &__next {
+    @include button;
+    display: block;
+    .disabled & {
+      background: #444;
+      box-shadow: 0 4px #666;
+      color: #AAAAAA;
     }
+  }
 
-    &__item {
-        @include button;
-        display: block;
-        padding-left: 10px;
-        padding-right: 10px;
-        margin: 0 5px;
+  &__item {
+    @include button;
+    display: block;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0 5px;
 
-        .active & {
-            background: #FFF;
-            box-shadow: 0 0px #FFF;
-            color: #000;
-        }
+    .active & {
+      background: #FFF;
+      box-shadow: 0 0px #FFF;
+      color: #000;
     }
+  }
 }

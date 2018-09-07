@@ -1,16 +1,16 @@
 @import '../../assets/scss/global.scss';
 
 .vocabulary-phrase-list-menu {
-    display: flex;
-    padding: 10px;
-    flex: 1 1 100%;
+  display: flex;
+  padding: 10px;
+  flex: 1 1 100%;
 
-    &__button {
-        @include button;
-        flex: 1;
-    }
+  &__button {
+    @include button;
+    flex: 1;
+  }
 
-    &__splitter {
-        width: 10px;
-    }
+  &__splitter {
+    width: 10px;
+  }
 }

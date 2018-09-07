@@ -1,66 +1,66 @@
 .App {
-    text-align: center;
+  text-align: center;
 
-    &__logo {
-        height: 25px;
+  &__logo {
+    height: 25px;
 
-        &-container {
-            overflow: hidden;
-            height: 25px;
-        }
+    &-container {
+      overflow: hidden;
+      height: 25px;
+    }
+  }
+
+  &__header {
+    background-color: #222;
+    padding: 10px;
+    color: white;
+    display: flex;
+
+    &-left {
+      flex: 1 1 100%;
+      display: flex;
+      align-items: center;
     }
 
-    &__header {
-        background-color: #222;
-        padding: 10px;
-        color: white;
-        display: flex;
-
-        &-left {
-            flex: 1 1 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        &-right {
-            display: flex;
-            justify-content: flex-end;
-            display: flex;
-        }
-
-        &-profile {
-            display: flex;
-            font-size: 12px;
-            justify-content: flex-end;
-            align-items: center;
-
-            &-image {
-                border-radius: 20px;
-                border: 2px solid #ccc;
-                margin-right: 5px;
-                height: 24px;
-            }
-        }
-
-        button {
-            background: #fff;
-            color: #000;
-            border: none;
-            cursor: pointer;
-            margin-left: 5px;
-            padding: 5px 10px;
-        }
+    &-right {
+      display: flex;
+      justify-content: flex-end;
+      display: flex;
     }
 
-    &__title {
-        font-size: 20px;
-        font-family: 'Black Ops One';
-        font-weight: normal;
-        margin: 0px;
-        padding: 4px 0 0 0;
+    &-profile {
+      display: flex;
+      font-size: 12px;
+      justify-content: flex-end;
+      align-items: center;
+
+      &-image {
+        border-radius: 20px;
+        border: 2px solid #ccc;
+        margin-right: 5px;
+        height: 24px;
+      }
     }
 
-    &__intro {
-        font-size: large;
+    button {
+      background: #fff;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      margin-left: 5px;
+      padding: 5px 10px;
     }
+  }
+
+  &__title {
+    font-size: 20px;
+    font-family: 'Black Ops One';
+    font-weight: normal;
+    margin: 0px;
+    padding: 4px 0 0 0;
+  }
+
+  &__intro {
+    font-size: large;
+  }
 }
