@@ -52,6 +52,21 @@
     }
   }
 
+  &__content {
+    width: 600px;
+    border: 1px solid #ccc;
+    border-width: 0 1px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 600px) {
+    &__content {
+      width: 100%;
+      border: none;
+      margin: 0;
+    }
+  }
+
   &__title {
     font-size: 20px;
     font-family: 'Black Ops One';

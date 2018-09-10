@@ -20,6 +20,79 @@
       font-size: 12px;
     }
 
+    &-buttons {
+      flex: 1 1 auto;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-direction: column;
+      margin-right: 10px;
+    }
+
+    &-button {
+      flex: 1 1 100%;
+      width: 100%;
+      max-width: 200px;
+      box-sizing: border-box;
+      padding: 10px;
+      color: #fff;
+      border-radius: 5px;
+      outline: none;
+      background: map-get($theme-2, background);
+      border: 1px solid map-get($theme-2, borderColor);
+      color: map-get($theme-2, textColor);
+      margin-bottom: 10px;
+      position: relative;
+      text-align: left;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+
+      &-top {
+        flex: 1 1 100%;
+        font-size: 1.6em;
+      }
+
+      &-bottom {
+        font-size: 0.8em;
+        text-align: right;
+      }
+
+      &--tiny {
+        font-size: 0.8em;
+      }
+
+      &--small {
+        font-size: 1.0em;
+      }
+
+      &--normal {
+        font-size: 1.2em;
+      }
+
+      &--large {
+        font-size: 1.4em;
+      }
+
+      &--vertical {
+        display: flex;
+        flex-direction: column;
+        .fa {
+          width: 20px;
+          margin-top: 2px;
+          text-align: center;
+        }
+      }
+
+      &-background {
+        position: absolute;
+        z-index: 0;
+        right: 10px;
+        top: 10px;
+        font-size: 40px;
+        opacity: 0.3;
+      }
+    }
   }
 
   &__info {

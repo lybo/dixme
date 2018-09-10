@@ -16,8 +16,9 @@ class Pagination extends Component {
     }
 
     return (
-      <ReactPaginate previousLabel={"previous"}
-        nextLabel={"next"}
+      <ReactPaginate
+        previousLabel={(<i className="fa fa-angle-left" />)}
+        nextLabel={(<i className="fa fa-angle-right" />)}
         breakLabel={<div>...</div>}
         breakClassName={"break-me"}
         pageCount={Math.round(list.length / perPage)}

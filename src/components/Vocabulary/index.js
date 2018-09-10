@@ -98,7 +98,7 @@ class Vocabulary extends Component {
       vocabulary,
       deleteVocabulary,
       onEditClick,
-      onAddClick,
+      // onAddClick,
       deletePhrase,
       navigate,
       navigateToPhraseForm,
@@ -116,51 +116,57 @@ class Vocabulary extends Component {
         </div>
 
         <div className="vocabulary__header-details">
-          <div className="vocabulary__info">
-
-            <div className="vocabulary__info-row">
-              <div className="vocabulary__info-label">
-                Translation:
-              </div>
-              <div className="vocabulary__info-value">
+          <div
+            className="vocabulary__header-buttons"
+          >
+            <div
+              className="vocabulary__header-button"
+            >
+              <i className="fa fa-language vocabulary__header-button-background" />
+              <div
+                className="vocabulary__header-button-top vocabulary__header-button--small vocabulary__header-button--vertical"
+              >
                 {ISO6391.getName(vocabulary.langFrom)}
-                <i className="fa fa-long-arrow-right vocabulary__info-arrow" />
+                <i className="fa fa-angle-down"/>
                 {ISO6391.getName(vocabulary.langTo)}
               </div>
-            </div>
-
-            <div className="vocabulary__info-row">
-              <div className="vocabulary__info-label">
-                Number of Phrases:
+              <div className="vocabulary__header-button-bottom">
+                languages
               </div>
-              <div className="vocabulary__info-value">
+            </div>
+            <div
+              className="vocabulary__header-button"
+            >
+              <i className="fa fa-font vocabulary__header-button-background" />
+              <div className="vocabulary__header-button-top">
                 {vocabulary.numberOfPhrases}
               </div>
-            </div>
-
-            <div className="vocabulary__info-sub-header">
-              Deviation from last sync:
-            </div>
-            <div className="vocabulary__info-sub">
-              <div className="vocabulary__info-row">
-                <div className="vocabulary__info-label">
-                  Number of new phrases:
-                </div>
-                <div className="vocabulary__info-value">
-                  {vocabulary.phrases.filter(p => p.isNew).length}
-                </div>
-              </div>
-
-              <div className="vocabulary__info-row">
-                <div className="vocabulary__info-label">
-                  Number of deleted phrases:
-                </div>
-                <div className="vocabulary__info-value">
-                  {vocabulary.syncDeletedPhrases}
-                </div>
+              <div className="vocabulary__header-button-bottom">
+                number of Phrases
               </div>
             </div>
-
+            <div
+              className="vocabulary__header-button"
+            >
+              <i className="fa fa-font vocabulary__header-button-background" />
+              <div className="vocabulary__header-button-top">
+                {vocabulary.phrases.filter(p => p.isNew).length}
+              </div>
+              <div className="vocabulary__header-button-bottom">
+                number of new phrases
+              </div>
+            </div>
+            <div
+              className="vocabulary__header-button"
+            >
+              <i className="fa fa-font vocabulary__header-button-background" />
+              <div className="vocabulary__header-button-top">
+                {vocabulary.syncDeletedPhrases}
+              </div>
+              <div className="vocabulary__header-button-bottom">
+                number of deleted phrases
+              </div>
+            </div>
           </div>
 
           <div className="vocabulary__actions">
@@ -168,21 +174,39 @@ class Vocabulary extends Component {
               {this.renderSyncButton()}
             </div>
 
-            <div style={{display: 'flex', padding: '0 10px', margin: '20px 0 10px'}}>
-              <button
-                className="vocabulary__edit-button"
-                onClick={() => navigate(`/vocabulary/edit/${vocabulary.id}`)}
-              >
-                edit
-              </button>
-            </div>
-
-            <div style={{display: 'flex', padding: '0 10px', margin: '10px 0'}}>
+            <div style={{display: 'flex', padding: '0 10px', margin: '20px 0'}}>
               <button
                 className="vocabulary__edit-button"
                 onClick={() => navigate(`/vocabulary/game/${vocabulary.id}`)}
               >
                 play
+              </button>
+            </div>
+
+            <div style={{display: 'flex', padding: '0 10px', margin: '0px 0 10px'}}>
+              <button
+                className="vocabulary__edit-button"
+                onClick={() => `/vocabulary/pdf/${vocabulary.id}`}
+              >
+                read
+              </button>
+            </div>
+
+            <div style={{display: 'flex', padding: '0 10px', margin: '10px 0 10px'}}>
+              <button
+                className="vocabulary__edit-button"
+                onClick={this.handleExportClick}
+              >
+                export
+              </button>
+            </div>
+
+            <div style={{display: 'flex', padding: '0 10px', margin: '10px 0 10px'}}>
+              <button
+                className="vocabulary__edit-button"
+                onClick={() => navigate(`/vocabulary/edit/${vocabulary.id}`)}
+              >
+                edit
               </button>
             </div>
 
@@ -215,18 +239,6 @@ class Vocabulary extends Component {
             {
               label: 'home',
               onClick: () => navigate(`/`),
-            },
-            {
-              label: 'pdf',
-              onClick: () => navigate(`/vocabulary/pdf/${vocabulary.id}`),
-            },
-            {
-              label: 'add phrase',
-              onClick: () => onAddClick(),
-            },
-            {
-              label: 'export',
-              onClick: this.handleExportClick,
             },
           ]}
         />

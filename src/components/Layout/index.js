@@ -71,7 +71,7 @@ class Layout extends Component {
             )}
           </div>
         </header>
-        <div>
+        <div className="App__content">
           {this.props.children}
         </div>
         <Notification />
