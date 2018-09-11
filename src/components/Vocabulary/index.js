@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './style.css';
 import { getPhraseModel } from '../../reducers/phrase';
 import VocabularyPhraseList from '../VocabularyPhraseList';
@@ -63,7 +63,6 @@ class Vocabulary extends Component {
 
     return (
       <SyncButton
-        label="Sync"
         vocabulary={vocabulary}
         getRemoteVocabulary={getRemoteVocabulary}
         setRemoteVocabulary={setRemoteVocabulary}
@@ -179,6 +178,7 @@ class Vocabulary extends Component {
                 className="vocabulary__edit-button"
                 onClick={() => navigate(`/vocabulary/game/${vocabulary.id}`)}
               >
+                <i className="fa fa-gamepad" />
                 play
               </button>
             </div>
@@ -188,6 +188,7 @@ class Vocabulary extends Component {
                 className="vocabulary__edit-button"
                 onClick={() => navigate(`/vocabulary/pdf/${vocabulary.id}`)}
               >
+                <i className="fa fa-book" />
                 read
               </button>
             </div>
@@ -197,6 +198,7 @@ class Vocabulary extends Component {
                 className="vocabulary__edit-button"
                 onClick={this.handleExportClick}
               >
+                <i className="fa fa-cloud-download" />
                 export
               </button>
             </div>
@@ -206,13 +208,19 @@ class Vocabulary extends Component {
                 className="vocabulary__edit-button"
                 onClick={() => navigate(`/vocabulary/edit/${vocabulary.id}`)}
               >
+                <i className="fa fa-pencil" />
                 edit
               </button>
             </div>
 
             <div className="vocabulary__delete-button">
               <ButtonWithConfirmation
-                label="delete"
+                label={(
+                  <Fragment>
+                    <i className="fa fa-trash-o" />
+                    delete
+                  </Fragment>
+                )}
                 confirmationMessage="Do you want to delete this vocabulary?"
                 onConfirm={() => deleteVocabulary(vocabulary.id)}
                 buttonClassName=""

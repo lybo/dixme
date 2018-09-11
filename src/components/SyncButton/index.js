@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './style.css';
 import ButtonWithActions from '../ButtonWithActions';
 
@@ -111,7 +111,12 @@ class SyncButton extends Component {
 
     return (
       <ButtonWithActions
-        label="Sync"
+        label={(
+          <Fragment>
+            <i className="fa fa-refresh" />
+            sync
+          </Fragment>
+        )}
         onClick={() => getRemoteVocabulary(vocabulary.id)}
         text={this.renderSyncComparison()}
         buttons={this.getSyncButtons()}
