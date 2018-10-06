@@ -1,4 +1,4 @@
-const brow = /Chrome/.test(navigator.userAgent) ? chrome : browser;
+const brow = /Chrome/.test(navigator.userAgent) ? window.chrome : window.browser;
 
 brow.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'update') {

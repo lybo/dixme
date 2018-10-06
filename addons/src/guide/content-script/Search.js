@@ -4,11 +4,14 @@ import './Search.css';
 
 
 export default class Search extends Component {
-  state = {
-    query: '',
+  constructor(props) {
+    super(props);
+    this.state = {
+      query: '',
+    };
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({
       query: event.currentTarget.value
     });
@@ -18,6 +21,7 @@ export default class Search extends Component {
     return (
       <div className="Search">
         <div className="bar">
+          22222:
           <input
             type="search"
             placeholder="Search the User Guide"
