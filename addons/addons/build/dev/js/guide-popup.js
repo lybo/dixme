@@ -113,7 +113,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "d91a791955a2e293f328"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "8a91292b4ba5df0b6fbc"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -771,10 +771,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./config/polyfills.js":
-/*!*****************************!*\
-  !*** ./config/polyfills.js ***!
-  \*****************************/
+/***/ "./addons/config/polyfills.js":
+/*!************************************!*\
+  !*** ./addons/config/polyfills.js ***!
+  \************************************/
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
@@ -800,10 +800,10 @@ Object.assign = __webpack_require__(/*! object-assign */ "./node_modules/object-
 
 /***/ }),
 
-/***/ "./lib/hot-update/browser-polyfill.js":
-/*!********************************************!*\
-  !*** ./lib/hot-update/browser-polyfill.js ***!
-  \********************************************/
+/***/ "./addons/lib/hot-update/browser-polyfill.js":
+/*!***************************************************!*\
+  !*** ./addons/lib/hot-update/browser-polyfill.js ***!
+  \***************************************************/
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
@@ -845,10 +845,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./lib/hot-update/client.js":
-/*!**********************************!*\
-  !*** ./lib/hot-update/client.js ***!
-  \**********************************/
+/***/ "./addons/lib/hot-update/client.js":
+/*!*****************************************!*\
+  !*** ./addons/lib/hot-update/client.js ***!
+  \*****************************************/
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
@@ -857,7 +857,7 @@ module.exports = {
 /* global __webpack_require__ */
 
 
-let {browser, browserRuntimeSendMessage} = __webpack_require__(/*! ./browser-polyfill */ "./lib/hot-update/browser-polyfill.js");
+let {browser, browserRuntimeSendMessage} = __webpack_require__(/*! ./browser-polyfill */ "./addons/lib/hot-update/browser-polyfill.js");
 
 const IS_BACKGROUND_SCRIPT = !!browser.runtime.getBackgroundPage;
 const __COMPILATION_HASH__ = __webpack_require__.h();
@@ -24762,15 +24762,15 @@ __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 /***/ }),
 
 /***/ 2:
-/*!*****************************************************************************************!*\
-  !*** multi ./lib/hot-update/client.js ./config/polyfills.js ./src/guide/popup/index.js ***!
-  \*****************************************************************************************/
+/*!*******************************************************************************************************!*\
+  !*** multi ./addons/lib/hot-update/client.js ./addons/config/polyfills.js ./src/guide/popup/index.js ***!
+  \*******************************************************************************************************/
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/georgioslymperis/Documents/projects/dixme/addons/lib/hot-update/client.js */"./lib/hot-update/client.js");
-__webpack_require__(/*! /Users/georgioslymperis/Documents/projects/dixme/addons/config/polyfills.js */"./config/polyfills.js");
+__webpack_require__(/*! /Users/georgioslymperis/Documents/projects/dixme/addons/addons/lib/hot-update/client.js */"./addons/lib/hot-update/client.js");
+__webpack_require__(/*! /Users/georgioslymperis/Documents/projects/dixme/addons/addons/config/polyfills.js */"./addons/config/polyfills.js");
 module.exports = __webpack_require__(/*! /Users/georgioslymperis/Documents/projects/dixme/addons/src/guide/popup/index.js */"./src/guide/popup/index.js");
 
 

@@ -113,7 +113,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "d91a791955a2e293f328"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "8a91292b4ba5df0b6fbc"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -766,15 +766,15 @@
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire("./lib/hot-update/background-script.js")(__webpack_require__.s = "./lib/hot-update/background-script.js");
+/******/ 	return hotCreateRequire("./addons/lib/hot-update/background-script.js")(__webpack_require__.s = "./addons/lib/hot-update/background-script.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./lib/hot-update/background-script.js":
-/*!*********************************************!*\
-  !*** ./lib/hot-update/background-script.js ***!
-  \*********************************************/
+/***/ "./addons/lib/hot-update/background-script.js":
+/*!****************************************************!*\
+  !*** ./addons/lib/hot-update/background-script.js ***!
+  \****************************************************/
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
@@ -783,7 +783,7 @@
 // WARNING! In development, this script is automatically added as a "background script" in manifest.json.
 
 
-let {browser} = __webpack_require__(/*! ./browser-polyfill */ "./lib/hot-update/browser-polyfill.js");
+let {browser} = __webpack_require__(/*! ./browser-polyfill */ "./addons/lib/hot-update/browser-polyfill.js");
 
 let connectionFailureHasBeenReported = false;
 let devServerRestarted = false;
@@ -896,10 +896,10 @@ const reloadExtension = () =>  {
 
 /***/ }),
 
-/***/ "./lib/hot-update/browser-polyfill.js":
-/*!********************************************!*\
-  !*** ./lib/hot-update/browser-polyfill.js ***!
-  \********************************************/
+/***/ "./addons/lib/hot-update/browser-polyfill.js":
+/*!***************************************************!*\
+  !*** ./addons/lib/hot-update/browser-polyfill.js ***!
+  \***************************************************/
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {

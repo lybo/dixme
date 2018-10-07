@@ -21,7 +21,7 @@ export default class Search extends Component {
     return (
       <div className="Search">
         <div className="bar">
-          22222:
+          11111:
           <input
             type="search"
             placeholder="Search the User Guide"
