@@ -1,4 +1,5 @@
-const brow = /Chrome/.test(navigator.userAgent) ? window.chrome : window.browser;
+import utils from '../../utils/';
+const brow = utils.getBrowser();
 
 brow.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'update') {

@@ -1,77 +1,60 @@
 import { getModelVocabulary } from '../../reducers/vocabulary';
+import localStorage from './localStorage';
 
-export function getGame() {
-  return new Promise(function(resolve, reject) {
-    const game = JSON.parse(localStorage.getItem('game')) || {};
-    resolve(game);
-  });
+export async function getGame() {
+  const game = await localStorage.getItem('game');
+  return game || {};
 }
 export function updateGame(game) {
-  return new Promise(function(resolve, reject) {
-    localStorage.setItem('game', JSON.stringify(game));
-    resolve(game);
-  });
+  return localStorage.setItem('game', game);
 }
 
 export function updateVocabularies(vocabularies) {
-  return new Promise(function(resolve, reject) {
-    localStorage.setItem('vocabularies', JSON.stringify(vocabularies));
-    resolve(vocabularies);
-  });
+  return localStorage.setItem('vocabularies', vocabularies);
 }
 
-export function getVocabularies() {
-  return new Promise(function(resolve, reject) {
-    const vocabularies = JSON.parse(localStorage.getItem('vocabularies')) || [];
-    resolve(vocabularies);
-  });
+export async function getVocabularies() {
+  const vocabularies = await localStorage.getItem('vocabularies');
+  return vocabularies || [];
 }
 
-export function addVocabulary(vocabulary) {
-  return new Promise(function(resolve, reject) {
-    const vocabularies = JSON.parse(localStorage.getItem('vocabularies')) || [];
-    localStorage.setItem('vocabularies', JSON.stringify([
-      getModelVocabulary(vocabulary),
-      ...vocabularies
-    ]));
-    resolve(vocabulary);
-  });
+export async function addVocabulary(vocabulary) {
+  const vocabularies = await localStorage.getItem('vocabularies') || [];
+  await localStorage.setItem('vocabularies', [
+    getModelVocabulary(vocabulary),
+    ...vocabularies
+  ]);
+  return vocabulary;
 }
 
-export function updateVocabulary(vocabulary) {
+export async function updateVocabulary(vocabulary) {
   const mapVocabulary = (vocabularyState) => {
     return vocabularyState.id === vocabulary.id ? Object.assign({}, vocabularyState, vocabulary) : vocabularyState;
   };
-  return new Promise(function(resolve, reject) {
-    const vocabularies = JSON.parse(localStorage.getItem('vocabularies')) || [];
-    localStorage.setItem('vocabularies', JSON.stringify(vocabularies.map(mapVocabulary)));
-    resolve(vocabulary);
-  });
+  const vocabularies = await localStorage.getItem('vocabularies') || [];
+  await localStorage.setItem('vocabularies', vocabularies.map(mapVocabulary));
+  return vocabulary;
 }
 
-export function deleteVocabulary(vocabularyId) {
-  return new Promise(function(resolve, reject) {
-    const vocabularies = JSON.parse(localStorage.getItem('vocabularies')) || [];
-    localStorage.setItem('vocabularies', JSON.stringify(vocabularies.filter(vocabulary =>
-      vocabulary.id !== vocabularyId
-    )));
-    resolve(vocabularyId);
-  });
+export async function deleteVocabulary(vocabularyId) {
+  const vocabularies = await localStorage.getItem('vocabularies') || [];
+  await localStorage.setItem('vocabularies', vocabularies.filter(vocabulary =>
+    vocabulary.id !== vocabularyId
+  ));
+  return vocabularyId;
 }
 
-export function addPhrase(phraseData) {
-  return new Promise(function(resolve, reject) {
-    const vocabularies = JSON.parse(localStorage.getItem('vocabularies')) || [];
-    const vocabulary = vocabularies.find(vocabulary =>
-      vocabulary.id === phraseData.vocabularyId
-    );
-    vocabulary.phrases.push(phraseData.phrase);
-    localStorage.setItem('vocabularies', JSON.stringify(vocabularies));
-    resolve(phraseData);
-  });
+export async function addPhrase(phraseData) {
+  const vocabularies = await localStorage.getItem('vocabularies') || [];
+  const vocabulary = vocabularies.find(vocabulary =>
+    vocabulary.id === phraseData.vocabularyId
+  );
+  vocabulary.phrases.push(phraseData.phrase);
+  await localStorage.setItem('vocabularies', vocabularies);
+  return phraseData;
 }
 
-export function updatePhrase(phraseData) {
+export async function updatePhrase(phraseData) {
   const mapPhrase = (phraseState) => {
     return phraseState.id === phraseData.phrase.id ? Object.assign({}, phraseState, phraseData.phrase) : phraseState;
   };
@@ -84,23 +67,19 @@ export function updatePhrase(phraseData) {
       }),
     ) : vocabularyState;
   };
-  return new Promise(function(resolve, reject) {
-    const vocabularies = JSON.parse(localStorage.getItem('vocabularies')) || [];
-    localStorage.setItem('vocabularies', JSON.stringify(vocabularies.map(mapVocabulary)));
-    resolve(phraseData);
-  });
+  const vocabularies = await localStorage.getItem('vocabularies') || [];
+  await localStorage.setItem('vocabularies', vocabularies.map(mapVocabulary));
+  return phraseData;
 }
 
-export function deletePhrase(phraseData) {
-  return new Promise(function(resolve, reject) {
-    const vocabularies = JSON.parse(localStorage.getItem('vocabularies')) || [];
-    const vocabulary = vocabularies.find(vocabulary =>
-      vocabulary.id === phraseData.vocabularyId
-    );
-    vocabulary.phrases = vocabulary.phrases.filter(phrase =>
-      phrase.id !== phraseData.phraseId
-    );
-    localStorage.setItem('vocabularies', JSON.stringify(vocabularies));
-    resolve(phraseData);
-  });
+export async function deletePhrase(phraseData) {
+  const vocabularies = await localStorage.getItem('vocabularies') || [];
+  const vocabulary = vocabularies.find(vocabulary =>
+    vocabulary.id === phraseData.vocabularyId
+  );
+  vocabulary.phrases = await vocabulary.phrases.filter(phrase =>
+    phrase.id !== phraseData.phraseId
+  );
+  await localStorage.setItem('vocabularies', vocabularies);
+  return phraseData;
 }

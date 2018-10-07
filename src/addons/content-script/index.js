@@ -5,10 +5,20 @@ import App from '../../containers/App';
 import { Provider } from 'react-redux'
 import store from '../../store/';
 import Search from './Search';
+import { requestPopulateVocabulariesFromLocal } from '../../actions/vocabulary';
+import { requestPopulateGameAnswersFromLocal } from '../../actions/game';
 
+store.subscribe(() => {
+  const state = JSON.parse(JSON.stringify(store.getState()));
+  console.log(state.lastAction.type, state.lastAction.payload, state);
+});
+
+store.dispatch(requestPopulateVocabulariesFromLocal());
+store.dispatch(requestPopulateGameAnswersFromLocal());
 const Main = () => {
   return (
     <div className="Main">
+      dfsdfsdfs:
       <Search />
       <Provider store={store}>
         <App />

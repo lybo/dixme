@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Create React WebExtension",
+  "name": "Dixme",
   "version": "0.0.1",
   "author": "Unknown",
   "icons": {
@@ -15,7 +15,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://github.com/constfun/create-react-WebExtension/blob/master/packages/react-scripts/template/README.md"
+        "<all_urls>"
       ],
       "js": [
         "js/addons-content-script.js"
@@ -29,5 +29,10 @@
   },
   "web_accessible_resources": [
     "media/*"
+  ],
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "tabs"
   ]
 }
