@@ -8,7 +8,7 @@
   },
   "background": {
     "scripts": [
-      "js/guide-background-script.js"
+      "js/addons-background-script.js"
     ],
     "persistent": true
   },
@@ -18,14 +18,14 @@
         "https://github.com/constfun/create-react-WebExtension/blob/master/packages/react-scripts/template/README.md"
       ],
       "js": [
-        "js/guide-content-script.js"
+        "js/addons-content-script.js"
       ]
     }
   ],
   "browser_action": {
     "default_icon": "icon-16.png",
     "default_title": "Open the Create React WebExtension User Guide",
-    "default_popup": "guide-popup.html"
+    "default_popup": "addons-popup.html"
   },
   "web_accessible_resources": [
     "media/*"
