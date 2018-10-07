@@ -3,14 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/jest": "^23.3.2",
     "@types/node": "^10.11.3",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.8",
     "autoprefixer": "7.1.1",
     "babel-core": "6.25.0",
     "babel-eslint": "7.2.3",
-    "babel-jest": "20.0.3",
     "babel-loader": "7.0.0",
     "babel-preset-react-app": "^3.0.1",
     "babel-runtime": "6.23.0",
@@ -31,7 +29,8 @@
     "find": "0.2.7",
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
-    "jest": "20.0.4",
+    "node-sass-chokidar": "0.0.3",
+    "npm-run-all": "^4.1.2",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.0.0",
     "postcss-loader": "2.0.6",
@@ -42,12 +41,6 @@
     "react-scripts-webextension": "^0.8.5",
     "style-loader": "0.18.2",
     "tree-from-paths": "^1.0.0",
-    "ts-jest": "20.0.7",
-    "ts-loader": "2.3.2",
-    "tslint": "5.2.0",
-    "tslint-loader": "3.5.3",
-    "tslint-react": "3.0.0",
-    "typescript": "2.4.2",
     "url-loader": "0.5.9",
     "web-ext-types": "^2.2.0",
     "webpack": "3.4.1",
@@ -56,45 +49,13 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start": "node addons/scripts/start.js",
-    "build": "node addons/scripts/build.js",
-    "test": "node addons/scripts/test.js --env=jsdom"
-  },
-  "jest": {
-    "mapCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}"
-    ],
-    "setupFiles": [
-      "<rootDir>/config/polyfills.js"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-      "<rootDir>/src/**/?(*.)(spec|test).ts?(x)"
-    ],
-    "testEnvironment": "node",
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^.+\\.tsx?$": "<rootDir>/config/jest/typescriptTransform.js",
-      "^(?!.*\\.(css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$"
-    ],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web"
-    },
-    "globals": {
-      "ts-jest": {}
-    }
+    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
+    "addons-start-js": "node addons/scripts/start.js",
+    "addons-start": "npm-run-all -p watch-css addons-start-js",
+    "addons-build-js": "node addons/scripts/build.js",
+    "addons-build": "npm-run-all build-css addons-build-js",
+    "addons-test": "node addons/scripts/test.js --env=jsdom"
   },
   "babel": {
     "presets": [
