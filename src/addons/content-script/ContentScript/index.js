@@ -228,7 +228,6 @@ export default connect(
       });
     };
     return {
-      vocabularies: state.vocabularies,
       vocabulary: getVocabulary(),
     };
   },

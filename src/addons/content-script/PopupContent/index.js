@@ -46,7 +46,7 @@ class PopupContent extends React.Component {
       definition,
       definitionReference,
     });
-    this.translate(text);
+    this.translate(translationFrom);
   }
 
   translate(text) {
