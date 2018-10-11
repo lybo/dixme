@@ -97,17 +97,24 @@ class ContentScript extends React.Component {
     const phrases = nextProps.vocabulary.phrases.map(phrase => phrase.text);
     const className = 'dixme-phrase';
     const instance = new Mark(document.querySelector('body'));
-    instance.mark(phrases, {
+    const options = {
       className,
       accuracy: 'exactly',
       separateWordSearch: false,
       element: 'span',
+    };
+    instance.unmark({
+      ...options,
       done: () => {
-        const annotations = document.querySelectorAll(`.${className}`);
-        console.log(annotations);
-        [].forEach.call(annotations, (annotation) => {
-          annotation.removeEventListener('click', this.handleAnnotationClick);
-          annotation.addEventListener('click', this.handleAnnotationClick);
+        instance.mark(phrases, {
+          ...options,
+          done: () => {
+            const annotations = document.querySelectorAll(`.${className}`);
+            [].forEach.call(annotations, (annotation) => {
+              annotation.removeEventListener('click', this.handleAnnotationClick);
+              annotation.addEventListener('click', this.handleAnnotationClick);
+            });
+          },
         });
       },
     });
@@ -133,11 +140,9 @@ class ContentScript extends React.Component {
       dimensions: null,
       text: '',
       sourceReference: '',
+      phraseId: null,
+      showModal: false,
     });
-  }
-
-  close = () => {
-    this.setState({ showModal: false });
   }
 
   getPopupContentProps() {
@@ -191,7 +196,7 @@ class ContentScript extends React.Component {
     return (
       <Popup
         showModal={showModal}
-        close={this.close}
+        close={this.setEmpty}
       >
         <PopupContent
           vocabulary={vocabulary}

@@ -150,7 +150,7 @@ class PopupContent extends React.Component {
                 });
               }}
             >
-              {'Add'}
+              {!selectedPhrase.id ? 'Add' : 'Update'}
             </button>
           </Fieldset>
         </div>
