@@ -1,0 +1,25 @@
+@mixin reference {
+  font-size: 14px;
+  background: #f9f9f9;
+  border-left: 1em solid #eee;
+  margin: 1.5em 1em;
+  padding: .5em 1em;
+  quotes: "\201C""\201D";
+
+  &:before{
+    color: #808080;
+    content: open-quote;
+    font-size: 4em;
+    line-height: .1em;
+    margin-right: .25em;
+    vertical-align: -.4em;
+  }
+
+  &:first-child{
+    display: block;
+  }
+
+  &:last-child{
+    margin-bottom: 0;
+  }
+}

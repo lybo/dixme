@@ -56,7 +56,7 @@ function WRDtableMap(html) {
  */
 function createTranslationItem(html) {
   const $ = cheerio.load(html);
-  const from = $('strong').text();
+  const from = $('strong').text().replace('⇒', '');
   $('.ToWrd em span').remove();
   $('.FrWrd em span').remove();
   const fromType = $('.FrWrd em').text();

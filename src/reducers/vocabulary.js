@@ -118,7 +118,7 @@ export default function(state = initialState, action = { type: '', payload: {} }
         ],
         numberOfPhrasesWithReference: action.payload.translationReference !== '' ? state.numberOfPhrasesWithReference + 1 : state.numberOfPhrasesWithReference,
         numberOfPhrases: state.numberOfPhrases + 1,
-        updatedAt: new Date().getTime(),
+        createdAt: new Date().getTime(),
         syncStatus: false,
       });
 

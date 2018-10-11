@@ -14,7 +14,7 @@ export default async function (word, from, to) {
   validateLanguage(from)
   validateLanguage(to)
   // Set the url
-  const url = `http://www.wordreference.com/${from}${to}/${word}`
+  const url = `https://www.wordreference.com/${from}${to}/${word}`
   // Make the request
   const html = await request({
     method: 'GET',

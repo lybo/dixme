@@ -35,7 +35,15 @@ methods[EXTENSION_LOCAL_STORAGE] = {
     });
   },
   removeItem: (keyName) => {
-    return browser.storage.local.remove(keyName);
+    return new Promise((resolve, reject) => {
+      browser.storage.local.remove([keyName], () => {
+        var error = browser.runtime.lastError;
+        if (error) {
+          reject(error);
+        }
+        resolve();
+      })
+    });
   },
 };
 

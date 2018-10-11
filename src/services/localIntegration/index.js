@@ -1,6 +1,8 @@
 import { getModelVocabulary } from '../../reducers/vocabulary';
 import localStorage from './localStorage';
 
+window.addonStorage = localStorage;
+
 export async function getGame() {
   const game = await localStorage.getItem('game');
   return game || {};
@@ -43,6 +45,9 @@ export async function deleteVocabulary(vocabularyId) {
   ));
   return vocabularyId;
 }
+
+// deleteVocabulary(0);
+// localStorage.removeItem('vocabularies');
 
 export async function addPhrase(phraseData) {
   const vocabularies = await localStorage.getItem('vocabularies') || [];

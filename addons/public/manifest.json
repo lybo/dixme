@@ -31,6 +31,8 @@
     "media/*"
   ],
   "permissions": [
+    "http://*.wordreference.com/",
+    "https://*.wordreference.com/",
     "storage",
     "unlimitedStorage",
     "tabs"

@@ -2,38 +2,17 @@ import React, { Component } from 'react';
 import 'react-tagsinput/react-tagsinput.css'
 import './style.css';
 import ButtonWithConfirmation from '../ButtonWithConfirmation';
-import { translate } from '../../services/translation/';
+import {
+  translate,
+  getTranslationLangKeys,
+  hasTranslationAPI,
+} from '../../services/translation/';
 import DebounceTextInput from '../Form/DebounceTextInput';
 import TextInput from '../Form/TextInput';
 import TextareaInput from '../Form/TextareaInput';
 import TagsInput from '../Form/TagsInput';
 import Fieldset from '../Fieldset';
 
-const wordreferenceCodeLanguagesAPI = {
-  'en': 'en',
-  'es': 'es',
-  'fr': 'fr',
-  'it': 'it',
-  'pt': 'pt',
-  'de': 'de',
-  'nl': 'nl',
-  'sv': 'sv',
-  'ru': 'ru',
-  'pl': 'pl',
-  'ro': 'ro',
-  'cs': 'cz',
-  'el': 'gr',
-  'tr': 'tr', // it doesn't work
-  'zh': 'zh',
-  'ja': 'ja',
-  'ko': 'ko',
-  'ar': 'ar',
-};
-
-const supportedCodeLanguages = Object.keys(wordreferenceCodeLanguagesAPI);
-const getSupportedLanguage = (code) => {
-  return supportedCodeLanguages.includes(code) ? wordreferenceCodeLanguagesAPI[code] : null;
-};
 const SCROLL_POSITION_LIMIT = 30;
 
 class PhraseForm extends Component {
@@ -142,13 +121,7 @@ class PhraseForm extends Component {
 
   getTranslationLangKeys() {
     const { vocabulary } = this.props;
-
-    const langFrom = getSupportedLanguage(vocabulary.langFrom) || 'en';
-    const langTo = getSupportedLanguage(vocabulary.langTo) || 'el';
-    return {
-      langFrom,
-      langTo,
-    };
+    return getTranslationLangKeys(vocabulary);
   }
 
   hasTranslationAPI() {
@@ -156,7 +129,10 @@ class PhraseForm extends Component {
       langFrom,
       langTo,
     } = this.getTranslationLangKeys();
-    return [langFrom, langTo].includes('en');
+    return hasTranslationAPI({
+      langFrom,
+      langTo,
+    });
   }
 
   handleScroll = (e) => {

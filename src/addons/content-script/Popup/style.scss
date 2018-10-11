@@ -1,0 +1,23 @@
+.popup {
+  &__modal {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    background-color: #FFFFFF;
+    padding: 10px;
+    z-index: 30010;
+    box-sizing: border-box;
+  }
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #CCCCCC;
+    z-index: 30000;
+  }
+}

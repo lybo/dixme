@@ -200,3 +200,11 @@ export function requestDeletePhrase(data) {
     payload: data
   }
 }
+
+// REQUEST_ADD_VOCABULARY_ADD_PHRASE
+export function requestAddVocabularyAddPhrase(data) {
+  return {
+    type: types.REQUEST_ADD_VOCABULARY_ADD_PHRASE,
+    payload: data
+  }
+}

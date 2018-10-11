@@ -355,3 +355,30 @@ export const requestDeletePhrase = (action$, store) => {
       )
     );
 };
+
+
+// ADD_VOCABULARY_ADD_PHRASE
+export const requestAddVocabularyAddPhrase = (action$, store) => {
+  return action$
+    .ofType(types.REQUEST_ADD_VOCABULARY_ADD_PHRASE)
+    .map(action => action.payload)
+    .flatMap(payload =>
+      // Concat 2 observables so they fire sequentially
+      Observable.concat(
+        Observable.fromPromise(api.addVocabulary(payload.vocabulary))
+          .flatMap(vocabularyData =>
+            // Concat 2 observables so they fire sequentially
+            Observable.concat(
+              Observable.of(actions.addVocabulary(vocabularyData)),
+              Observable.fromPromise(api.addPhrase({ phrase: payload.phrase, vocabularyId: vocabularyData.id }))
+                .flatMap(phraseData =>
+                  // Concat 2 observables so they fire sequentially
+                  Observable.concat(
+                    Observable.of(actions.addPhrase(phraseData)),
+                  )
+                )
+            )
+          )
+      )
+    );
+};
