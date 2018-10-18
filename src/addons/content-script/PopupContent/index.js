@@ -122,19 +122,18 @@ class PopupContent extends React.Component {
           <Fieldset
             title="Info"
           >
-            {selectedPhrase.text}
             {selectedPhrase.sourceReference ? (
               <div
                 className="popup-content__reference"
                 dangerouslySetInnerHTML={{__html: `... ${selectedPhrase.sourceReference} ...`}}
               />
             ) : null}
-            <div>{translationFrom}</div>
-            <div>{translationFromType}</div>
+            <div>
+              {translationFrom}
+              <span>({translationFromType})</span>
+            </div>
             <div>{translationTo}</div>
-            <div>{translationReference}</div>
             <div>{definition}</div>
-            <div>{definitionReference}</div>
             <button
               className="popup-content__translation-button"
               onClick={(e) => {

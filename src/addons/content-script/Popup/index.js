@@ -23,7 +23,7 @@ export default class Popup extends React.Component {
       children,
     } = this.props;
     return (
-      <div className='popup'>
+      <div className="popup">
         <ReactModal
           isOpen={showModal}
           contentLabel="Translate"
@@ -34,8 +34,15 @@ export default class Popup extends React.Component {
           closeTimeoutMS={150}
           ariaHideApp={false}
         >
-          <button onClick={close}>Close Modal</button>
-          {children}
+          <div className="popup__content">
+            <button
+              onClick={close}
+              className="popup__close-button"
+            >
+              X
+            </button>
+            {children}
+          </div>
         </ReactModal>
       </div>
     );
